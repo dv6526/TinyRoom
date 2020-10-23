@@ -157,6 +157,8 @@ body {
 	bottom: 15px;
 
 	padding: 10px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 .message-bubble {

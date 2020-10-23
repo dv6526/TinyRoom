@@ -113,3 +113,7 @@ body {
 		display: block;
 	}
 }
+
+input {
+	background-color: #24272A !important;
+}
