@@ -63,10 +63,7 @@ body {
 }
 
 .username {
-	font-size: 20px;
-	font-family: "Press Start 2P", cursive;
-	color: #ffffff;
-	padding: 0px 20px;
+
 }
 
 @media screen and (max-width: 992px) {
