@@ -62,10 +62,6 @@ body {
 	padding: 10px 10px;
 }
 
-.username {
-
-}
-
 @media screen and (max-width: 992px) {
 	.wrapper .sidebar-inner {
 		left: -100%;
@@ -95,13 +91,22 @@ body {
 	background: #1d1f21;
 }
 
+.inactive {
+	color: #505050;
+	cursor: default;
+}
+
 .kaligrafija {
 	font-size: 20px;
 	font-family: "Press Start 2P", cursive;
 }
 
-.kaligrafija a {
+body a {
 	color: #FFFFFF;
+}
+
+body a:hover {
+	color: #cfcfcf;
 }
 
 .pisava {
@@ -184,3 +189,8 @@ body {
 .message-content {
 	display: inline;
 }
+
+input {
+	background-color: #24272A !important;
+}
+
