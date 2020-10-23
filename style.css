@@ -1,7 +1,7 @@
-.wrapper {
+/*.wrapper {
 	display: flex;
 	width: 100%;
-}
+}*/
 
 body {
 	background: #1d1f21;
@@ -29,14 +29,10 @@ body {
 .wrapper .sidebar-inner .sidebar-menu a {
 	padding: 10px 15px;
 	display: block;
-	height: 90px;
+	/*height: 90px;*/
 	background-color: #2a2d30;
 	font-family: "Press Start 2P", cursive;
 	color: #ffffff;
-}
-
-.wrapper .sidebar-inner .sidebar-menu a:hover {
-	color: #707982;
 }
 
 .wrapper .sidebar-inner .close {
@@ -66,14 +62,14 @@ body {
 	display: none;
 }
 
-.wrapper .sidebar .sidebar-header {
+.title {
 	font-size: 27px;
 	font-family: "Press Start 2P", cursive;
 	color: #ffffff;
 	padding: 10px 10px;
 }
 
-.wrapper .sidebar .sidebar-username {
+.username {
 	font-size: 20px;
 	font-family: "Press Start 2P", cursive;
 	color: #ffffff;
@@ -84,7 +80,7 @@ body {
 	border: none;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 992px) {
 	.wrapper .sidebar-inner {
 		left: -100%;
 	}
@@ -103,4 +99,25 @@ body {
 	.wrapper .main-container .top-bar .hamburger {
 		display: block;
 	}
+}
+
+.svetla {
+	background: #2A2D30;
+}
+
+/*.kaligrafija {
+	font-size: 27px;
+	font-family: "Press Start 2P", cursive;
+}*/
+
+.pisava {
+	color: #FFFFFF;
+}
+
+/*.temna {
+	background: #1D1F21;
+}*/
+
+.robovi {
+	border-radius: 15px;
 }
