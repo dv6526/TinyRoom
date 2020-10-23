@@ -158,4 +158,30 @@ body {
 	left: 30px;
 	right: 30px;
 	bottom: 15px;
+
+	padding: 10px;
+}
+
+.message-bubble {
+	padding: 10px;
+	background-color: #32404e;
+	border-radius: 15px;
+	font-size: 0.9rem;
+	margin-bottom: 5px;
+}
+
+.player {
+	background-color: #5a738d;
+}
+
+.message-sender {
+	display: inline;
+}
+
+.message-date {
+	display: inline;
+}
+
+.message-content {
+	display: inline;
 }
