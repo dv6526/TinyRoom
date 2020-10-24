@@ -194,3 +194,38 @@ input {
 	background-color: #24272A !important;
 }
 
+.profile {
+    margin:5% 10% 0 10%;
+    color:white;
+}
+
+.profile input {
+    border-radius: 20px;
+    padding: 1em;
+    background-color: #2a2d30;
+    outline: none;
+    border: none;
+    color: darkgrey;
+    width: auto;
+}
+
+.profile #bio, input {
+    margin-bottom:0.5em;
+}
+
+#bio {
+    border-radius: 20px;
+    background-color: #2a2d30;
+    border:none;
+    width:auto;
+}
+
+.profile .infotype {
+    font-weight:bold;
+}
+
+.profile .row {
+    padding-bottom:1em;
+}
+
+
