@@ -138,20 +138,37 @@ body a:hover {
 
 #messagebox {
 	height: 100px;
+	position: relative;
 }
 
 #message {
-	padding: 10px;
-	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 87%;
 	height: 100%;
 
 	font-size: 1.25rem;
 	line-height: 1.5rem;
+	padding: 10px;
 
 	resize: none;
 
 	border-color: rgb(75, 75, 75);
 	border-style: solid;
+}
+
+#messagesend {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+	width: 12%;
+
+	border-color: rgb(75, 75, 75);
+	border-style: solid;
+	font-size: min(3vw, 100%);
+	padding: 0;
 }
 
 #chatlogs {
