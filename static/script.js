@@ -1,4 +1,5 @@
 $(function() {
+    // Event Listeners, Function Declarations ==============
     $(".hamburger .fa").click(function(){
         $(".wrapper").addClass("active")
     })
@@ -22,8 +23,18 @@ $(function() {
             console.log($(square).width(), $(square).height());
         }
     }
-
-    formatPage();
     $(window).resize(formatPage);
 
+    function 
+    // End of Event Listeners, Function Declarations =======
+
+    // Start of Code =======================================
+    // Tukaj lahko klicete funkcije da jih testirate
+
+
+
+    // formatiranje s pomocjo javascripta
+    formatPage();
+    // End of Code =========================================
+    
 });
