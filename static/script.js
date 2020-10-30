@@ -25,7 +25,8 @@ $(function() {
     }
     $(window).resize(formatPage);
 
-    function 
+    // write your functions here
+
     // End of Event Listeners, Function Declarations =======
 
     // Start of Code =======================================
