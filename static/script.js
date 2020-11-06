@@ -20,9 +20,13 @@ class User {
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
+<<<<<<< HEAD
         this.sprite_idx = sprite_idx;
         this.draw_avatar();
         
+=======
+        this.draw_avatar();
+>>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
     }
 
     draw_avatar() {
@@ -31,8 +35,12 @@ class User {
         var user = this;
         img.onload = function () {
             var ctx = (user.canvas).getContext('2d');
+<<<<<<< HEAD
             ctx.drawImage(img,user.sprite_idx * 30, 0, 30, 30, 0, 0,user.sprite_wh,user.sprite_wh);
 
+=======
+            ctx.drawImage(img,0,0,user.sprite_wh,user.sprite_wh);
+>>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
         }
 
     }
@@ -49,6 +57,10 @@ class Chat {
         this.drawLoop();
     }
 
+    addPlayer(player) {
+        this.users.push(player);
+    }
+
     resize(width) {
         this.canvas.style.width = '95%';
         this.canvas.style.height = '95%';
@@ -59,11 +71,19 @@ class Chat {
     drawLoop() {
         // Da lahko uporabimo v loopu
         var chat = this;
-
+        
         function loop() {
             // Prvo pobrisemo
             chat.context.clearRect(0, 0, chat.canvas.width, chat.canvas.height);
             
+            for (let i = 0; i < chat.users.length; i++) {
+                var user = chat.users[i];
+                //chat.context.fillRect(Math.floor(Math.random()*200), Math.floor(Math.random()*200), 50, 50);
+                chat.context.imageSmoothingEnabled = false;
+                chat.context.drawImage(user.canvas, 0, 0, 300, 300);
+                
+            }
+
         }
 
         setInterval(function() {
@@ -119,6 +139,11 @@ $(function() {
     var position = [2,3];
     var name = "Domen";
     var weather = "Sunny";
+<<<<<<< HEAD
     var user1 = new User(position, name, weather, 1);
 
+=======
+    var user1 = new User(position, name, weather);
+    chat.addPlayer(user1);
+>>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
 });
