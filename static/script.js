@@ -13,20 +13,16 @@ class Vector {
 class User {
        
     constructor(position, name, weather, sprite_idx) {
-        this.sprite_wh = 60;
+        this.sprite_wh = 30;
         this.position = position;
         this.name = name;
         this.weather = weather;
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
-<<<<<<< HEAD
         this.sprite_idx = sprite_idx;
         this.draw_avatar();
         
-=======
-        this.draw_avatar();
->>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
     }
 
     draw_avatar() {
@@ -35,12 +31,8 @@ class User {
         var user = this;
         img.onload = function () {
             var ctx = (user.canvas).getContext('2d');
-<<<<<<< HEAD
             ctx.drawImage(img,user.sprite_idx * 30, 0, 30, 30, 0, 0,user.sprite_wh,user.sprite_wh);
 
-=======
-            ctx.drawImage(img,0,0,user.sprite_wh,user.sprite_wh);
->>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
         }
 
     }
@@ -139,11 +131,6 @@ $(function() {
     var position = [2,3];
     var name = "Domen";
     var weather = "Sunny";
-<<<<<<< HEAD
     var user1 = new User(position, name, weather, 1);
-
-=======
-    var user1 = new User(position, name, weather);
     chat.addPlayer(user1);
->>>>>>> 00591b7a564537a2310121e58e9b14a244e802b3
 });
