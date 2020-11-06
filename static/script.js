@@ -11,7 +11,30 @@ class Vector {
 }
 
 class User {
+       
+    constructor(position, name, weather) {
+        this.sprite_wh = 60;
+        this.position = position;
+        this.name = name;
+        this.weather = weather;
+        this.canvas = document.createElement("canvas");
+        this.canvas.width = this.sprite_wh;
+        this.canvas.height = this.sprite_wh;
+        
+    }
 
+    draw_avatar() {
+        var img=document.createElement('img');
+        img.src='static/avatar.png';
+        var user = this;
+        img.onload = function () {
+            var ctx = (user.canvas).getContext('2d');
+            ctx.drawImage(img,0,0,user.sprite_wh,user.sprite_wh);
+
+        }
+
+    }
+    
 }
 
 class Chat {
@@ -90,5 +113,10 @@ $(function() {
     var chat = new Chat('tinyroom');
     formatPage();
     // End of Code =========================================
-    
+
+    var position = [2,3];
+    var name = "Domen";
+    var weather = "Sunny";
+    var user1 = new User(position, name, weather);
+    //user1.draw_avatar();
 });
