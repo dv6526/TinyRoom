@@ -12,7 +12,7 @@ class Vector {
 
 class User {
        
-    constructor(position, name, weather) {
+    constructor(position, name, weather, sprite_idx) {
         this.sprite_wh = 60;
         this.position = position;
         this.name = name;
@@ -20,16 +20,18 @@ class User {
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
+        this.sprite_idx = sprite_idx;
+        this.draw_avatar();
         
     }
 
     draw_avatar() {
         var img=document.createElement('img');
-        img.src='static/avatar.png';
+        img.src='static/sprites.png';
         var user = this;
         img.onload = function () {
             var ctx = (user.canvas).getContext('2d');
-            ctx.drawImage(img,0,0,user.sprite_wh,user.sprite_wh);
+            ctx.drawImage(img,user.sprite_idx * 30, 0, 30, 30, 0, 0,user.sprite_wh,user.sprite_wh);
 
         }
 
@@ -117,6 +119,6 @@ $(function() {
     var position = [2,3];
     var name = "Domen";
     var weather = "Sunny";
-    var user1 = new User(position, name, weather);
-    //user1.draw_avatar();
+    var user1 = new User(position, name, weather, 1);
+
 });
