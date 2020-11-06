@@ -1,9 +1,50 @@
+class Vector {
+    constructor(x, y) {
+        this.x = x || 0;
+        this.y = y || 0;
+    }
+
+    add(vector_to_add) {
+        this.x += vector_to_add.x;
+        this.y += vector_to_add.y;
+    }
+}
+
 class User {
 
 }
 
 class Chat {
-    
+    constructor(canvas_id) {
+        this.canvas = document.getElementById(canvas_id);
+        this.context = this.canvas.getContext('2d');
+        this.users = [];
+        
+        // Start drawing
+        this.drawLoop();
+    }
+
+    resize(width) {
+        this.canvas.style.width = '95%';
+        this.canvas.style.height = '95%';
+        this.canvas.width = 0.95*width;
+        this.canvas.height = this.canvas.width;
+    }
+
+    drawLoop() {
+        // Da lahko uporabimo v loopu
+        var chat = this;
+
+        function loop() {
+            // Prvo pobrisemo
+            chat.context.clearRect(0, 0, chat.canvas.width, chat.canvas.height);
+            
+        }
+
+        setInterval(function() {
+            loop();
+        }, 16.666);
+    }
 }
 
 $(function() {
@@ -28,7 +69,10 @@ $(function() {
         for (let i = 0; i < squares.length; i++) {
             const square = squares[i];
             $(square).height($(square).width());
-            console.log($(square).width(), $(square).height());
+            if (square.classList.contains('map')) {
+                chat.resize($(square).width());
+            }
+            //console.log($(square).width(), $(square).height());
         }
     }
     $(window).resize(formatPage);
@@ -43,6 +87,7 @@ $(function() {
 
 
     // formatiranje s pomocjo javascripta
+    var chat = new Chat('tinyroom');
     formatPage();
     // End of Code =========================================
     
