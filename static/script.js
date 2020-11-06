@@ -20,7 +20,7 @@ class User {
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
-        
+        this.draw_avatar();
     }
 
     draw_avatar() {
@@ -30,7 +30,6 @@ class User {
         img.onload = function () {
             var ctx = (user.canvas).getContext('2d');
             ctx.drawImage(img,0,0,user.sprite_wh,user.sprite_wh);
-
         }
 
     }
@@ -47,6 +46,10 @@ class Chat {
         this.drawLoop();
     }
 
+    addPlayer(player) {
+        this.users.push(player);
+    }
+
     resize(width) {
         this.canvas.style.width = '95%';
         this.canvas.style.height = '95%';
@@ -57,11 +60,19 @@ class Chat {
     drawLoop() {
         // Da lahko uporabimo v loopu
         var chat = this;
-
+        
         function loop() {
             // Prvo pobrisemo
             chat.context.clearRect(0, 0, chat.canvas.width, chat.canvas.height);
             
+            for (let i = 0; i < chat.users.length; i++) {
+                var user = chat.users[i];
+                //chat.context.fillRect(Math.floor(Math.random()*200), Math.floor(Math.random()*200), 50, 50);
+                chat.context.imageSmoothingEnabled = false;
+                chat.context.drawImage(user.canvas, 0, 0, 300, 300);
+                
+            }
+
         }
 
         setInterval(function() {
@@ -118,5 +129,5 @@ $(function() {
     var name = "Domen";
     var weather = "Sunny";
     var user1 = new User(position, name, weather);
-    //user1.draw_avatar();
+    chat.addPlayer(user1);
 });
