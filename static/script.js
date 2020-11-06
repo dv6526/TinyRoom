@@ -1,3 +1,11 @@
+class User {
+
+}
+
+class Chat {
+    
+}
+
 $(function() {
     // Event Listeners, Function Declarations ==============
     $(".hamburger .fa").click(function(){
