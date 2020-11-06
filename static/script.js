@@ -151,7 +151,7 @@ class Chat {
         var canvas_center = this.offset.clone().add(new Vector(this.canvas.width/2, this.canvas.height/2));
         var player_position = this.player.position;
         // check if player is close to border, move if he is
-        const treshold = 100;
+        const treshold = Math.min(250, this.canvas.width/2-50);
         const move_speed = 5;
         // calculate distances from border
         // top, right, bottom, left
