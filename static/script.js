@@ -234,6 +234,12 @@ $(function () {
 
     // write your functions here
 
+    //js za pojavno okno
+    function topAlert(message, seconds){
+        document.getElementById("main message").textContent = message;
+        var cas = setTimeout(function() { document.getElementById("modalnoOkno").style.display = "none"; }, seconds);
+    }
+
     function dropdownReset() {
         let dropwdown = document.getElementById("dropdown");
         if (dropdown.style.display == "block") {
