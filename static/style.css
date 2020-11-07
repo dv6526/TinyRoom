@@ -250,3 +250,16 @@ input {
 }
 
 
+#dropdown {
+	position: absolute;
+	display:none;
+	background:#1d1f21;
+	border: 1px;
+	border-color: rgb(75, 75, 75);
+	border-style: solid;
+}
+
+#dropdown .nav .nav-item a:hover {
+	background:white;
+	color: #1d1f21;
+}
