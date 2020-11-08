@@ -236,8 +236,12 @@ $(function () {
 
     //js za pojavno okno
     function topAlert(message, seconds){
-        document.getElementById("main message").textContent = message;
-        var cas = setTimeout(function() { document.getElementById("modalnoOkno").style.display = "none"; }, seconds);
+        var okno = document.createElement('div');
+        okno.textContent = message;
+        okno.className = 'message-bubble modalnoOkno';
+        document.body.appendChild(okno);
+
+        var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
 
 
@@ -318,6 +322,7 @@ $(function () {
 
     // Start of Code =======================================
     // Tukaj lahko klicete funkcije da jih testirate
+    //topAlert("delaj", 7);
 
 
 
