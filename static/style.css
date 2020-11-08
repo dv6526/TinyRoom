@@ -249,10 +249,9 @@ input {
     padding-bottom:1em;
 }
 
-
 #dropdown {
 	position: absolute;
-	display:none;
+	display:block;
 	background:#1d1f21;
 	border: 1px;
 	border-color: rgb(75, 75, 75);

@@ -240,13 +240,11 @@ $(function () {
         var cas = setTimeout(function() { document.getElementById("modalnoOkno").style.display = "none"; }, seconds);
     }
 
+
+    // MessageDropdown
     function dropdownReset() {
-        let dropwdown = document.getElementById("dropdown");
-        if (dropdown.style.display == "block") {
-            dropdown.style.display = "none";
-            let dropdown_nav = document.getElementById("dropdown_nav");
-            dropdown_nav.remove();
-        }
+        if(document.getElementById("dropdown")) 
+            document.getElementById("dropdown").remove();
     }
     
     function dropdownButtonClick(option) {
@@ -259,7 +257,8 @@ $(function () {
         dropdownReset();
     
         // init
-        let dropwdown = document.getElementById("dropdown");
+        //let dropdown = document.getElementById("dropdown");
+        let dropdown = document.createElement("div");
         let dropdown_nav = document.createElement("ul");
         let row = document.createElement("li");
         let link = document.createElement("a");
@@ -268,13 +267,14 @@ $(function () {
         let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
         
         // Append buttons to div (user and admin are different)
+        dropdown.id = "dropdown";
         dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
         dropdown_nav.className = "nav flex-column";                     // bootstrap
         for(let i=0;i<optionsLength;i++) {
             link = document.createElement("a");                         // has to be reinitialized every time
             row.className="nav-item";                                   // bootstrap
             link.className = "nav-link pt-0 pb-0";                      // bootstrap
-            link.setAttribute("onclick", "dropdownButtonClick()");      // set action onclick
+            //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
             
             // append childs to parents (look out for mute/unmute, global mute/unmute)
             if(i==0)
@@ -286,11 +286,14 @@ $(function () {
             row.appendChild(link);
             dropdown_nav.appendChild(row);
         }
-        // append everything to dropdown
-        dropwdown.appendChild(dropdown_nav);
+        // append everything to dropdown and to body
+        dropdown.appendChild(dropdown_nav);
+        document.body.appendChild(dropdown);
     
+        // add event listener on click
+        dropdown.addEventListener("click", dropdownButtonClick);     
+           
         // Opens dropdown on x,y position
-        dropdown.style.display = "block";
         // check if clicked closer to the edge than allowed
         if((screenPosition.x + dropdown.offsetHeight) > $(document).height())
             dropdown.style.top = ($(document).height() - dropdown.offsetHeight - 1) + "px";
@@ -310,7 +313,7 @@ $(function () {
         // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
     }
 
-    
+
     // End of Event Listeners, Function Declarations =======
 
     // Start of Code =======================================
