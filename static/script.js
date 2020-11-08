@@ -243,7 +243,20 @@ $(function () {
 
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
+    
+    // new message
+    function novoSporocilo(sporocilo_info) {
+        var sporocilo=document.createElement("div");
+        sporocilo.classList.add("message-bubble");
+        sporocilo.setAttribute("data-user_id",sporocilo_info.sender_id);
 
+        if (sporocilo_info.player==true) {
+            sporocilo.classList.add("player");
+        }
+
+        sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
+        document.querySelector("#chatlogs").prepend(sporocilo);
+    }
 
     // MessageDropdown
     function dropdownReset() {
@@ -323,8 +336,14 @@ $(function () {
     // Start of Code =======================================
     // Tukaj lahko klicete funkcije da jih testirate
     //topAlert("delaj", 7);
-
-
+    
+     /*novoSporocilo({
+        'date':'18:05',
+        'sender':'Janez',
+        'sender_id':12,
+        'body':'Moje ime je Janez',
+        'player':true
+     });*/
 
     // formatiranje s pomocjo javascripta
     var chat = new Chat('tinyroom');
