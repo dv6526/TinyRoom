@@ -274,7 +274,6 @@ $(function () {
         dropdownReset();
     
         // init
-        //let dropdown = document.getElementById("dropdown");
         let dropdown = document.createElement("div");
         let dropdown_nav = document.createElement("ul");
         let row = document.createElement("li");
@@ -282,12 +281,16 @@ $(function () {
         let options = [["mute", "unmute"], "room invite", "request room invite", "private message",
                         ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
         let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
-        
+        /*
+            Construct dropdown
+        */
+        //dropdown.style.width = "400px";
         // Append buttons to div (user and admin are different)
         dropdown.id = "dropdown";
         dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
-        dropdown_nav.className = "nav flex-column";                     // bootstrap
+        dropdown_nav.className = "nav flex-columns";                 // bootstrap
         for(let i=0;i<optionsLength;i++) {
+            //row = document.createElement("li");
             link = document.createElement("a");                         // has to be reinitialized every time
             row.className="nav-item";                                   // bootstrap
             link.className = "nav-link pt-0 pb-0";                      // bootstrap
@@ -303,8 +306,34 @@ $(function () {
             row.appendChild(link);
             dropdown_nav.appendChild(row);
         }
-        // append everything to dropdown and to body
         dropdown.appendChild(dropdown_nav);
+
+        // Append profile information to div
+        // {'bio_pic':'imagesrc', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'}
+        let profile = document.createElement("div");
+        let picture = document.createElement("img");
+        let title = document.createElement("h5");
+        let description = document.createElement("div");
+        profile.id="dropdown_profile";
+
+        // picture
+        picture.src = dropdown_info.bio_pic;
+        picture.alt = "Profile picture";
+        picture.style.width = "170px";
+        // bio title (uppercased)
+        title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
+        title.className = "text-center";
+        // bio description
+        description.className ="";
+        description.append(document.createTextNode(dropdown_info.bio_description));
+        description.className = "text-justify p-2";
+        
+        // append everything
+        profile.append(picture);
+        profile.append(title);
+        profile.append(description);
+
+        dropdown.append(profile);
         document.body.appendChild(dropdown);
     
         // add event listener on click
@@ -337,7 +366,15 @@ $(function () {
     // Tukaj lahko klicete funkcije da jih testirate
     //topAlert("delaj", 7);
     
-     /*novoSporocilo({
+    /*
+        Dropdown test
+    */
+    //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12})
+    //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'});
+    messageDropdown({'x':200, 'y':300},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum mauris semper est finibus, ornare aliquet metus mollis.'});
+    
+    
+    /*novoSporocilo({
         'date':'18:05',
         'sender':'Janez',
         'sender_id':12,

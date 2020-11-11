@@ -251,11 +251,17 @@ input {
 
 #dropdown {
 	position: absolute;
-	display:block;
+	display:inline-flex;
 	background:#1d1f21;
 	border: 1px;
 	border-color: rgb(75, 75, 75);
 	border-style: solid;
+}
+
+#dropdown_profile {
+	border-left: 1px solid rgb(75, 75, 75);
+	color: white;
+	width: 170px;
 }
 
 #dropdown .nav .nav-item a:hover {
