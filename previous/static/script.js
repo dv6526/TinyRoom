@@ -276,6 +276,7 @@ $(function () {
 
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
+
     
     // new message
     function novoSporocilo(sporocilo_info) {
@@ -290,6 +291,24 @@ $(function () {
         sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
         document.querySelector("#chatlogs").prepend(sporocilo);
     }
+
+
+    //ajax zahteva, ki pošlje sporočilo in token
+    $("messagesend").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "/novoSporocilo",
+            data: {
+                message:document.getElementById("message");
+                token: 11222;
+            },
+            success: function() {
+            document.getElementById("message").value = "";
+            },
+            dataType: "text"
+        });
+    });
+
 
     // MessageDropdown
     function dropdownReset() {
