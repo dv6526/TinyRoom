@@ -1,0 +1,125 @@
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="sidebar-inner">
+            <div class="close">
+                <i class="fa fa-close"></i>
+            </div>
+            <div class="title text-center">
+                TINYROOM
+            </div>
+            <div class="pisava kaligrafija pl-3">
+                Tjasa
+            </div>
+            <div class="d-flex flex-column pl-3 kaligrafija pisava">
+                <a href="./index.html" class="inactive">CHAT</a>
+                <a href="./private.html" class="">MY ROOM</a>
+                <a href="./profile.html" class="">MY PROFILE</a>
+                <a href="./register.html" class="">LOG OUT</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars fa-3x"></i>
+            </div>
+        </div>
+        <!-- PAGE CONTENT STARTS HERE -->
+        <div class="container-xl">
+            <div class="page-content pisava">
+                <div class="row mt-2 squares-content">
+                    <div class="col-md-6 col-12 pt-2">
+                        <div class="svetla robovi square-content center-content map">
+                            <canvas id="tinyroom" class="robovi" style="width: 95%; height: 95%;">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 pt-2">
+                        <div class="svetla robovi square-content" id="chat">
+                            <div id="messagebox" class="mb-2">
+                                <textarea id="message" class="robovi temna pisava" name="message" id="" cols="30"
+                                    rows="3" placeholder="Enter your message here!"></textarea>
+                                <input type="button" class="robovi pisava text-center" id="messagesend" value="Send">
+                            </div>
+                            <div id="chatlogs" class="robovi temna">
+                                <div class="message-bubble">
+                                    <div class="message-date">14:56</div>
+                                    <div class="message-sender">Ana</div>: <div class="message-content">To je tekst čez
+                                        več linij! To je tekst čez več linij! To je tekst čez več linij! To je tekst čez
+                                        več linij!</div>
+                                </div>
+                                <div class="message-bubble">
+                                    <div class="message-date">14:52</div>
+                                    <div class="message-sender">Ana</div>: <div class="message-content">Ker tisti font
+                                        na sliki nima š-jev!</div>
+                                </div>
+                                <div class="message-bubble player">
+                                    <div class="message-date">14:48</div>
+                                    <div class="message-sender">Tjasa</div>: <div class="message-content">Zakaj nimam
+                                        š-ja v imenu?</div>
+                                </div>
+                                <div class="message-bubble">
+                                    <div class="message-date">14:40</div>
+                                    <div class="message-sender">Ana</div>: <div class="message-content">Oi Tjasa! Kako
+                                        si?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="robovi svetla pisava" id="weather">
+                            <div class="row justify-content-md-around justify-content-center flex-wrap">
+                                <div id="day1" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">MONDAY</div>
+                                    <div><i class="fas fa-sun" style="font-size:50px"></i></div>
+                                    <div>Sunny</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day2" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">TUESDAY</div>
+                                    <div><i class="fas fa-cloud" style="font-size:50px"></i></div>
+                                    <div>Cloudy</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day3" class=" pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">WEDNESDAY</div>
+                                    <div><i class="fas fa-smog" style="font-size:50px"></i></div>
+                                    <div>Foggy</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day4" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">THURSDAY</div>
+                                    <div><i class="fas fa-cloud-sun" style="font-size:50px"></i></div>
+                                    <div>Partly cloudy</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day5" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">FRIDAY</div>
+                                    <div><i class="fas fa-cloud-sun-rain" style="font-size:50px"></i></div>
+                                    <div>Showers</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day6" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">SATURDAY</div>
+                                    <div><i class="fas fa-cloud-showers-heavy" style="font-size:50px"></i></div>
+                                    <div>Rain</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                                <div id="day7" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                    <div class="pb-2">SUNDAY</div>
+                                    <div><i class="fas fa-snowflake" style="font-size:50px"></i></div>
+                                    <div>Snow</div>
+                                    <div>12 °C | 60 °F</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- PAGE CONTENT ENDS HERE -->
+    </div>
+
+</div>
