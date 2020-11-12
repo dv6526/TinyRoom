@@ -60,6 +60,7 @@ class User {
     constructor(position, name, weather, sprite_idx) {
         this.sprite_wh = 30;
         this.position = position;
+        this.wanted_position = position;
         this.name = name;
         this.weather = weather;
         this.canvas = document.createElement("canvas");
@@ -76,6 +77,26 @@ class User {
         var img = returnImageObject('static/sprites.png', function () {
             user.context.drawImage(img, user.sprite_idx * 30, 0, 30, 30, 0, 0, user.sprite_wh, user.sprite_wh);
         });
+    }
+
+    step() {
+        const speed = 5;
+        const slowdown_distance = 100;
+        const treshold = 2;
+        // treshold for when to stop moving
+        var vectorToWanted = this.wanted_position.clone().subtract(this.position);
+        var distanceToWanted = vectorToWanted.length();
+
+        if (distanceToWanted > treshold) {
+            vectorToWanted.normalize().multiply(
+                Math.min(
+                    Math.min(speed*(distanceToWanted/slowdown_distance), speed),
+                    distanceToWanted
+                    )
+                );
+            this.position.add(vectorToWanted);
+        }
+        
     }
 
 }
@@ -134,14 +155,23 @@ class Chat {
         this.canvas.width = 0.95 * width;
         this.canvas.height = this.canvas.width;
     }
+    
+    inMap(position) {
+        if (position.x <= this.canvas.width && position.y <= this.canvas.height && 0 <= position.x && 0 <= position.y) {
+            return true;
+        }
+        return false;
+    }
 
     hookControls() {
         var chat = this;
         // move handler
         document.addEventListener('click', function(click) {
             var position = getCanvasMousePos(click, chat.canvas);
-            var wanted_position = position.clone().add(chat.offset);
-            chat.player.position = wanted_position;
+            if (chat.inMap(position)) {
+                var wanted_position = position.clone().add(chat.offset);
+                chat.player.wanted_position = wanted_position;
+            }
         });
     }
 
@@ -152,7 +182,7 @@ class Chat {
         var player_position = this.player.position;
         // check if player is close to border, move if he is
         const treshold = Math.min(250, this.canvas.width/2-50);
-        const move_speed = 5;
+        const move_speed = 2.5;
         // calculate distances from border
         // top, right, bottom, left
         const distances = [
@@ -165,9 +195,11 @@ class Chat {
         if (Math.min(...distances) < treshold) {
             // player is close to the border
             // calculate vector to center map
-            var direction = canvas_center.subtract(player_position).normalize();
+            var vectorToMove = canvas_center.subtract(player_position);
+            var distance = vectorToMove.length();
+            var direction = vectorToMove.normalize();
             // finally move the offset
-            this.offset.subtract(direction.multiply(move_speed));
+            this.offset.subtract(direction.multiply(Math.min(move_speed, distance)));
         }
     }
 
@@ -189,9 +221,10 @@ class Chat {
 
             for (let i = 0; i < chat.users.length; i++) {
                 var user = chat.users[i];
-                
-                context.drawImage(user.canvas, user.position.x - chat.offset.x - avatar_size/2, user.position.y - chat.offset.y - avatar_size/2, avatar_size, avatar_size);
 
+                user.step();
+
+                context.drawImage(user.canvas, user.position.x - chat.offset.x - avatar_size/2, user.position.y - chat.offset.y - avatar_size/2, avatar_size, avatar_size);
             }
 
         }
@@ -371,7 +404,7 @@ $(function () {
     */
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12})
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'});
-    messageDropdown({'x':200, 'y':300},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum mauris semper est finibus, ornare aliquet metus mollis.'});
+    //messageDropdown({'x':200, 'y':300},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum mauris semper est finibus, ornare aliquet metus mollis.'});
     
     
     /*novoSporocilo({
