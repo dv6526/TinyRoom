@@ -1,6 +1,6 @@
 /* GET home page */
 const index = (req, res) => {
-    res.render('index', { title: 'Express' });
+    res.render('index', require('../models/weather.json'));
 };
 
 const private = (req, res) => {

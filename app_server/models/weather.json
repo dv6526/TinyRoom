@@ -1,1 +1,46 @@
-{}
+{
+  "weather": [
+    {
+      "day": "MONDAY",
+      "type": "sun",
+      "type_string": "Sunny",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "TUESDAY",
+      "type": "cloud",
+      "type_string": "Cloudy",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "WEDNESDAY",
+      "type": "smog",
+      "type_string": "Foggy",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "THURSDAY",
+      "type": "cloud-sun",
+      "type_string": "Partly cloudy",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "FRIDAY",
+      "type": "cloud-sun-rain",
+      "type_string": "Showers",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "SATURDAY",
+      "type": "cloud-showers-heavy",
+      "type_string": "Rain",
+      "temperature": "12 °C | 60 °F"
+    },
+    {
+      "day": "SUNDAY",
+      "type": "snowflake",
+      "type_string": "Snow",
+      "temperature": "12 °C | 60 °F"
+    }
+  ]
+}
