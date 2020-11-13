@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b355b10-55ba-440d-a2b3-c80e8f98230b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/LP-23.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_server/models/weather.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/controllers/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/controllers/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/views/index.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/views/index.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/views/layout.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/views/layout.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/views/private.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/views/private.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/views/profile.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/views/profile.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_server/views/register.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app_server/views/register.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1kDylVFlG6vkUFgTa1fX1qOwNCd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.web.browsers" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b355b10-55ba-440d-a2b3-c80e8f98230b" name="Default Changelist" comment="" />
+      <created>1605249608005</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605249608005</updated>
+      <workItem from="1605249609241" duration="5072000" />
+      <workItem from="1605259403705" duration="2243000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="3119" y="301" key="#Chrome_Settings" timestamp="1605258279011">
+      <screen x="2560" y="0" width="1536" height="832" />
+    </state>
+    <state x="3119" y="301" key="#Chrome_Settings/2560.0.1536.832/0.0.2560.1040@2560.0.1536.832" timestamp="1605258279011" />
+    <state x="2788" y="105" width="1089" height="713" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605253443829">
+      <screen x="2560" y="0" width="1536" height="832" />
+    </state>
+    <state x="2788" y="105" width="1089" height="713" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.0.1536.832/0.0.2560.1040@2560.0.1536.832" timestamp="1605253443829" />
+    <state x="2837" y="57" key="SettingsEditor" timestamp="1605258369313">
+      <screen x="2560" y="0" width="1536" height="832" />
+    </state>
+    <state x="2837" y="57" key="SettingsEditor/2560.0.1536.832/0.0.2560.1040@2560.0.1536.832" timestamp="1605258369313" />
+    <state x="2996" y="153" key="search.everywhere.popup" timestamp="1605254293216">
+      <screen x="2560" y="0" width="1536" height="832" />
+    </state>
+    <state x="2996" y="153" key="search.everywhere.popup/2560.0.1536.832/0.0.2560.1040@2560.0.1536.832" timestamp="1605254293216" />
+  </component>
+</project>

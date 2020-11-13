@@ -31,7 +31,40 @@
 </head>
 
 <body>
-  {{{body}}}
+    <!-- Dodaj navigacijo -->
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="sidebar-inner">
+                <div class="close">
+                    <i class="fa fa-close"></i>
+                </div>
+                <div class="title text-center">
+                    TINYROOM
+                </div>
+                <div class="pisava kaligrafija pl-3">
+                    Tjasa
+                </div>
+                <div class="d-flex flex-column pl-3 kaligrafija pisava">
+                    <a href="./" class="inactive">CHAT</a>
+                    <a href="./private" class="">MY ROOM</a>
+                    <a href="./profile" class="">MY PROFILE</a>
+                    <a href="./register" class="">LOG OUT</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="top-bar">
+                <div class="hamburger">
+                    <i class="fa fa-bars fa-3x"></i>
+                </div>
+            </div>
+            <!-- PAGE CONTENT STARTS HERE -->
+            {{{body}}}
+            <!-- PAGE CONTENT ENDS HERE -->
+        </div>
+
+    </div>
 </body>
 
 </html>
