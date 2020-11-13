@@ -4,7 +4,7 @@
         <div class="row mt-2 squares-content">
             <div class="col-md-6 col-12 pt-2">
                 <div class="svetla robovi square-content center-content map">
-                    <canvas id="tinyroom" class="robovi" style="width: 95%; height: 95%;">
+                    <canvas id="tinyroom" class="robovi" style="width: 95%; height: 95%;"/>
                 </div>
             </div>
             <div class="col-md-6 col-12 pt-2">
@@ -44,48 +44,14 @@
             <div class="col-12">
                 <div class="robovi svetla pisava" id="weather">
                     <div class="row justify-content-md-around justify-content-center flex-wrap">
-                        <div id="day1" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">MONDAY</div>
-                            <div><i class="fas fa-sun" style="font-size:50px"></i></div>
-                            <div>Sunny</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day2" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">TUESDAY</div>
-                            <div><i class="fas fa-cloud" style="font-size:50px"></i></div>
-                            <div>Cloudy</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day3" class=" pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">WEDNESDAY</div>
-                            <div><i class="fas fa-smog" style="font-size:50px"></i></div>
-                            <div>Foggy</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day4" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">THURSDAY</div>
-                            <div><i class="fas fa-cloud-sun" style="font-size:50px"></i></div>
-                            <div>Partly cloudy</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day5" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">FRIDAY</div>
-                            <div><i class="fas fa-cloud-sun-rain" style="font-size:50px"></i></div>
-                            <div>Showers</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day6" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">SATURDAY</div>
-                            <div><i class="fas fa-cloud-showers-heavy" style="font-size:50px"></i></div>
-                            <div>Rain</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
-                        <div id="day7" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">SUNDAY</div>
-                            <div><i class="fas fa-snowflake" style="font-size:50px"></i></div>
-                            <div>Snow</div>
-                            <div>12 °C | 60 °F</div>
-                        </div>
+                        {{#each weather}}
+                            <div id="{{this.id}}" class="pb-3 pt-3 text-center mr-2 ml-2">
+                                <div class="pb-2">{{this.day}}</div>
+                                <div><i class="fas fa-{{this.type}}" style="font-size:50px"></i></div>
+                                <div>{{this.type_string}}</div>
+                                <div>{{this.temperature}}</div>
+                            </div>
+                        {{/each}}
                     </div>
                 </div>
             </div>
