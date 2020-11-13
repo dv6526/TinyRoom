@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const server = new WebSocket.Server({
+const wsserver = new WebSocket.Server({
     port: 8070
 });
 
@@ -29,7 +29,7 @@ class UserSocket {
     }
 }
 
-server.on('connection', function(socket) {
+wsserver.on('connection', function(socket) {
     // ko se nov connection naredi, ga dodamo v sockets list
     // prvo naredimo object
     var user = new UserSocket(socket)
@@ -64,3 +64,5 @@ server.on('connection', function(socket) {
         sockets = sockets.filter(s => s !== socket);
     });
 });
+
+module.exports = wsserver;
