@@ -1,25 +1,47 @@
+var navigation = [
+    {href: '/',
+    value: 'CHAT'},
+
+    {href: '/private',
+    value: 'MY ROOM'},
+
+    {href: '/profile',
+    value: 'PROFILE'},
+
+    {href: '/',
+    value: 'LOG OUT'},
+]
+
+
+
 /* GET home page */
 const index = (req, res) => {
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' , navigation : navigation, active_tab : 0});
 };
 
 const private = (req, res) => {
-    res.render('private', { title: 'Express'});
+    res.render('private', { title: 'Express', navigation : navigation, active_tab : 1});
 }
 
 const profile = (req, res) => {
+
     res.render('profile', { 
             
             title: 'Express', 
+            navigation : navigation,
+            active_tab : 2,
             user : {rank: 'admin', 
                     username: 'domen', 
                     email: 'example@student.uni-lj.si', 
                     bio : 'To je moj bio'}
+            
     });
+
 }
 
 const register = (req, res) => {
-    res.render('register', { title: 'Express'});
+    
+    res.render('register', { navigation : navigation, active_tab : 3});
 }
 
 module.exports = {
