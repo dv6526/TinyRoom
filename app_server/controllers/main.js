@@ -8,7 +8,14 @@ const private = (req, res) => {
 }
 
 const profile = (req, res) => {
-    res.render('profile', { title: 'Express'});
+    res.render('profile', { 
+            
+            title: 'Express', 
+            user : {rank: 'admin', 
+                    username: 'domen', 
+                    email: 'example@student.uni-lj.si', 
+                    bio : 'To je moj bio'}
+    });
 }
 
 const register = (req, res) => {
