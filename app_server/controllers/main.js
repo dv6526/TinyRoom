@@ -1,6 +1,8 @@
+var weatherData = require('../models/weather.json')
+
 /* GET home page */
 const index = (req, res) => {
-    res.render('index', require('../models/weather.json'));
+    res.render('index', weatherData);
 };
 
 const private = (req, res) => {
