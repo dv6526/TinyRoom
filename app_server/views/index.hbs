@@ -45,7 +45,7 @@
                 <div class="robovi svetla pisava" id="weather">
                     <div class="row justify-content-md-around justify-content-center flex-wrap">
                         {{#each weather}}
-                            <div id="day1" class="pb-3 pt-3 text-center mr-2 ml-2">
+                            <div id="{{this.id}}" class="pb-3 pt-3 text-center mr-2 ml-2">
                                 <div class="pb-2">{{this.day}}</div>
                                 <div><i class="fas fa-{{this.type}}" style="font-size:50px"></i></div>
                                 <div>{{this.type_string}}</div>
