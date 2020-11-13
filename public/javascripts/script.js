@@ -53,6 +53,13 @@ function getCanvasMousePos(evt, canvas) {
         evt.clientY - rect.top
     );
 }
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
 // END OF UTILITY FUNCTIONS ================================
 
 class User {
@@ -266,6 +273,32 @@ $(function () {
     $(window).resize(formatPage);
 
     // write your functions here
+
+    //ajax zahteva, ki pošlje sporočilo in token
+    $("#messagesend").click(function(){
+        var message = document.getElementById("message");
+
+        $.ajax({
+            type: "POST",
+            url: "/novoSporocilo",
+            data: {
+                message: message.value,
+                token: 11222
+            },
+            success: function() {
+                var date = new Date();
+                novoSporocilo({
+                    'date': addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                    'sender': username,
+                    'sender_id': my_id,
+                    'body': message.value,
+                    'player': true
+                 });
+                 message.value = "";
+            },
+            dataType: "text"
+        });
+    });
 
     //js za pojavno okno
     function topAlert(message, seconds){

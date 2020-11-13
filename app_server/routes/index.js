@@ -11,4 +11,6 @@ router.get('/profile', ctrlMain.profile);
 
 router.get('/register', ctrlMain.register);
 
+router.post('/novoSporocilo', ctrlMain.novosporocilo);
+
 module.exports = router;
