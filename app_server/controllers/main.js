@@ -1,3 +1,5 @@
+var weatherData = require('../models/weather.json')
+
 var navigation = [
     {href: '/',
     value: 'CHAT'},
@@ -16,7 +18,7 @@ var navigation = [
 
 /* GET home page */
 const index = (req, res) => {
-    res.render('index', { title: 'Express' , navigation : navigation, active_tab : 0});
+    res.render('index', { title: 'Express' , navigation : navigation, active_tab : 0, weatherData});
 };
 
 const private = (req, res) => {
