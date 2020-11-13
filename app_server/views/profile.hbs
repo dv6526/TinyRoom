@@ -3,17 +3,17 @@
     <!--RANK-->
     <div class="row">
         <div class="col-sm-2 infotype">rank</div>
-        <div class="col-sm-10">admin</div>
+        <div class="col-sm-10">{{user.rank}}</div>
     </div>
     <!--USERNAME-->
     <div class="row">
         <div class="col-sm-2 infotype">username</div>
-        <div class="col-sm-10">anon</div>
+        <div class="col-sm-10">{{user.username}}</div>
     </div>
     <!--EMAIL-->
     <div class="row">
         <div class="col-sm-2 infotype">email</div>
-        <div class="col-sm-10">example@student.uni-lj.si</div>
+        <div class="col-sm-10">{{user.email}}</div>
     </div>
     <!--PASSWORD-->
     <form class="form-horizontal">
@@ -31,7 +31,7 @@
         <div class="form-group row">
             <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
             <div class="col-sm-10">
-                <textarea class="form-control input-sm" id="bio" name="bio" rows="5"></textarea>
+                <textarea class="form-control input-sm" id="bio" name="bio" rows="5">{{user.bio}}</textarea>
                 <input type="submit" class="btn btn-primary btn-sm" value="UPDATE BIO" />
             </div>
         </div>
