@@ -44,12 +44,13 @@
                     TINYROOM
                 </div>
                 <div class="pisava kaligrafija pl-3">
-                    Tjasa
+                    Tjasa 
                 </div>
                 <div class="d-flex flex-column pl-3 kaligrafija pisava povezave-strani">
                     {{#each navigation}}
-                    <a href='{{this.href}}'
-                        class='{{#if (ifEquals this.active_tab @index)}} inactive {{/if}}'>{{this.value}}</a>
+                    <a href='{{this.href}}' 
+                        class={{ifEquals @index ../active_tab}}>{{this.value}}
+                    </a>
                     {{/each}}
 
                 </div>

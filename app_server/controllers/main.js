@@ -44,7 +44,8 @@ const profile = (req, res) => {
             user : {rank: 'admin', 
                     username: 'domen', 
                     email: 'example@student.uni-lj.si', 
-                    bio : 'To je moj bio'}
+                    bio : 'To je moj bio',
+                    id: 0}
             
     });
 

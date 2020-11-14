@@ -460,20 +460,5 @@ $(function () {
     var user1 = new User(position, name, weather, 1);
     chat.addUser(user1, true);
 
-    var href = location.href;
-    const url = new URL(href);
-    switch(url.pathname) {
-        case "/":
-            $(".povezave-strani" ).children().eq(0).addClass("inactive");
-            break;
-        case "/private":
-            $(".povezave-strani" ).children().eq(1).addClass("inactive");
-            break;
-        case "/profile":
-            $(".povezave-strani" ).children().eq(2).addClass("inactive");
-            break;
-        case "/register":
-            $(".povezave-strani" ).children().eq(3).addClass("inactive");
-            break;
-    }
+
 });
