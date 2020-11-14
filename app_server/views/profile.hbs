@@ -1,5 +1,8 @@
 <!-- PAGE CONTENT STARTS HERE -->
 <div class="container-s profile">
+    <div class="row">
+        <h2>SETTINGS</h2>
+    </div>
     <!--RANK-->
     <div class="row">
         <div class="col-sm-2 infotype">rank</div>
@@ -26,26 +29,6 @@
             </div>
         </div>
     </form>
-    <!--BIO-->
-    <form>
-        <div class="form-group row">
-            <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
-            <div class="col-sm-10">
-                <textarea class="form-control input-sm" id="bio" name="bio" rows="5">{{user.bio}}</textarea>
-                <input type="submit" class="btn btn-primary btn-sm" value="UPDATE BIO" />
-            </div>
-        </div>
-    </form>
-    <!--SKIN-->
-    <form>
-        <div class="form-group row infotype">
-            <label for="skin" class="col-sm-2 col-form-label infotype">skin</label>
-            <div class="col-sm-10">
-                <input type="file" class="form-control-file input-sm" id="skin" name="skin" />
-                <input type="submit" class="btn btn-primary btn-sm" value="UPLOAD SKIN" />
-            </div>
-        </div>
-    </form>
     <!--TERMINATE MY ACCOUNT-->
     <form>
         <div class="form-group row infotype">
@@ -55,5 +38,56 @@
             </div>
         </div>
     </form>
+
+<!--APPEARANCE-->
+
+     <div class="row">
+         <h2>APPEARANCE</h2>
+    </div>
+    <!--PROFILE PICTURE-->
+    <form>
+         <div class="form-group row infotype">
+            <label for="pfp" class="col-sm-2 col-form-label infotype">profile picture</label>
+            <div class="col-sm-10">
+                    <input type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp" />
+            </div>
+        </div>
+    <form>
+    <!--SKIN-->
+    <form>
+        <div class="form-group row infotype">
+            <label for="skin" class="col-sm-2 col-form-label infotype">skin</label>
+            <div class="col-sm-10 skin-selector">
+                <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" checked />
+                <label class="skin-img goat" for="goat"></label>
+                <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny" />
+                <label class="skin-img bunny" for="bunny"></label>
+                <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" />
+                <label class="skin-img rat" for="rat"></label>
+            </div>
+        </div>
+    </form>
+    <!--BIO TITLE-->
+    <form>
+        <div class="form-group row">
+             <label for="biotitle" class="col-sm-2 col-form-label infotype">bio title</label>
+             <div class="col-sm-10">
+                <input type="text" class="form-control input-sm appearance-form" id="biotitle" name="biotitle" >
+            </div>
+        </div>
+    </form>
+    <!--BIO-->
+    <form>
+        <div class="form-group row">
+            <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
+            <div class="col-sm-10">
+                <textarea class="form-control input-sm" id="bio" name="bio" rows="5">{{user.bio}}</textarea>
+            </div>
+        </div>
+    </form>
+    <!--SUBMIT CHANGES-->
+    <div class="form-group row">
+         <input type="submit" id="submit-button" class="btn btn-primary btn-sm" value="UPDATE PROFILE" disabled />
+    </div>
 </div>
 <!-- PAGE CONTENT ENDS HERE -->
