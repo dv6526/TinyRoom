@@ -425,6 +425,24 @@ $(function () {
         // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
     }
 
+ 
+// za submit button na strani profile
+document.querySelector("#submit-button").addEventListener("click", () => {
+    document.querySelector("#submit-button").disabled = true;
+});
+
+document.querySelectorAll(".profile-input").forEach(item =>
+    { item.addEventListener("input", () => { 
+        document.querySelector("#submit-button").disabled = false; 
+      }) 
+    });
+
+document.querySelectorAll(".appearance-form").forEach(item =>
+    { item.addEventListener("change", () => { 
+         document.querySelector("#submit-button").disabled = false; 
+        }) 
+    });
+
 
     // End of Event Listeners, Function Declarations =======
 
