@@ -111,6 +111,11 @@ class User {
 class Chat {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
+
+        if (this.canvas == null) {
+            return;
+        }
+
         this.context = this.canvas.getContext('2d');
         // all users without logged in user
         this.users = [];
@@ -426,22 +431,6 @@ $(function () {
     }
 
  
-// za submit button na strani profile
-document.querySelector("#submit-button").addEventListener("click", () => {
-    document.querySelector("#submit-button").disabled = true;
-});
-
-document.querySelectorAll(".profile-input").forEach(item =>
-    { item.addEventListener("input", () => { 
-        document.querySelector("#submit-button").disabled = false; 
-      }) 
-    });
-
-document.querySelectorAll(".appearance-form").forEach(item =>
-    { item.addEventListener("change", () => { 
-         document.querySelector("#submit-button").disabled = false; 
-        }) 
-    });
 
 
     // End of Event Listeners, Function Declarations =======
