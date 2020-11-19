@@ -79,6 +79,22 @@ class User {
 
     }
 
+    setWantedPos(pos) {
+        this.wanted_position = pos;
+    }
+
+    getWantedPos() {
+        return this.wanted_position;
+    }
+
+    setPosition(pos) {
+        this.position = pos;
+    }
+
+    getName() {
+        return this.name;
+    }
+
     draw_avatar() {
         var user = this;
         var img = returnImageObject('/images/sprites.png', function () {
@@ -116,6 +132,9 @@ class Chat {
             return;
         }
 
+        // server communications
+        this.socket = undefined;
+
         this.context = this.canvas.getContext('2d');
         // all users without logged in user
         this.users = [];
@@ -144,11 +163,17 @@ class Chat {
                 chat.background_height * chat.background_center.y - chat.canvas.height/2
             );
 
+            // Add Player
+            chat.addPlayer();
+
             // Start drawing
             chat.drawLoop();
             
             // add event listeners for interacting
             chat.hookControls();
+
+            // start connection
+            chat.communications();
         });
     }
 
@@ -159,6 +184,16 @@ class Chat {
         if (isPlayer) {
             this.player = player;
         }
+    }
+
+    addPlayer() {
+        // default spawn position
+        var position = new Vector(600, 600);
+        var name = username;
+        // default weather
+        var weather = "sunny";
+        var player = new User(position, name, weather, 1);
+        this.addUser(player, true);
     }
 
     resize(width) {
@@ -182,7 +217,9 @@ class Chat {
             var position = getCanvasMousePos(click, chat.canvas);
             if (chat.inMap(position)) {
                 var wanted_position = position.clone().add(chat.offset);
-                chat.player.wanted_position = wanted_position;
+                chat.player.setWantedPos(wanted_position);
+                // communicate with server
+                chat.socket.send("PO " + JSON.stringify(chat.player.getWantedPos()));
             }
         });
     }
@@ -244,6 +281,85 @@ class Chat {
         setInterval(function () {
             loop();
         }, 16.666);
+    }
+
+    communications() {
+        this.socket = new WebSocket("ws://localhost:8070");
+
+        var chat = this;
+
+        this.socket.onopen = function(event) {
+            // we need to identify ourselves to the server
+            // prepare json
+            var identification = {
+                "username": chat.player.getName(),
+                "token": 999999
+            }
+
+            chat.socket.send("ID " + JSON.stringify(identification));
+
+        }
+
+        this.socket.onmessage = function(event) {
+            const msg = event.data;
+            var command = msg.substr(0, 2);
+            var command_data = JSON.parse(msg.substr(3));
+
+            switch (command) {
+                case 'LI':
+                    // all players in room
+                    var players = command_data["players"];
+
+                    for (let i = 0; i < players.length; i++) {
+                        const player = players[i];
+                        var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                        var pos = new Vector(player["position"]["x"], player["position"]["y"]);
+                        player_to_add.setWantedPos(pos);
+                        player_to_add.setPosition(pos);
+                        chat.addUser(player_to_add, false);
+                    }
+
+                    break;
+                case 'PO':
+                    // position update
+                    var position = command_data["position"];
+
+                    for (let i = 0; i < chat.users.length; i++) {
+                        
+                        const user = chat.users[i];
+
+                        if (user.getName() == position["username"]) {
+                            var position = position["position"];
+                            user.setWantedPos(new Vector(position["x"], position["y"]));
+                            break;
+                        }
+                    }
+                    
+                    break;
+                case 'JO':
+
+                    // player joined the room
+                    var player = command_data["player"];
+                    var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                    var pos = new Vector(player["position"]["x"], player["position"]["y"]);
+                    player_to_add.setWantedPos(pos);
+                    player_to_add.setPosition(pos);
+                    chat.addUser(player_to_add, false);
+
+                    break;
+                case 'LE':
+                    // player left the room
+                    var user_that_left = command_data["username"];
+                    chat.users = chat.users.filter(user => user.getName() !== user_that_left);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        this.socket.onclose = function(event) {
+            console.log("Socket closed!");
+        }
     }
 }
 
@@ -461,11 +577,6 @@ $(function () {
     formatPage();
     // End of Code =========================================
 
-    var position = new Vector(600, 600);
-    var name = "Domen";
-    var weather = "Sunny";
-    var user1 = new User(position, name, weather, 1);
-    chat.addUser(user1, true);
 
 
 });
