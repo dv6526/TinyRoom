@@ -11,6 +11,7 @@
     "express": "*",
     "hbs": "*",
     "http-errors": "*",
+    "mongoose": "^5.10.15",
     "morgan": "*",
     "ws": "*"
   }

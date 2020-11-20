@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('./app_api/models/db');
+
 var indexRouter = require('./app_server/routes/index'); //usmerjevalnik, glede na zahtevo kličemo metode iz krmilnika
 var usersRouter = require('./app_server/routes/users');
 
