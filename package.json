@@ -6,12 +6,13 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "cookie-parser": "*",
     "debug": "*",
     "express": "*",
     "hbs": "*",
     "http-errors": "*",
-    "mongoose": "^5.10.15",
+    "mongoose": "*",
     "morgan": "*",
     "ws": "*"
   }
