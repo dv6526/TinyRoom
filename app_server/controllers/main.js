@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { NotExtended } = require('http-errors');
 var apiParametri = {
   streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
@@ -30,9 +31,19 @@ const verification = (req, res) => {
                 "sporocilo": "uporabnika nismo nasli."
             });
         } else {
+            req.session.user = req.body.username;
             res.status(400).json(odgovor.data);
         }
     })
+}
+
+const validateCookie = (req, res, next) => {
+    if(req.session.user) {
+        console.log(req.session.user);
+        next();
+    } else {
+        register(req, res);
+    }
 }
 
 const registerin = (req, res) => {
@@ -55,51 +66,43 @@ const registerin = (req, res) => {
 
 /* GET home page */
 const index = (req, res) => {
-    if(cookieExists) {
-        res.render('index', {
-            title: 'TinyRoom',
-            user: {
-                username: req.body.username,
-                id: 230
-            },
-            navigation : navigation,
-            active_tab : 0,
-            weatherData
-        });
-    } else {
-        
-        register(req, res);
-    }
+    
+    res.render('index', {
+        title: 'TinyRoom',
+        user: {
+            username: req.body.username,
+            id: 230
+        },
+        navigation : navigation,
+        active_tab : 0,
+        weatherData
+    });
+    
     
 };
 
 const private = (req, res) => {
-    if(cookieExists) {
-        res.render('private', { title: 'Private Room', user: {username: req.body.username, id: 230}, navigation : navigation, active_tab : 1});
-    } else {
-        register(req, res);
-    }
+
+    res.render('private', { title: 'Private Room', user: {username: req.body.username, id: 230}, navigation : navigation, active_tab : 1});
+
     
 }
 
 const profile = (req, res) => {
-    if(cookieExists) {
-        res.render('profile', { 
-                
-                title: 'Profile', 
-                navigation : navigation,
-                active_tab : 2,
-                user : {rank: 'admin', 
-                        username: req.body.username, 
-                        email: 'example@student.uni-lj.si', 
-                        bio : 'To je moj bio',
-                        id: 0}
-                
-        });
-    } else {
-        register(req, res);
-    }
 
+    res.render('profile', { 
+            
+            title: 'Profile', 
+            navigation : navigation,
+            active_tab : 2,
+            user : {rank: 'admin', 
+                    username: req.body.username, 
+                    email: 'example@student.uni-lj.si', 
+                    bio : 'To je moj bio',
+                    id: 0}
+            
+    });
+  
 
 }
 
@@ -118,6 +121,7 @@ module.exports = {
     register,
     novosporocilo,
     verification,
-    registerin
+    registerin,
+    validateCookie
 };
 

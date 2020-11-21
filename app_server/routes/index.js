@@ -3,9 +3,9 @@ var router = express.Router();
 const ctrlMain = require('../controllers/main');
 
 /* GET home page. */
-router.get('/',         ctrlMain.index);
-router.get('/private',  ctrlMain.private);
-router.get('/profile',  ctrlMain.profile);
+router.get('/', ctrlMain.validateCookie, ctrlMain.index);
+router.get('/private',ctrlMain.validateCookie,  ctrlMain.private);
+router.get('/profile',ctrlMain.validateCookie,  ctrlMain.profile);
 
 router.post('/register', ctrlMain.registerin);
 router.post('/signin', ctrlMain.verification);
