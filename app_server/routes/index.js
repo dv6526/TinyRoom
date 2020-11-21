@@ -9,6 +9,7 @@ router.get('/profile',ctrlMain.validateCookie,  ctrlMain.profile);
 
 router.post('/register', ctrlMain.registerin);
 router.post('/signin', ctrlMain.verification);
+router.get('/logout', ctrlMain.logout);
 
 router.get('/novoSporocilo', ctrlMain.novosporocilo);
 
