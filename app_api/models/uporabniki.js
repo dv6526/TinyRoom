@@ -7,4 +7,4 @@ const uporabnikiShema = new mongoose.Schema({
     password : String
 });
 
-mongoose.model('Uporabnik', uporabnikiShema);
+mongoose.model('Uporabnik', uporabnikiShema, "uporabnik");

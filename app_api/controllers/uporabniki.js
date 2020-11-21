@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const Uporabnik = mongoose.model('Uporabnik');
 
 const vrniUporabnike = (req, res) => {
-    console.log(req.query.username + " " + req.query.password);
     Uporabnik.find({"username" : req.query.username, "password" : req.query.password}).exec((napaka, uporabnik) => {
-        console.log(uporabnik.username);
         if(!uporabnik) {
             return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
         } else if(napaka) {
@@ -16,7 +14,6 @@ const vrniUporabnike = (req, res) => {
 };
 
 const uporabnikKreiraj = (req, res) => {
-    console.log(req.body.username + " " + req.body.password + " " + req.body.email);
     Uporabnik.create({
         username : req.body.username,
         email : req.body.email,

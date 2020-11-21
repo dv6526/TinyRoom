@@ -30,9 +30,7 @@ const verification = (req, res) => {
                 "sporocilo": "uporabnika nismo nasli."
             });
         } else {
-            res.status(400).json({
-                "sporočilo": "uporabnika nasli"
-            });
+            res.status(400).json(odgovor.data);
         }
     })
 }
@@ -48,12 +46,10 @@ const registerin = (req, res) => {
             email: req.body.email,
             rank : "admin"
         }
-      }).then(() => {
-        res.status(400).json({
-            "sporočilo": "uporabnika nasli"
-        });
+      }).then((odgovor) => {
+        res.status(400).json(odgovor.data);
       });
-    
+
 }
 
 
