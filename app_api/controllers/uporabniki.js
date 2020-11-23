@@ -10,8 +10,8 @@ const vrniUporabnike = (req, res) => {
         } else {
             res.status(200).json(uporabnik);
         }
-    })
-};
+    });
+}
 
 const vrniUporabnikaById = (req, res) => {
     //res.status(200).json({"req.params" : req.params.idUporabnika});

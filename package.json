@@ -13,7 +13,7 @@
     "express-session": "^1.17.1",
     "hbs": "*",
     "http-errors": "*",
-    "mongoose": "*",
+    "mongoose": "^5.10.15",
     "morgan": "*",
     "ws": "*"
   }
