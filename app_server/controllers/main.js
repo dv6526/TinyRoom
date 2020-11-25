@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { NotExtended } = require('http-errors');
 var apiParametri = {
-  streznik: 'http://localhost:' + (process.env.PORT || 8000)
+  streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
 
 const cookieExists = false;
@@ -109,7 +109,12 @@ const profile = (req, res) => {
             
         });
     });
+}
 
+const profileUpdate = (req, res) => {
+    //posodobi profil
+    console.log(req.body);
+    res.redirect('/profile');
 }
 
 const register = (req, res) => {
@@ -129,6 +134,7 @@ module.exports = {
     verification,
     registerin,
     validateCookie,
-    logout
+    logout,
+    profileUpdate
 };
 
