@@ -6,6 +6,8 @@ const wsserver = new WebSocket.Server({
 class UserSocket {
     constructor(socket) {
         this.username = undefined;
+        this.friends = [];
+        this.room = undefined;
         this.socket = socket;
 
         // default position
@@ -14,6 +16,39 @@ class UserSocket {
 
     setPosition(position) {
         this.wanted_position = position;
+    }
+
+    getRoom() {
+        return this.room;
+    }
+
+    joinRoom(room) {
+        // ta metoda se poklice ko se user joina nekemu roomu
+        // room variable je username od ownerja sobe, oziroma identifikator sobe
+
+        // prvo obvestimo vse userje stare sobe da gremo stran
+        sockets.forEach(s => {
+            // dont send to itself
+            if (s !== this && s.getRoom() == this.getRoom()) {
+                s.socket.send("LE " + JSON.stringify({"username": this.getUsername()}));
+            }
+        });
+
+        // gremo v drugo sobo
+        this.room = room;
+
+        // obvestimo vse userje nove sobe da smo prisli not
+        sockets.forEach(s => {
+            // dont send to itself
+            if (s !== this && s.getRoom() == this.getRoom()) {
+                s.socket.send("JO " + JSON.stringify(
+                    {"player": this.getPublicInfo()}
+                ));
+            }
+        });
+
+        // posljemo userju ki je prisu na novo v sobo informacije o vseh userjih v sobi
+        this.socket.send("LI " + JSON.stringify(dto_for_LI(this)));
     }
 
     getPosition() {
@@ -54,12 +89,21 @@ function dto_for_LI(user) {
     var dto = {"players": []};
 
     sockets.forEach(s => {
-        if (s !== user) {
+        if (s !== user && s.getRoom() == user.getRoom()) {
             dto.players.push(s.getPublicInfo());
         }
     })
 
     return dto;
+}
+
+function findByUsername(username) {
+    for (let i = 0; i < sockets.length; i++) {
+        const user = sockets[i];
+        if (user.getUsername() == username) {
+            return user;
+        }
+    }
 }
 
 // connection list
@@ -122,12 +166,43 @@ wsserver.on('connection', function(socket) {
                 //console.log(user);
                 sockets.forEach(s => {
                     // dont send to itself
-                    if (s !== user) {
+                    if (s !== user && s.getRoom() == user.getRoom()) {
                         s.socket.send("PO " + JSON.stringify(
                             {"position": user.getPublicInfo()}
                         ));
                     }
                 });
+            }
+
+            else if (command == "MS") {
+                
+                var msg = command_data.message;
+                console.log(user.getUsername(), msg, user.getRoom());
+
+                sockets.forEach(s => {
+                    // dont send to itself
+                    if (s !== user && s.getRoom() == user.getRoom()) {
+                        s.socket.send("MS " + JSON.stringify({
+                            "message": msg,
+                            "username": user.getUsername()
+                        }));
+                    }
+                });
+            }
+
+            else if (command == "AL") {
+                user.friends.push(command_data.username);
+            }
+
+            else if (command == "JO") {
+                //console.log()
+                if (user.getUsername() == command_data.username || findByUsername(command_data.username).friends.includes(user.getUsername())) {
+                    user.joinRoom(command_data.username);
+                }
+                else {
+                    console.log(user.getUsername(), "does not have permission for", command_data.username);
+                }
+
             }
         }
     });
