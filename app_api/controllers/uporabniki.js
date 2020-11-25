@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const Uporabnik = mongoose.model('Uporabnik');
 
 const vrniUporabnike = (req, res) => {
-    Uporabnik.find().exec((napaka, uporabniki) => {
-        if(!uporabniki) {
-            return res.status(404).json({"sporocilo" : "Ni uporabnikov"});
+    Uporabnik.find({"username" : req.query.username, "password" : req.query.password}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
         } else if(napaka) {
             return res.status(500).json(napaka);
         } else {
-            res.status(200).json(uporabniki);
+            res.status(200).json(uporabnik);
         }
-    })
+    });
 }
 
 const vrniUporabnikaById = (req, res) => {

@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const Profile = mongoose.model('Uporabnik');
 
 const terminateProfile = (req, res) => {
+    console.log("blabla");
     if(req.params.idUporabnika) {
         Profile.findByIdAndRemove(req.params.idUporabnika).exec((napaka) => {
             if (napaka) {
                 return res.status(500).json(napaka);
             }
-            res.status(204).json(null);
-            });
+            res.status(204).json({"sporočilo" : "Ne najdem uporabnika!"});
+        });
     } else {
         res.status(404).json({
             "sporočilo": "Ne najdem uporabnika, idUporabnika je obvezen parameter."
@@ -18,6 +19,7 @@ const terminateProfile = (req, res) => {
 }
 
 const changePassword = (req, res) => {
+    console.log("0" + "     " + req.params.idUporabnika);
     //če obstaja uporabnik mu spremeni geslo
     Profile.findById(req.params.idUporabnika).exec((napaka, profile) => {
         if(!profile) {
@@ -25,10 +27,10 @@ const changePassword = (req, res) => {
         } else if(napaka) {
             res.status(500).json(napaka);
         }
-
+        console.log(profile);
         profile.password = req.body.password;
-
-        Profile.save((napaka, profile) => {
+        console.log(profile.password);
+        profile.save((napaka, profile) => {
            if(napaka) {
                res.status(404).json(napaka);
            } else {
@@ -39,7 +41,8 @@ const changePassword = (req, res) => {
 }
 
 const changeProfileInfo = (req, res) => {
-    console.log("domen pise pocasi");
+    //console.log("-------------------------------------------------")
+    //console.log(req.params.body);
     //če obstaja uporabnik mu spremeni profilne informacije
     Profile.findById(req.params.idUporabnika).exec((napaka, profile) => {
         if(!profile) {
@@ -48,12 +51,15 @@ const changeProfileInfo = (req, res) => {
             res.status(500).json(napaka);
         }
 
-        if(req.body.biotitle)
-            profile.biotitle = req.body.biotitle;
+        if(req.body.bio_title)
+            profile.bio_title = req.body.bio_title;
         if(req.body.bio)
             profile.bio = req.body.bio;
         if(req.body.chosen_skin)
             profile.chosen_skin = req.body.chosen_skin;
+        if(req.body.profile_picture)
+            profile.profile_picture = req.body.profile_picture;
+
 
         /*
         if (!req.files || Object.keys(req.files).length === 0) {
@@ -81,7 +87,7 @@ const changeProfileInfo = (req, res) => {
             });
         });
         */
-        Profile.save((napaka, profile) => {
+        profile.save((napaka, profile) => {
             if(napaka) {
                 res.status(404).json(napaka);
             } else {
