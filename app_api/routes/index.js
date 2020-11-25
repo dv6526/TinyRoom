@@ -13,4 +13,9 @@ const ctrlObject = require('../controllers/object');
 router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
 //router.get('/object', ctrlObject.vrniLokacijo);
 
+const ctrlProfilePage = require('../controllers/profilePage');
+router.delete('/profileRoom/:idUporabnika', ctrlProfilePage.terminateProfile);
+router.put('/profileRoom/:idUporabnika/password', ctrlProfilePage.changePassword);
+router.put('/profileRoom/:idUporabnika/info', ctrlProfilePage.changeProfileInfo);
+
 module.exports = router;

@@ -16,7 +16,7 @@ const sobaKreiraj = (req, res) => {
     //če obstaja uporabnik kreiraj njegovo sobo
     const idUporabnika = req.params.idUporabnika;
     if (idUporabnika) {
-        soba.create({
+        soba.create({   // TODO Soba namesto soba?
             username: req.body.username,
             //objects: ?
         }, (napaka, soba) => {
