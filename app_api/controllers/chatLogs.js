@@ -28,4 +28,4 @@ const chatIzbrisiIzbranega = (req, res) => {
         });
 }
 
-module.exports = {vrniChatById, chatKreiraj, chatIzbrisiIzbranega};
+module.exports = {chatIzbrisiIzbranega};
