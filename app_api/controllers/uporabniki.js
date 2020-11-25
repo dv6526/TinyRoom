@@ -13,6 +13,18 @@ const vrniUporabnike = (req, res) => {
     })
 }
 
+const vrniUporabnikaByUiPass = (req, res) => {
+    Uporabnik.find({"username" : req.query.username, "password" : req.query.password}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
+        } else if(napaka) {
+            return res.status(500).json(napaka);
+        } else {
+            res.status(200).json(uporabnik);
+        }
+    });
+}
+
 const vrniUporabnikaById = (req, res) => {
     //res.status(200).json({"req.params" : req.params.idUporabnika});
     
@@ -56,4 +68,4 @@ const uporabnikKreiraj = (req, res) => {
     });
 }
 
-module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi};
+module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass};
