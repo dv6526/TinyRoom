@@ -87,6 +87,17 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     }
 
     function dropdownButtonClick(option) {
+        console.log(option.target.innerHTML);
+        switch (option.target.innerHTML) {
+            case "room invite":
+                chat.allowPlayer(dropdown_info.username);
+                break;
+            case "join room":
+                chat.joinRoom(dropdown_info.username);
+                break;
+            default:
+                break;
+        }
         dropdownReset();
         //option handler
     }
@@ -99,7 +110,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     let dropdown_nav = document.createElement("ul");
     let row = document.createElement("li");
     let link = document.createElement("a");
-    let options = [["mute", "unmute"], "room invite", "request room invite", "private message",
+    let options = [["mute", "unmute"], "room invite", "join room", "private message",
                     ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
     let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
     /*
@@ -159,8 +170,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     document.body.appendChild(dropdown);
 
     // add event listener on click
-    document.addEventListener("click", function(click) {
-
+    function click_handler(click) {
         if ($(click.target).parents('#dropdown').length && click.target.classList.contains('nav-link')) {
             dropdownButtonClick(click);
         }
@@ -168,7 +178,10 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
         else {
             dropdownReset();
         }
-    });     
+        document.removeEventListener("click", click_handler);
+    }
+
+    document.addEventListener("click", click_handler);     
        
 
     // Opens dropdown on x,y position
@@ -372,11 +385,13 @@ class Chat {
                 const treshold = 40;
 
                 var found = false;
+                var found_user = '';
                 for (let i = 0; i < chat.users.length; i++) {
                     const user = chat.users[i];
                     
                     if (user.getPosition().clone().subtract(chat.offset).subtract(position).length() <= treshold) {
                         found = true;
+                        found_user = user.getName();
                     }
                 }
 
@@ -387,6 +402,7 @@ class Chat {
                         'muted': false,
                         'g_muted': false,
                         'target_user_id': 12,
+                        'username': found_user,
                         'bio_pic': 'static/avatar.png',
                         'bio_title': 'This is my title',
                         'bio_description': 'I am too lazy to change my bio description'
@@ -488,6 +504,25 @@ class Chat {
         setInterval(function () {
             loop();
         }, 16.666);
+    }
+
+    allowPlayer(to_allow) {
+        console.log("allowed", to_allow)
+        this.socket.send("AL " + JSON.stringify({
+            "username": to_allow
+        }));
+    }
+
+    joinRoom(username_to_join) {
+        console.log("joined", username_to_join)
+        // zbrisimo vse druge players iz players arraya
+        // sebe ne
+        this.users = [];
+        this.users.push(this.player);
+
+        this.socket.send("JO " + JSON.stringify({
+            "username": username_to_join
+        }));
     }
 
     communications() {
