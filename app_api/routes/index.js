@@ -15,9 +15,9 @@ router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
 //router.get('/object', ctrlObject.vrniLokacijo);
 
 const ctrlProfilePage = require('../controllers/profilePage');
-router.delete('/profileRoom/:idUporabnika', ctrlProfilePage.terminateProfile);
-router.put('/profileRoom/:idUporabnika/password', ctrlProfilePage.changePassword);
-router.put('/profileRoom/:idUporabnika/info', ctrlProfilePage.changeProfileInfo);
+router.delete('/profile/:idUporabnika', ctrlProfilePage.terminateProfile);
+router.put('/profile/:idUporabnika/password', ctrlProfilePage.changePassword);
+router.put('/profile/:idUporabnika/info', ctrlProfilePage.changeProfileInfo);
 
 const ctrlChatLogs = require('../controllers/chatLogs');
 //router.post('/chatLogs/:idSporocila', ctrlChatLogs.chatKreiraj);
