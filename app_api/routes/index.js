@@ -3,6 +3,7 @@ const router = express.Router();
 const ctrlUporabniki = require('../controllers/uporabniki');
 router.get('/uporabniki', ctrlUporabniki.vrniUporabnike);
 router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
+router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
 router.post('/uporabniki', ctrlUporabniki.uporabnikKreiraj);
 
 const ctrlprivateRoom = require('../controllers/privateRoom');

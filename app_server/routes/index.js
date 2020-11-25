@@ -14,5 +14,7 @@ router.get('/logout', ctrlMain.logout);
 router.post('/novoSporocilo', ctrlMain.novosporocilo);
 router.post('/profile/update', ctrlMain.profileUpdate);
 
+router.post('/profile/password')
+
 
 module.exports = router;

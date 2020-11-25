@@ -27,6 +27,20 @@ const vrniUporabnikaById = (req, res) => {
     
 }
 
+const vrniUporabnikaByUi = (req, res) => {
+    console.log("izpis: "+ req.params.ui);
+    Uporabnik.find({"username" : req.params.ui}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
+        } else if(napaka) {
+            return res.status(500).json(napaka);
+        } else {
+            console.log("izpis: "+ uporabnik[0]._id);
+            res.status(200).json({"id" : uporabnik[0]._id});
+        }
+    })
+}
+
 const uporabnikKreiraj = (req, res) => {
     Uporabnik.create({
         username : req.body.username,
@@ -42,4 +56,4 @@ const uporabnikKreiraj = (req, res) => {
     });
 }
 
-module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById};
+module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi};
