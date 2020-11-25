@@ -12,7 +12,7 @@ mongoose.connection.on('connected', () => {
   console.log(`Mongoose je povezan na ${dbURI}.`);
 });
 
-mongoose.connection.on('error', () => {
+mongoose.connection.on('error', (napaka) => {
   console.log('Mongoose napaka pri povezavi: ', napaka);
 });
 
