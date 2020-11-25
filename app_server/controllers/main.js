@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { NotExtended } = require('http-errors');
 var apiParametri = {
-  streznik: 'http://localhost:' + (process.env.PORT || 8000)
+  streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
 
 const cookieExists = false;
