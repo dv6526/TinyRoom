@@ -11,3 +11,4 @@ const privateRoomShema = new mongoose.Schema({
 });
 
 mongoose.model('privateRoom', privateRoomShema, 'prRoom');
+module.exports = privateRoomShema;
