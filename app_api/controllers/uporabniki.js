@@ -10,8 +10,22 @@ const vrniUporabnike = (req, res) => {
         } else {
             res.status(200).json(uporabnik);
         }
-    })
-};
+    });
+}
+
+const vrniUporabnikaById = (req, res) => {
+    //res.status(200).json({"req.params" : req.params.idUporabnika});
+    
+    Uporabnik.findById(req.params.idUporabnika).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            res.status(404).json({"sporočilo" : "Ne najdem uporabnika z idjem!"})
+        } else if(napaka) {
+            res.status(500).json(napaka);
+        }
+        res.status(200).json(uporabnik);
+    });
+    
+}
 
 const uporabnikKreiraj = (req, res) => {
     Uporabnik.create({
@@ -28,4 +42,4 @@ const uporabnikKreiraj = (req, res) => {
     });
 }
 
-module.exports = {vrniUporabnike, uporabnikKreiraj};
+module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById};

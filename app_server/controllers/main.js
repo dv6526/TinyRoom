@@ -19,27 +19,27 @@ var navigation = [
     {href: '/profile',
     value: 'PROFILE'},
 
-    {href: '/',
+    {href: '/logout',
     value: 'LOG OUT'},
 ]
 const verification = (req, res) => {
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
-        console.log("to je odgovor data: " + odgovor.data);
         if(odgovor.data.length == 0) {
             res.status(400).json({
                 "sporocilo": "uporabnika nismo nasli."
             });
         } else {
             req.session.user = req.body.username;
-            res.status(400).json(odgovor.data);
+            req.session.user_id = odgovor.data[0]._id;
+            res.redirect('/');
         }
     })
 }
 
 const validateCookie = (req, res, next) => {
     if(req.session.user) {
-        console.log(req.session.user);
+        console.log("id userja: " + req.session.user);
         next();
     } else {
         register(req, res);
@@ -61,6 +61,11 @@ const registerin = (req, res) => {
         res.status(400).json(odgovor.data);
       });
 
+}
+
+const logout = (req, res) => {
+    req.session.destroy();
+    register(req, res);
 }
 
 
@@ -89,20 +94,21 @@ const private = (req, res) => {
 }
 
 const profile = (req, res) => {
-
-    res.render('profile', { 
+    console.log("session user id " + req.session.user_id);
+    axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+        console.log(odgovor.data);
+        res.render('profile', { 
             
             title: 'Profile', 
             navigation : navigation,
             active_tab : 2,
-            user : {rank: 'admin', 
-                    username: req.body.username, 
-                    email: 'example@student.uni-lj.si', 
-                    bio : 'To je moj bio',
-                    id: 0}
+            user : {rank: odgovor.data.rank, 
+                    username: odgovor.data.username, 
+                    email: odgovor.data.email,
+                    bio : odgovor.data.bio}
             
+        });
     });
-  
 
 }
 
@@ -122,6 +128,7 @@ module.exports = {
     novosporocilo,
     verification,
     registerin,
-    validateCookie
+    validateCookie,
+    logout
 };
 

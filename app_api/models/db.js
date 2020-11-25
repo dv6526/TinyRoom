@@ -49,3 +49,4 @@ process.on('SIGTERM', () => {
 }); 
 
 require('./uporabniki');
+require('./privateRoom');
