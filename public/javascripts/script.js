@@ -93,7 +93,14 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                 chat.allowPlayer(dropdown_info.username);
                 break;
             case "join room":
-                chat.joinRoom(dropdown_info.username);
+                chat.socket.send("JO " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
+                break;
+            case "leave room":
+                chat.socket.send("JO " + JSON.stringify({
+                    "username": undefined
+                }));
                 break;
             default:
                 break;
@@ -110,7 +117,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     let dropdown_nav = document.createElement("ul");
     let row = document.createElement("li");
     let link = document.createElement("a");
-    let options = [["mute", "unmute"], "room invite", "join room", "private message",
+    let options = [["mute", "unmute"], "room invite", ["join room", "leave room"], "private message",
                     ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
     let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
     /*
@@ -129,10 +136,13 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
         //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
         
         // append childs to parents (look out for mute/unmute, global mute/unmute)
-        if(i==0)
+        if (i==0)
             link.appendChild(document.createTextNode((dropdown_info.muted)? options[i][1]: options[i][0]));
-        else if(i==4)
+        else if (i==4)
             link.appendChild(document.createTextNode((dropdown_info.g_muted)? options[i][1]: options[i][0]));
+        else if (i==2) {
+            link.appendChild(document.createTextNode((chat.room == undefined)? options[i][0]: options[i][1]));
+        }
         else 
             link.appendChild(document.createTextNode(options[i]));
         row.appendChild(link);
@@ -291,8 +301,10 @@ class Chat {
         this.users = [];
         // logged in user
         this.player;
+        this.room = undefined;
 
         // set up background drawing offset
+        this.background_clear_color = '#387eb4';
         this.background_width = 2000;
         this.background_height = undefined;
         this.background_size = new Vector();
@@ -330,6 +342,53 @@ class Chat {
         });
     }
 
+    changeBackground(background) {
+        var backgrounds = {
+            "map": {
+                'file':'/images/map.png',
+                'width': 2000,
+                'center': {
+                    'x': 0.42,
+                    'y': 0.36
+                },
+                'clear_color': '#387eb4'
+            },
+            "room": {
+                'file':'/images/room.png',
+                'width': 600,
+                'center': {
+                    'x': 0.5,
+                    'y': 0.5
+                },
+                'clear_color': '#f2e1d6'
+            }
+        }
+
+        this.background_clear_color = backgrounds[background].clear_color;
+
+        this.background_width = backgrounds[background].width;
+        this.background_center = new Vector(backgrounds[background].center.x, backgrounds[background].center.y);
+
+        var chat = this;
+        // set up background
+        this.background = returnImageObject(backgrounds[background].file, function() {
+            // this executes when the background loads
+            // set background center to center of screen
+            // calculate ratio
+            var ratio = chat.background.width/chat.background.height;
+            // set height
+            chat.background_height = chat.background_width / ratio;
+
+            chat.offset = new Vector(
+                chat.background_width * chat.background_center.x - chat.canvas.width/2,
+                chat.background_height * chat.background_center.y - chat.canvas.height/2
+            );
+
+            chat.player.setPosition(new Vector(chat.background_width * chat.background_center.x, chat.background_height * chat.background_center.y));
+            chat.player.setWantedPos(new Vector(chat.background_width * chat.background_center.x, chat.background_height * chat.background_center.y));
+        });
+    }
+
     addUser(player, isPlayer) {
         // player ... user object
         // isPlayer ... boolean, is added user the logged in user?
@@ -363,6 +422,10 @@ class Chat {
         return false;
     }
 
+    sendPosition() {
+        this.socket.send("PO " + JSON.stringify(this.player.getWantedPos()));
+    }
+
     hookControls() {
         var chat = this;
         // move handler
@@ -372,7 +435,7 @@ class Chat {
                 var wanted_position = position.clone().add(chat.offset);
                 chat.player.setWantedPos(wanted_position);
                 // communicate with server
-                chat.socket.send("PO " + JSON.stringify(chat.player.getWantedPos()));
+                chat.sendPosition()
             }
         });
 
@@ -484,7 +547,8 @@ class Chat {
         function loop() {
             // Prvo pobrisemo
             context.imageSmoothingEnabled = false;
-            context.clearRect(0, 0, chat.canvas.width, chat.canvas.height);
+            context.fillStyle = chat.background_clear_color;
+            context.fillRect(0, 0, chat.canvas.width, chat.canvas.height);
             // move offset towards player
             chat.centerOnPlayer();
             context.drawImage(chat.background, -chat.offset.x, -chat.offset.y, chat.background_width, chat.background_height);
@@ -514,15 +578,23 @@ class Chat {
     }
 
     joinRoom(username_to_join) {
+        this.room = username_to_join;
+
         console.log("joined", username_to_join)
         // zbrisimo vse druge players iz players arraya
         // sebe ne
+
         this.users = [];
         this.users.push(this.player);
 
-        this.socket.send("JO " + JSON.stringify({
-            "username": username_to_join
-        }));
+        if (username_to_join) {
+            this.changeBackground('room');
+        }
+        else {
+            this.changeBackground('map');
+        }
+
+        this.sendPosition();
     }
 
     communications() {
@@ -550,6 +622,7 @@ class Chat {
             switch (command) {
                 case 'LI':
                     // all players in room
+                    chat.joinRoom(command_data["room"]);
                     var players = command_data["players"];
 
                     for (let i = 0; i < players.length; i++) {

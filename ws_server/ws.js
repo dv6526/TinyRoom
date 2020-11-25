@@ -86,7 +86,10 @@ class UserSocket {
 function dto_for_LI(user) {
     // build structure to send to a new user
     // tell him about all players in the room
-    var dto = {"players": []};
+    var dto = {
+        "room": user.getRoom(),
+        "players": []
+    };
 
     sockets.forEach(s => {
         if (s !== user && s.getRoom() == user.getRoom()) {
@@ -195,14 +198,16 @@ wsserver.on('connection', function(socket) {
             }
 
             else if (command == "JO") {
-                //console.log()
-                if (user.getUsername() == command_data.username || findByUsername(command_data.username).friends.includes(user.getUsername())) {
+                if (command_data.username == undefined) {
+                    user.joinRoom(undefined);
+                }
+                else if (user.getUsername() == command_data.username || findByUsername(command_data.username).friends.includes(user.getUsername())) {
                     user.joinRoom(command_data.username);
                 }
                 else {
                     console.log(user.getUsername(), "does not have permission for", command_data.username);
                 }
-
+                
             }
         }
     });
