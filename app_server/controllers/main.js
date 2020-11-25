@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { NotExtended } = require('http-errors');
 var apiParametri = {
-  streznik: 'http://localhost:' + (process.env.PORT || 3000)
+  streznik: 'http://localhost:' + (process.env.PORT || 8000)
 };
 
 const cookieExists = false;
@@ -70,7 +70,7 @@ const index = (req, res) => {
     res.render('index', {
         title: 'TinyRoom',
         user: {
-            username: req.body.username,
+            username: req.session.user,
             id: 230
         },
         navigation : navigation,
@@ -83,7 +83,7 @@ const index = (req, res) => {
 
 const private = (req, res) => {
 
-    res.render('private', { title: 'Private Room', user: {username: req.body.username, id: 230}, navigation : navigation, active_tab : 1});
+    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: 230}, navigation : navigation, active_tab : 1});
 
     
 }

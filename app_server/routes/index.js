@@ -10,6 +10,6 @@ router.get('/profile',ctrlMain.validateCookie,  ctrlMain.profile);
 router.post('/register', ctrlMain.registerin);
 router.post('/signin', ctrlMain.verification);
 
-router.get('/novoSporocilo', ctrlMain.novosporocilo);
+router.post('/novoSporocilo', ctrlMain.novosporocilo);
 
 module.exports = router;
