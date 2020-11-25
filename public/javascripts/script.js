@@ -74,6 +74,126 @@ function novoSporocilo(sporocilo_info) {
     sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
     document.querySelector("#chatlogs").prepend(sporocilo);
 }
+
+function messageDropdown(screenPosition, dropdown_info, chat) {
+    // MessageDropdown
+    function dropdownReset() {
+        if(document.getElementById("dropdown")) {
+            document.getElementById("dropdown").remove();
+            setTimeout(function() {
+                chat.dropdown_active = false;
+            }, 0.5)
+        }
+    }
+
+    function dropdownButtonClick(option) {
+        dropdownReset();
+        //option handler
+    }
+
+    // reset in case of two consecutive right clicks
+    dropdownReset();
+
+    // init
+    let dropdown = document.createElement("div");
+    let dropdown_nav = document.createElement("ul");
+    let row = document.createElement("li");
+    let link = document.createElement("a");
+    let options = [["mute", "unmute"], "room invite", "request room invite", "private message",
+                    ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
+    let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
+    /*
+        Construct dropdown
+    */
+    //dropdown.style.width = "400px";
+    // Append buttons to div (user and admin are different)
+    dropdown.id = "dropdown";
+    dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
+    dropdown_nav.className = "nav flex-columns";                 // bootstrap
+    for(let i=0;i<optionsLength;i++) {
+        //row = document.createElement("li");
+        link = document.createElement("a");                         // has to be reinitialized every time
+        row.className="nav-item";                                   // bootstrap
+        link.className = "nav-link pt-0 pb-0";                      // bootstrap
+        //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
+        
+        // append childs to parents (look out for mute/unmute, global mute/unmute)
+        if(i==0)
+            link.appendChild(document.createTextNode((dropdown_info.muted)? options[i][1]: options[i][0]));
+        else if(i==4)
+            link.appendChild(document.createTextNode((dropdown_info.g_muted)? options[i][1]: options[i][0]));
+        else 
+            link.appendChild(document.createTextNode(options[i]));
+        row.appendChild(link);
+        dropdown_nav.appendChild(row);
+    }
+    dropdown.appendChild(dropdown_nav);
+
+    // Append profile information to div
+    // {'bio_pic':'imagesrc', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'}
+    let profile = document.createElement("div");
+    let picture = document.createElement("img");
+    let title = document.createElement("h5");
+    let description = document.createElement("div");
+    profile.id="dropdown_profile";
+
+    // picture
+    picture.src = dropdown_info.bio_pic;
+    picture.alt = "Profile picture";
+    picture.style.width = "170px";
+    // bio title (uppercased)
+    title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
+    title.className = "text-center";
+    // bio description
+    description.className ="";
+    description.append(document.createTextNode(dropdown_info.bio_description));
+    description.className = "p-2";
+    description.style.fontSize = "12px"
+    
+    // append everything
+    profile.append(picture);
+    profile.append(title);
+    profile.append(description);
+
+    dropdown.append(profile);
+    document.body.appendChild(dropdown);
+
+    // add event listener on click
+    document.addEventListener("click", function(click) {
+
+        if ($(click.target).parents('#dropdown').length && click.target.classList.contains('nav-link')) {
+            dropdownButtonClick(click);
+        }
+
+        else {
+            dropdownReset();
+        }
+    });     
+       
+
+    // Opens dropdown on x,y position
+    // check if clicked closer to the edge than allowed
+    /*
+    if((screenPosition.x + dropdown.offsetHeight) > $(document).height())
+        dropdown.style.top = ($(document).height() - dropdown.offsetHeight - 1) + "px";
+    else
+        dropdown.style.top = screenPosition.y + "px";
+    
+    if((screenPosition.y + dropdown.offsetWidth) > $(document).width())
+        dropdown.style.left = ($(document).width() - dropdown.offsetWidth - 1) + "px";
+    else
+        dropdown.style.left = screenPosition.x + "px";
+    */
+    dropdown.style.top = screenPosition.y + "px";
+    dropdown.style.left = screenPosition.x + "px";
+    
+    // Close dropdown if clicked anywhere else on the screen 
+    // klic dropdownButtonClick(brez opcije) ali dropdownReset()
+    // PRI RESIZE-U OKNA SKRIJ DIV (klic dropdownReset()), ker se ne premika skladno in bo potem postavljen kr nekje
+
+    // HTML okno mora imeti atribut data-user_id z vrednostjo target_user_id
+    // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
+}
 // END OF UTILITY FUNCTIONS ================================
 
 class User {
@@ -103,6 +223,10 @@ class User {
 
     setPosition(pos) {
         this.position = pos;
+    }
+
+    getPosition() {
+        return this.position;
     }
 
     getName() {
@@ -162,6 +286,8 @@ class Chat {
         this.background_center = new Vector(0.42, 0.36); // from 0 to 1, percentage
         this.offset = undefined;
         
+        this.dropdown_active = false;
+
         var chat = this;
         // set up background
         this.background = returnImageObject('/images/map.png', function() {
@@ -229,11 +355,44 @@ class Chat {
         // move handler
         document.addEventListener('click', function(click) {
             var position = getCanvasMousePos(click, chat.canvas);
-            if (chat.inMap(position)) {
+            if (chat.inMap(position) && !chat.dropdown_active) {
                 var wanted_position = position.clone().add(chat.offset);
                 chat.player.setWantedPos(wanted_position);
                 // communicate with server
                 chat.socket.send("PO " + JSON.stringify(chat.player.getWantedPos()));
+            }
+        });
+
+        document.addEventListener('contextmenu', function(click) {
+            var position = getCanvasMousePos(click, chat.canvas);
+            if (chat.inMap(position)) {
+                click.preventDefault();
+
+                // get player underneath mouse
+                const treshold = 40;
+
+                var found = false;
+                for (let i = 0; i < chat.users.length; i++) {
+                    const user = chat.users[i];
+                    
+                    if (user.getPosition().clone().subtract(chat.offset).subtract(position).length() <= treshold) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    chat.dropdown_active = true;
+                    messageDropdown({x: click.clientX, y: click.clientY},{
+                        'rank': 'user',
+                        'muted': false,
+                        'g_muted': false,
+                        'target_user_id': 12,
+                        'bio_pic': 'static/avatar.png',
+                        'bio_title': 'This is my title',
+                        'bio_description': 'I am too lazy to change my bio description'
+                    }, chat);
+                }
+
             }
         });
 
@@ -488,110 +647,6 @@ $(function () {
 
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
-
-    // MessageDropdown
-    function dropdownReset() {
-        if(document.getElementById("dropdown")) 
-            document.getElementById("dropdown").remove();
-    }
-    
-    function dropdownButtonClick(option) {
-        dropdownReset();
-        //option handler
-    }
-    
-    function messageDropdown(screenPosition, dropdown_info) {
-        // reset in case of two consecutive right clicks
-        dropdownReset();
-    
-        // init
-        let dropdown = document.createElement("div");
-        let dropdown_nav = document.createElement("ul");
-        let row = document.createElement("li");
-        let link = document.createElement("a");
-        let options = [["mute", "unmute"], "room invite", "request room invite", "private message",
-                        ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
-        let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
-        /*
-            Construct dropdown
-        */
-        //dropdown.style.width = "400px";
-        // Append buttons to div (user and admin are different)
-        dropdown.id = "dropdown";
-        dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
-        dropdown_nav.className = "nav flex-columns";                 // bootstrap
-        for(let i=0;i<optionsLength;i++) {
-            //row = document.createElement("li");
-            link = document.createElement("a");                         // has to be reinitialized every time
-            row.className="nav-item";                                   // bootstrap
-            link.className = "nav-link pt-0 pb-0";                      // bootstrap
-            //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
-            
-            // append childs to parents (look out for mute/unmute, global mute/unmute)
-            if(i==0)
-                link.appendChild(document.createTextNode((dropdown_info.muted)? options[i][1]: options[i][0]));
-            else if(i==4)
-                link.appendChild(document.createTextNode((dropdown_info.g_muted)? options[i][1]: options[i][0]));
-            else 
-                link.appendChild(document.createTextNode(options[i]));
-            row.appendChild(link);
-            dropdown_nav.appendChild(row);
-        }
-        dropdown.appendChild(dropdown_nav);
-
-        // Append profile information to div
-        // {'bio_pic':'imagesrc', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'}
-        let profile = document.createElement("div");
-        let picture = document.createElement("img");
-        let title = document.createElement("h5");
-        let description = document.createElement("div");
-        profile.id="dropdown_profile";
-
-        // picture
-        picture.src = dropdown_info.bio_pic;
-        picture.alt = "Profile picture";
-        picture.style.width = "170px";
-        // bio title (uppercased)
-        title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
-        title.className = "text-center";
-        // bio description
-        description.className ="";
-        description.append(document.createTextNode(dropdown_info.bio_description));
-        description.className = "text-justify p-2";
-        
-        // append everything
-        profile.append(picture);
-        profile.append(title);
-        profile.append(description);
-
-        dropdown.append(profile);
-        document.body.appendChild(dropdown);
-    
-        // add event listener on click
-        dropdown.addEventListener("click", dropdownButtonClick);     
-           
-        // Opens dropdown on x,y position
-        // check if clicked closer to the edge than allowed
-        if((screenPosition.x + dropdown.offsetHeight) > $(document).height())
-            dropdown.style.top = ($(document).height() - dropdown.offsetHeight - 1) + "px";
-        else
-            dropdown.style.top = screenPosition.x + "px";
-        
-        if((screenPosition.y + dropdown.offsetWidth) > $(document).width())
-            dropdown.style.left = ($(document).width() - dropdown.offsetWidth - 1) + "px";
-        else
-            dropdown.style.left = screenPosition.y + "px";
-    
-        // Close dropdown if clicked anywhere else on the screen 
-        // klic dropdownButtonClick(brez opcije) ali dropdownReset()
-        // PRI RESIZE-U OKNA SKRIJ DIV (klic dropdownReset()), ker se ne premika skladno in bo potem postavljen kr nekje
-    
-        // HTML okno mora imeti atribut data-user_id z vrednostjo target_user_id
-        // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
-    }
-
- 
-
 
     // End of Event Listeners, Function Declarations =======
 
