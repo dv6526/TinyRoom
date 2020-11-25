@@ -110,7 +110,6 @@ const profile = (req, res) => {
                     email: odgovor.data.email,
                     bio : odgovor.data.bio,
                     bio_title: odgovor.data.bio_title}
-            
         });
     });
 }
@@ -120,20 +119,6 @@ const profileUpdate = (req, res) => {
     console.log("profileUpdate");
     console.log(req.body);
     // TODO save file
-    axios({
-        method: 'put',
-        url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
-        data: {
-            bio_title: req.body.biotitle,
-            bio: req.body.bio,
-            chosen_skin: req.body.skin
-        }
-    }).catch((napaka) => {
-        res.status(404).json({
-            "sporocilo": "uporabnika nismo nasli."
-        });
-    });
-
     if(req.body.pfp) {
         let koncnica = req.body.pfp.split(".")
         koncnica = koncnica[koncnica.length-1];
@@ -143,14 +128,28 @@ const profileUpdate = (req, res) => {
             data: {
                 profile_picture: req.session.user + "." + koncnica
             }
-        }).then((odgovor) => {
-            res.redirect('/profile');
         }).catch((napaka) => {
             res.status(404).json({
                 "sporocilo": "uporabnika nismo nasli."
             });
         });
     }
+
+    axios({
+        method: 'put',
+        url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
+        data: {
+            bio_title: req.body.biotitle,
+            bio: req.body.bio,
+            chosen_skin: req.body.skin
+        }
+    }).then((odgovor) => {
+        res.redirect('/profile');
+    }).catch((napaka) => {
+        res.status(404).json({
+            "sporocilo": "uporabnika nismo nasli."
+        });
+    });
 }
 
 const profileChangePassword = (req, res) => {
