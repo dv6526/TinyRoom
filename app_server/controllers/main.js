@@ -94,10 +94,10 @@ const private = (req, res) => {
 }
 
 const profile = (req, res) => {
-    console.log("session user id " + req.session.user_id);
+    //console.log("session user id " + req.session.user_id);
     axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
-        console.log(req.session.user_id);
-        console.log(odgovor.data);
+        //console.log(req.session.user_id);
+        //console.log(odgovor.data);
         res.render('profile', { 
             
             title: 'Profile', 
@@ -107,7 +107,8 @@ const profile = (req, res) => {
                     username: odgovor.data.username,
                     id: odgovor.data._id,
                     email: odgovor.data.email,
-                    bio : odgovor.data.bio}
+                    bio : odgovor.data.bio,
+                    bio_title: odgovor.data.bio_title}
             
         });
     });

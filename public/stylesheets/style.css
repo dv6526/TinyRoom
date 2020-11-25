@@ -253,9 +253,12 @@ input {
        -moz-appearance:none;
             appearance:none;
 }
-.goat{background-image:url(https://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png);}
-.bunny{background-image:url(https://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png);}
-.rat{background-image:url(https://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png);}
+.goat{background-image:url("/images/sprites.png"); background-position: 25px 0px;}
+.bunny{background-image:url("/images/sprites.png"); background-position: -56px 0px;}
+.rat{background-image:url("/images/sprites.png"); background-position: 25px 0px;}
+.bla {
+
+}
 
 .skin-selector input:active +.skin-img{opacity: .9;}
 .skin-selector input:checked +.skin-img{
@@ -263,9 +266,10 @@ input {
        -moz-filter: none;
             filter: none;
 }
+
 .skin-img{
     cursor:pointer;
-    background-size:contain;
+	background-size: 140px 70px;
     background-repeat:no-repeat;
     display:inline-block;
     width:100px;height:70px;
