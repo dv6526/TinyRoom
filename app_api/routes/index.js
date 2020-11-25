@@ -10,7 +10,7 @@ router.get('/privateRoom/:idSobe', ctrlprivateRoom.vrniSoboById);
 router.post('/privateRoom/:idUporabnika', ctrlprivateRoom.sobaKreiraj);
 
 const ctrlObject = require('../controllers/object');
-router.get('/object/:idObjekta', ctrlObject.vrniObject);
-router.get('/object', ctrlObject.vrniLokacijo);
+router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
+//router.get('/object', ctrlObject.vrniLokacijo);
 
 module.exports = router;
