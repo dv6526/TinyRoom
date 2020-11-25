@@ -76,7 +76,7 @@ const index = (req, res) => {
         title: 'TinyRoom',
         user: {
             username: req.session.user,
-            id: 230
+            id: req.session.user_id,
         },
         navigation : navigation,
         active_tab : 0,
@@ -88,7 +88,7 @@ const index = (req, res) => {
 
 const private = (req, res) => {
 
-    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: 230}, navigation : navigation, active_tab : 1});
+    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : navigation, active_tab : 1});
 
     
 }
@@ -96,6 +96,7 @@ const private = (req, res) => {
 const profile = (req, res) => {
     console.log("session user id " + req.session.user_id);
     axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+        console.log(req.session.user_id);
         console.log(odgovor.data);
         res.render('profile', { 
             
@@ -103,7 +104,8 @@ const profile = (req, res) => {
             navigation : navigation,
             active_tab : 2,
             user : {rank: odgovor.data.rank, 
-                    username: odgovor.data.username, 
+                    username: odgovor.data.username,
+                    id: odgovor.data._id,
                     email: odgovor.data.email,
                     bio : odgovor.data.bio}
             
@@ -114,6 +116,25 @@ const profile = (req, res) => {
 const profileUpdate = (req, res) => {
     //posodobi profil
     console.log(req.body);
+    console.log(req);
+    //api klic
+    res.redirect('/profile');
+}
+
+// TODO
+const profileChangePassword = (req, res) => {
+    //posodobi profil
+    console.log(req.body);
+    //api klic
+    console.log("profileChangePassword");
+    res.redirect('/profile');
+}
+// TODO
+const profileTerminate = (req, res) => {
+    //posodobi profil
+    console.log(req.body);
+    console.log("profileTerminate");
+    //api klic
     res.redirect('/profile');
 }
 
@@ -135,6 +156,8 @@ module.exports = {
     registerin,
     validateCookie,
     logout,
-    profileUpdate
+    profileUpdate,
+    profileTerminate,
+    profileChangePassword
 };
 
