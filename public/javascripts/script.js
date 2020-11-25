@@ -60,6 +60,20 @@ function addZero(i) {
     }
     return i;
 }
+
+// new message
+function novoSporocilo(sporocilo_info) {
+    var sporocilo=document.createElement("div");
+    sporocilo.classList.add("message-bubble");
+    sporocilo.setAttribute("data-username",sporocilo_info.sender);
+
+    if (sporocilo_info.player==true) {
+        sporocilo.classList.add("player");
+    }
+
+    sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
+    document.querySelector("#chatlogs").prepend(sporocilo);
+}
 // END OF UTILITY FUNCTIONS ================================
 
 class User {
@@ -222,6 +236,28 @@ class Chat {
                 chat.socket.send("PO " + JSON.stringify(chat.player.getWantedPos()));
             }
         });
+
+        document.getElementById("messagesend").addEventListener('click', function() {
+            var message = document.getElementById("message");
+            
+            var to_send = {
+                "message": message.value
+            }
+
+            if (message.value.length > 0) {
+                var date = new Date();
+                novoSporocilo({
+                    sender: chat.player.getName(),
+                    body: message.value,
+                    date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                    player: true
+                })
+    
+                message.value = "";
+                
+                chat.socket.send("MS " + JSON.stringify(to_send));
+            }
+        });
     }
 
     centerOnPlayer() {
@@ -364,6 +400,14 @@ class Chat {
                     var user_that_left = command_data["username"];
                     chat.users = chat.users.filter(user => user.getName() !== user_that_left);
                     break;
+                case 'MS':
+                    var date = new Date();
+                    novoSporocilo({
+                        sender: command_data["username"],
+                        body: command_data["message"],
+                        date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                        player: false
+                    })
                 default:
                     break;
             }
@@ -408,6 +452,7 @@ $(function () {
     // write your functions here
 
     //ajax zahteva, ki pošlje sporočilo in token
+    /*
     $("#messagesend").click(function(){
         var message = document.getElementById("message");
 
@@ -432,6 +477,7 @@ $(function () {
             dataType: "text"
         });
     });
+    */
 
     //js za pojavno okno
     function topAlert(message, seconds){
@@ -441,20 +487,6 @@ $(function () {
         document.body.appendChild(okno);
 
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
-    }
-    
-    // new message
-    function novoSporocilo(sporocilo_info) {
-        var sporocilo=document.createElement("div");
-        sporocilo.classList.add("message-bubble");
-        sporocilo.setAttribute("data-user_id",sporocilo_info.sender_id);
-
-        if (sporocilo_info.player==true) {
-            sporocilo.classList.add("player");
-        }
-
-        sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
-        document.querySelector("#chatlogs").prepend(sporocilo);
     }
 
     // MessageDropdown

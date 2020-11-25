@@ -129,6 +129,23 @@ wsserver.on('connection', function(socket) {
                     }
                 });
             }
+
+            if (command == "MS") {
+
+                var msg = command_data.message;
+
+                //console.log(msg);
+
+                sockets.forEach(s => {
+                    // dont send to itself
+                    if (s !== user) {
+                        s.socket.send("MS " + JSON.stringify({
+                            "message": msg,
+                            "username": user.getUsername()
+                        }));
+                    }
+                });
+            }
         }
     });
 
