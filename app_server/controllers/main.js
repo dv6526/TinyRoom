@@ -32,6 +32,7 @@ const verification = (req, res) => {
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
+            console.log(odgovor.data[0]._id);
             res.redirect('/');
         }
     })
