@@ -53,6 +53,8 @@ const changeProfileInfo = (req, res) => {
         profile.email = req.body.email;
         //profile.biotitle = req.body.biotitle;
         profile.bio = req.body.bio;
+        profile.pic = req.body.pic;
+        //profile.chosen_skin = req.body.chosen_skin;
 
         profile.save((napaka, profile) => {
             if(napaka) {
