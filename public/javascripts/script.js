@@ -252,6 +252,16 @@ class Chat {
         }
     }
 
+    drawName(text, x, y) {
+        this.context.font = '20px Sans-serif';
+        var textWidth = this.context.measureText(text).width;
+        this.context.strokeStyle = 'black';
+        this.context.lineWidth = 3;
+        this.context.strokeText(text, x-textWidth/2, y-35);
+        this.context.fillStyle = 'white';
+        this.context.fillText(text, x-textWidth/2, y-35);
+    }
+
     drawLoop() {
         // Da lahko uporabimo v loopu
         var chat = this;
@@ -268,11 +278,13 @@ class Chat {
             chat.centerOnPlayer();
             context.drawImage(chat.background, -chat.offset.x, -chat.offset.y, chat.background_width, chat.background_height);
 
+            // draw users
             for (let i = 0; i < chat.users.length; i++) {
                 var user = chat.users[i];
 
                 user.step();
-
+                // draw user avatar
+                chat.drawName(user.getName(), user.position.x - chat.offset.x, user.position.y - chat.offset.y);
                 context.drawImage(user.canvas, user.position.x - chat.offset.x - avatar_size/2, user.position.y - chat.offset.y - avatar_size/2, avatar_size, avatar_size);
             }
 
