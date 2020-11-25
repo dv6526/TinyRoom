@@ -12,5 +12,7 @@ router.post('/signin', ctrlMain.verification);
 router.get('/logout', ctrlMain.logout);
 
 router.post('/novoSporocilo', ctrlMain.novosporocilo);
+router.post('/profile/update', ctrlMain.profileUpdate);
+
 
 module.exports = router;
