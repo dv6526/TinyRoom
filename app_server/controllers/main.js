@@ -26,9 +26,11 @@ const verification = (req, res) => {
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
-            res.status(400).json({
-                "sporocilo": "uporabnika nismo nasli."
-            });
+            //res.render('register', { error: 'Wrong username or password' });
+            res.render('register', {title: "Login or Register", navigation : navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
+            //res.status(400).json({
+            //    "sporocilo": "uporabnika nismo nasli."
+            //});
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
@@ -59,7 +61,9 @@ const registerin = (req, res) => {
             rank : "admin"
         }
       }).then((odgovor) => {
-        res.status(400).json(odgovor.data);
+        req.session.user = odgovor.data.username;
+        req.session.user_id = odgovor.data._id;
+        res.redirect('/');
       });
 
 }
@@ -72,7 +76,6 @@ const logout = (req, res) => {
 
 /* GET home page */
 const index = (req, res) => {
-    
     res.render('index', {
         title: 'TinyRoom',
         user: {
@@ -83,8 +86,6 @@ const index = (req, res) => {
         active_tab : 0,
         weatherData
     });
-    
-    
 };
 
 const private = (req, res) => {
@@ -119,6 +120,7 @@ const profileUpdate = (req, res) => {
     console.log("profileUpdate");
     console.log(req.body);
     // TODO save file
+
     if(req.body.pfp) {
         let koncnica = req.body.pfp.split(".")
         koncnica = koncnica[koncnica.length-1];
