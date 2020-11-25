@@ -12,11 +12,12 @@ router.post('/signin', ctrlMain.verification);
 router.get('/logout', ctrlMain.logout);
 
 router.post('/novoSporocilo', ctrlMain.novosporocilo);
+
 router.post('/profile/update', ctrlMain.profileUpdate);
 router.post('/profile/changePassword', ctrlMain.profileChangePassword);
 router.post('/profile/terminate', ctrlMain.profileTerminate);
 
-router.post('/profile/password')
+//router.post('/profile/password')
 
 
 module.exports = router;

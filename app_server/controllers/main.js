@@ -116,27 +116,76 @@ const profile = (req, res) => {
 
 const profileUpdate = (req, res) => {
     //posodobi profil
+    console.log("profileUpdate");
     console.log(req.body);
-    console.log(req);
-    //api klic
-    res.redirect('/profile');
+    // TODO save file
+    axios({
+        method: 'put',
+        url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
+        data: {
+            bio_title: req.body.biotitle,
+            bio: req.body.bio,
+            chosen_skin: req.body.skin
+        }
+    }).catch((napaka) => {
+        res.status(404).json({
+            "sporocilo": "uporabnika nismo nasli."
+        });
+    });
+
+    if(req.body.pfp) {
+        let koncnica = req.body.pfp.split(".")
+        koncnica = koncnica[koncnica.length-1];
+        axios({
+            method: 'put',
+            url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
+            data: {
+                profile_picture: req.session.user + "." + koncnica
+            }
+        }).then((odgovor) => {
+            res.redirect('/profile');
+        }).catch((napaka) => {
+            res.status(404).json({
+                "sporocilo": "uporabnika nismo nasli."
+            });
+        });
+    }
 }
 
-// TODO
 const profileChangePassword = (req, res) => {
-    //posodobi profil
-    console.log(req.body);
     //api klic
-    console.log("profileChangePassword");
-    res.redirect('/profile');
+    axios({
+          method: 'put',
+          url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/password',
+          data: {
+              password: req.body.password,
+          }
+    }).then((odgovor) => {
+      res.redirect('/profile');
+    }).catch((napaka) => {
+        res.status(404).json({
+            "sporocilo": "uporabnika nismo nasli."
+        });
+    });
 }
-// TODO
+
 const profileTerminate = (req, res) => {
-    //posodobi profil
-    console.log(req.body);
-    console.log("profileTerminate");
+    console.log("profileTerminate" + req.session.user_id);
     //api klic
-    res.redirect('/profile');
+    axios({
+        method: 'delete',
+        url: apiParametri.streznik + '/api/profile/' + req.session.user_id
+    }).then((odgovor) => {
+        // TODO ostane vpisan - briši piškotke al neki
+        req.session.user = undefined;
+        res.redirect('/');
+    }).catch((napaka) => {
+        res.status(404).json({
+            "sporocilo": "uporabnika nismo nasli."
+        });
+    });
+
+
 }
 
 const register = (req, res) => {
