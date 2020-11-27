@@ -23,6 +23,9 @@ var navigation = [
     value: 'LOG OUT'},
 ]
 const verification = (req, res) => {
+    console.log("longitude: " + req.body.longitude);
+    console.log("latitude: " + req.body.latitude);
+            //console.log("latitude: " + req.data.latitude);
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
@@ -35,6 +38,7 @@ const verification = (req, res) => {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
             console.log(odgovor.data[0]._id);
+            
             res.redirect('/');
         }
     })

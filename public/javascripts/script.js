@@ -783,7 +783,28 @@ $(function () {
     var chat = new Chat('tinyroom');
     formatPage();
     // End of Code =========================================
+    
 
 
 
 });
+
+function getLocation() {
+    console.log("Pridobivam lokacijo...");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
+}
+
+function success(position) {
+    console.log(position);
+    $("#getlon").val(position.coords.longitude);
+    $("#getlat").val(position.coords.latitude);
+
+    $("#signinform").submit(); // here the form is submit
+}
+
+function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
