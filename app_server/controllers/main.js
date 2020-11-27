@@ -64,6 +64,9 @@ const registerin = (req, res) => {
         req.session.user = odgovor.data.username;
         req.session.user_id = odgovor.data._id;
         res.redirect('/');
+      }).catch((napaka) => {
+        res.render('register', {title: "Login or Register", navigation : navigation, 
+        active_tab : 3, error2: 'Username already exists!'});
       });
 
 }

@@ -41,7 +41,7 @@ const vrniUporabnikaById = (req, res) => {
 
 const vrniUporabnikaByUi = (req, res) => {
     console.log("izpis: "+ req.params.ui);
-    Uporabnik.find({"username" : req.params.ui}).exec((napaka, uporabnik) => {
+    Uporabnik.findOne({"username" : req.params.ui}).exec((napaka, uporabnik) => {
         if(!uporabnik) {
             return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
         } else if(napaka) {
@@ -54,18 +54,25 @@ const vrniUporabnikaByUi = (req, res) => {
 }
 
 const uporabnikKreiraj = (req, res) => {
-    Uporabnik.create({
-        username : req.body.username,
-        email : req.body.email,
-        password : req.body.password,
-        rank : req.body.rank
-    },(napaka, uporabnik) => {
-        if (napaka) {
-          res.status(400).json(napaka);
+    Uporabnik.findOne({"username" : req.body.username}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            Uporabnik.create({
+                username : req.body.username,
+                email : req.body.email,
+                password : req.body.password,
+                rank : req.body.rank
+            },(napaka, uporabnik) => {
+                if (napaka) {
+                  res.status(400).json(napaka);
+                } else {
+                  res.status(201).json(uporabnik);
+                }
+            });
         } else {
-          res.status(201).json(uporabnik);
+            return res.status(400).json(napaka);
         }
-    });
+    })
+    
 }
 
 module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass};
