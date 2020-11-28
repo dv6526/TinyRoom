@@ -6,3 +6,9 @@ hbs.registerHelper("ifEquals", function(arg1, arg2) {
     }
     return '';
 });
+
+hbs.registerHelper("checked", function(skin, printSkin) {
+    if(skin == printSkin)
+        return 'checked';
+    return '';
+});

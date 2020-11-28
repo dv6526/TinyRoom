@@ -179,6 +179,7 @@ const profile = (req, res) => {
                     username: odgovor.data.username,
                     id: odgovor.data._id,
                     email: odgovor.data.email,
+                    skin: odgovor.data.chosen_skin,
                     bio : odgovor.data.bio,
                     bio_title: odgovor.data.bio_title}
         });
