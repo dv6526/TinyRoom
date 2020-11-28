@@ -1,0 +1,15 @@
+git
+  "navigation": [
+    {"href": "/",
+      "value": "CHAT"},
+
+    {"href": "/private",
+      "value": "MY ROOM"},
+
+    {"href": "/profile",
+      "value": "PROFILE"},
+
+    {"href": "/logout",
+      "value": "LOG OUT"}
+  ]
+}
