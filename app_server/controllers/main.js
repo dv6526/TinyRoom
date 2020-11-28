@@ -9,19 +9,7 @@ const cookieExists = false;
 
 var weatherData = require('../models/weather.json')
 
-var navigation = [
-    {href: '/',
-    value: 'CHAT'},
-
-    {href: '/private',
-    value: 'MY ROOM'},
-
-    {href: '/profile',
-    value: 'PROFILE'},
-
-    {href: '/logout',
-    value: 'LOG OUT'},
-]
+var n = require('../models/navigation.json')
 const verification = (req, res) => {
     console.log("longitude: " + req.body.longitude);
     console.log("latitude: " + req.body.latitude);
@@ -31,7 +19,7 @@ const verification = (req, res) => {
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
             //res.render('register', { error: 'Wrong username or password' });
-            res.render('register', {title: "Login or Register", navigation : navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
+            res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
             //res.status(400).json({
             //    "sporocilo": "uporabnika nismo nasli."
             //});
@@ -107,17 +95,17 @@ const registerin = (req, res) => {
     let regName = /^[a-zA-Z0-9]+$/;
     let lengthPass = 3;
     if(!regEmail.test(req.body.email)) {
-        res.render('register', {title: "Login or Register", navigation : navigation,
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
             active_tab : 3, error2: 'Email address has a typo'});
         return;
     }
     if(!regName.test(req.body.username)) {
-        res.render('register', {title: "Login or Register", navigation : navigation,
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
             active_tab : 3, error2: 'Username should consist only of letters or numbers'});
         return;
     }
     if(req.body.password.length < lengthPass) {
-        res.render('register', {title: "Login or Register", navigation : navigation,
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
             active_tab : 3, error2: 'Password is too short'});
         return;
     }
@@ -135,7 +123,7 @@ const registerin = (req, res) => {
         req.session.user_id = odgovor.data._id;
         res.redirect('/');
       }).catch((napaka) => {
-        res.render('register', {title: "Login or Register", navigation : navigation, 
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
         active_tab : 3, error2: 'Username already exists!'});
       });
 
@@ -156,7 +144,7 @@ const index = (req, res) => {
             id: req.session.user_id,
             sprite_idx : req.session.sprite_idx
         },
-        navigation : navigation,
+        navigation : n.navigation,
         active_tab : 0,
         weather : req.session.weather
     });
@@ -164,7 +152,7 @@ const index = (req, res) => {
 
 const private = (req, res) => {
 
-    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : navigation, active_tab : 1});
+    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
 
     
 }
@@ -174,10 +162,9 @@ const profile = (req, res) => {
     axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
         //console.log(req.session.user_id);
         //console.log(odgovor.data);
-        res.render('profile', { 
-            
+        res.render('profile', {
             title: 'Profile', 
-            navigation : navigation,
+            navigation : n.navigation,
             active_tab : 2,
             user : {rank: odgovor.data.rank, 
                     username: odgovor.data.username,
@@ -185,7 +172,8 @@ const profile = (req, res) => {
                     email: odgovor.data.email,
                     skin: odgovor.data.chosen_skin,
                     bio : odgovor.data.bio,
-                    bio_title: odgovor.data.bio_title}
+                    bio_title: odgovor.data.bio_title},
+            error : ""
         });
     });
 }
@@ -232,6 +220,27 @@ const profileUpdate = (req, res) => {
 }
 
 const profileChangePassword = (req, res) => {
+    // preverba dolzine passworda
+    let lengthPass = 3;
+    if(req.body.password.length < lengthPass) {
+        axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+            res.render('profile', {
+                title: 'Profile',
+                navigation : n.navigation,
+                active_tab : 2,
+                user : {rank: odgovor.data.rank,
+                    username: odgovor.data.username,
+                    id: odgovor.data._id,
+                    email: odgovor.data.email,
+                    skin: odgovor.data.chosen_skin,
+                    bio : odgovor.data.bio,
+                    bio_title: odgovor.data.bio_title},
+                error : 'Password is too short'
+            });
+        });
+        return;
+    }
+
     //api klic
     axios({
           method: 'put',
@@ -268,7 +277,7 @@ const profileTerminate = (req, res) => {
 }
 
 const register = (req, res) => {
-    res.render('register', {title: "Login or Register", navigation : navigation, active_tab : 3, user : {id: 230}});
+    res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}});
 }
 
 const novosporocilo = (req, res) => {

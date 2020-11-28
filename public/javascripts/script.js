@@ -41,6 +41,16 @@ class Vector {
 var mutedPlayers = [];
 
 // UTILITY FUNCTIONS =======================================
+function checkPassword(dogodek) {
+    let password = document.getElementById('password');
+    let info = document.getElementById("passwordInfo");
+    let lengthPass = 3;
+    if(password.value.length < lengthPass) {
+        info.innerText = "Password is too short";
+        dogodek.preventDefault();
+    }
+}
+
 function checkRegisterInfo(dogodek) {
     // preveri pravilno vnosa imena in gesla
     let email = document.getElementById('email');
