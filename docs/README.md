@@ -31,4 +31,6 @@ S klikom na "Log out" povezavo v navigaciji se izpišemo iz računa.
 # Razlika med navadnim uporabnikom in administratorjem
 Razlika med navadnim uporabnikom (user) in administratorjem (admin) se pokaže ob desnem kliku na lik uporabnika. Med tem, ko ima navadni uporabnik možnosti za utišanje, pošiljanje privatnega sporočila, vabilo ali vstopanje v privatno sobo, ima administrator še nekaj dodatnih. Administrator lahko tako še globalno utiša uporabnika (global mute/unmute), mu pošlje opozorilo (warn), ga začasno vrže iz sveta (kick), ga trajno vrže iz sveta (ban) ali pa vstopi v tujo sobo brez vabila drugega uporabnika.
 
-npm web socket smo uporabli
+
+- dodaj opis v profil
+username dolzina 25
