@@ -170,8 +170,7 @@ const profile = (req, res) => {
     axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
         //console.log(req.session.user_id);
         //console.log(odgovor.data);
-        res.render('profile', { 
-            
+        res.render('profile', {
             title: 'Profile', 
             navigation : navigation,
             active_tab : 2,
@@ -181,7 +180,8 @@ const profile = (req, res) => {
                     email: odgovor.data.email,
                     skin: odgovor.data.chosen_skin,
                     bio : odgovor.data.bio,
-                    bio_title: odgovor.data.bio_title}
+                    bio_title: odgovor.data.bio_title},
+            error : ""
         });
     });
 }
@@ -226,6 +226,27 @@ const profileUpdate = (req, res) => {
 }
 
 const profileChangePassword = (req, res) => {
+    // preverba dolzine passworda
+    let lengthPass = 3;
+    if(req.body.password.length < lengthPass) {
+        axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+            res.render('profile', {
+                title: 'Profile',
+                navigation : navigation,
+                active_tab : 2,
+                user : {rank: odgovor.data.rank,
+                    username: odgovor.data.username,
+                    id: odgovor.data._id,
+                    email: odgovor.data.email,
+                    skin: odgovor.data.chosen_skin,
+                    bio : odgovor.data.bio,
+                    bio_title: odgovor.data.bio_title},
+                error : 'Password is too short'
+            });
+        });
+        return;
+    }
+
     //api klic
     axios({
           method: 'put',
