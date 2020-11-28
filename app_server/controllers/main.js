@@ -84,8 +84,8 @@ function formatWeatherData(data, req, res) {
         day.id = "day" + index+1;
         day.day =  dayName;
         day.icon = val.weather[0].icon;
-        day.type_string = val.weather[0].main;
-        day.temperature = val.temp.day;
+        day.icon_string = val.weather[0].main;
+        day.temperature = Math.round(val.temp.day) + ' °C';
         weather7.push(day);
     });
     req.session.weather = weather7;
