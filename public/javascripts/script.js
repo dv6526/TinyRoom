@@ -41,6 +41,31 @@ class Vector {
 var mutedPlayers = [];
 
 // UTILITY FUNCTIONS =======================================
+function checkRegisterInfo(dogodek) {
+    // preveri pravilno vnosa imena in gesla
+    let email = document.getElementById('email');
+    let name = document.getElementById('usernameRegister');
+    let password = document.getElementById('passwordRegister');
+    let regEmail = /^\S+@\S+$/;
+    let regName = /[A-Za-z0-9]*/;
+    let lengthPass = 3;
+
+    let info = document.getElementById("registerInfo");
+
+    if(!regEmail.test(email.value)) {
+        info.innerText = "Email address has a typo";
+        dogodek.preventDefault();
+    }
+    if(!regName.test(name.value)) {
+        info.innerText = "Username should consist only of letters or numbers";
+        dogodek.preventDefault();
+    }
+    if(password.value.length < lengthPass) {
+        info.innerText = "Password is too short";
+        dogodek.preventDefault();
+    }
+}
+
 function returnImageObject(image_link, onload) {
     var img = document.createElement('img');
     img.src = image_link;
