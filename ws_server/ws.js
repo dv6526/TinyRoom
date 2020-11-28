@@ -89,7 +89,7 @@ class UserSocket {
             } else {
                 var skins = {"bunny" : 0, "goat":1, "rat":2};
                 user.sprite_idx = skins[odgovor.data.chosen_skin];
-                rcallback(true);
+                callback(true);
             }
         })
 

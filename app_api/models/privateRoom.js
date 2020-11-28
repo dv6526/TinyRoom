@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const objectShema = new mongoose.Schema({
-    objectName: String,
-    pixelCoordinate: {type: [Number], index: '2dsphere'}
+    type: String,
+    position: {x: Number, y: Number}
 });
 
 const privateRoomShema = new mongoose.Schema({

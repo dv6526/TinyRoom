@@ -375,57 +375,57 @@ class Chat {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
 
-        if (this.canvas == null) {
-            return;
+        if (this.canvas != null) {
+            // server communications
+            this.socket = undefined;
+
+            this.context = this.canvas.getContext('2d');
+            // all users without logged in user
+            this.users = [];
+            // logged in user
+            this.player;
+            this.room = undefined;
+
+            // set up background drawing offset
+            this.background_clear_color = '#387eb4';
+            this.background_width = 2000;
+            this.background_height = undefined;
+            this.background_size = new Vector();
+            this.background_center = new Vector(0.42, 0.36); // from 0 to 1, percentage
+            this.offset = undefined;
+
+            this.dropdown_active = false;
+
+            var chat = this;
+            // set up background
+            this.background = returnImageObject('/images/map.png', function() {
+                // this executes when the background loads
+                // set background center to center of screen
+                // calculate ratio
+                var ratio = chat.background.width/chat.background.height;
+                // set height
+                chat.background_height = chat.background_width / ratio;
+
+                chat.offset = new Vector(
+                    chat.background_width * chat.background_center.x - chat.canvas.width/2,
+                    chat.background_height * chat.background_center.y - chat.canvas.height/2
+                );
+
+                // Add Player
+                chat.addPlayer();
+
+                // Start drawing
+                chat.drawLoop();
+                
+                // add event listeners for interacting
+                chat.hookControls();
+
+                // start connection
+                chat.communications();
+            });
         }
 
-        // server communications
-        this.socket = undefined;
-
-        this.context = this.canvas.getContext('2d');
-        // all users without logged in user
-        this.users = [];
-        // logged in user
-        this.player;
-        this.room = undefined;
-
-        // set up background drawing offset
-        this.background_clear_color = '#387eb4';
-        this.background_width = 2000;
-        this.background_height = undefined;
-        this.background_size = new Vector();
-        this.background_center = new Vector(0.42, 0.36); // from 0 to 1, percentage
-        this.offset = undefined;
         
-        this.dropdown_active = false;
-
-        var chat = this;
-        // set up background
-        this.background = returnImageObject('/images/map.png', function() {
-            // this executes when the background loads
-            // set background center to center of screen
-            // calculate ratio
-            var ratio = chat.background.width/chat.background.height;
-            // set height
-            chat.background_height = chat.background_width / ratio;
-
-            chat.offset = new Vector(
-                chat.background_width * chat.background_center.x - chat.canvas.width/2,
-                chat.background_height * chat.background_center.y - chat.canvas.height/2
-            );
-
-            // Add Player
-            chat.addPlayer();
-
-            // Start drawing
-            chat.drawLoop();
-            
-            // add event listeners for interacting
-            chat.hookControls();
-
-            // start connection
-            chat.communications();
-        });
     }
 
     changeBackground(background) {
@@ -472,6 +472,7 @@ class Chat {
 
             chat.player.setPosition(new Vector(chat.background_width * chat.background_center.x, chat.background_height * chat.background_center.y));
             chat.player.setWantedPos(new Vector(chat.background_width * chat.background_center.x, chat.background_height * chat.background_center.y));
+            chat.sendPosition();
         });
     }
 
@@ -496,10 +497,12 @@ class Chat {
     }
 
     resize(width) {
-        this.canvas.style.width = '95%';
-        this.canvas.style.height = '95%';
-        this.canvas.width = 0.95 * width;
-        this.canvas.height = this.canvas.width;
+        if (this.canvas) {
+            this.canvas.style.width = '95%';
+            this.canvas.style.height = '95%';
+            this.canvas.width = 0.95 * width;
+            this.canvas.height = this.canvas.width;
+        }
     }
     
     inMap(position) {
@@ -691,8 +694,6 @@ class Chat {
         else {
             this.changeBackground('map');
         }
-
-        this.sendPosition();
     }
 
     communications() {
