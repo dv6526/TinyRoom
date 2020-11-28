@@ -3,14 +3,27 @@ const { NotExtended } = require('http-errors');
 var apiParametri = {
   streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
-
 const cookieExists = false;
 
-
 var weatherData = require('../models/weather.json')
-
 var n = require('../models/navigation.json')
+
+const regPass = /^.{3,}$/;
+const regEmail = /^\S+@\S+$/;
+const regName = /^[a-zA-Z0-9]{1,10}$/;
+
 const verification = (req, res) => {
+    if(!regName.test(req.body.username)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Username does not fit the specification'});
+        return;
+    }
+    if(!regPass.test(req.body.password)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Password does not fit the specification'});
+        return;
+    }
+
     console.log("longitude: " + req.body.longitude);
     console.log("latitude: " + req.body.latitude);
     var longit = req.body.longitude;
@@ -18,17 +31,10 @@ const verification = (req, res) => {
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
-            //res.render('register', { error: 'Wrong username or password' });
             res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
-            //res.status(400).json({
-            //    "sporocilo": "uporabnika nismo nasli."
-            //});
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
-            //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
-            //req.session.weather = weatherData.weather;
-            //res.redirect('/');
             if(longit === "" &&  latit === "") {
                 req.body.longitude = 14.5058;
                 req.body.latitude = 46.0569;
@@ -88,9 +94,6 @@ const validateCookie = (req, res, next) => {
 }
 
 const registerin = (req, res) => {
-    let regEmail = /^\S+@\S+$/;
-    let regName = /^[a-zA-Z0-9]+$/;
-    let lengthPass = 3;
     if(!regEmail.test(req.body.email)) {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
             active_tab : 3, error2: 'Email address has a typo'});
@@ -101,7 +104,7 @@ const registerin = (req, res) => {
             active_tab : 3, error2: 'Username should consist only of letters or numbers'});
         return;
     }
-    if(req.body.password.length < lengthPass) {
+    if(!regPass.test(req.body.password)) {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
             active_tab : 3, error2: 'Password is too short'});
         return;
@@ -176,8 +179,15 @@ const profile = (req, res) => {
 
 const profileUpdate = (req, res) => {
     //posodobi profil
-    console.log("profileUpdate");
-    console.log(req.body);
+    req.body.biotitle = req.body.biotitle.substr(0,20);
+    req.body.bio = req.body.bio.substr(0,20);
+    if(req.body.biotitle == "") {
+        req.body.biotitle = "Default bio title";
+    }
+    if(req.body.bio == "") {
+        req.body.bio = "This is default bio";
+    }
+
     // TODO save file
 
     if(req.body.pfp) {
@@ -215,8 +225,8 @@ const profileUpdate = (req, res) => {
 
 const profileChangePassword = (req, res) => {
     // preverba dolzine passworda
-    let lengthPass = 3;
-    if(req.body.password.length < lengthPass) {
+
+    if(!regPass.test(req.body.password)) {
         axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
             res.render('profile', {
                 title: 'Profile',

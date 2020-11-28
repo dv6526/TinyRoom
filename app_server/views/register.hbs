@@ -4,14 +4,14 @@
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
                 <h2>Login</h2>
-                <form action="/signin" method="post" id="signinform">
+                <form action="/signin" method="post" id="signinform" onsubmit="checkLoginInfo(event)">
                     <div class="form-group">
                         <label for="text">Username:</label>
-                        <input type="text" class="form-control" id="username" name="username">
+                        <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="checkbox">
                         <label><input type="checkbox" name="remember">Remember me</label>
@@ -20,8 +20,7 @@
                     <input type="hidden" name="latitude" id="getlat" />
                     <button onclick="getLocation()" class="btn btn-outline-dark">Login</button>
                 </form>
-
-                </br>{{{error}}}
+                <div id="loginInfo">{{{error}}}</div>
             </div>
 
 
@@ -36,13 +35,13 @@
                     <!-- spremenil iz username v usernameRegister -- ce pride do kakega buga -->
                     <div class="form-group">
                         <label for="usernameRegister">Username:</label>
-                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username" required pattern="[A-Za-z0-9]*"
+                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username" required
                             name="username">
                     </div>
                     <!-- spremenil iz password v passwordRegister -- ce pride do kakega buga -->
                     <div class="form-group">
                         <label for="passwordRegister">Password:</label>
-                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password" required minlength="3"
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password" required
                             name="password">
                     </div>
                     <button type="submit" class="btn btn-outline-dark" >Register</button>

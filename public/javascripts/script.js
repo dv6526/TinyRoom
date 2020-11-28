@@ -41,38 +41,75 @@ class Vector {
 var mutedPlayers = [];
 
 // UTILITY FUNCTIONS =======================================
+const regPass = /^.{3,}$/;
+const regEmail = /^\S+@\S+$/;
+const regName = /^[a-zA-Z0-9]{1,10}$/;
+
+// check profile password
 function checkPassword(dogodek) {
     let password = document.getElementById('password');
     let info = document.getElementById("passwordInfo");
-    let lengthPass = 3;
-    if(password.value.length < lengthPass) {
+    if(!regPass.test(password.value)) {
         info.innerText = "Password is too short";
         dogodek.preventDefault();
+        return;
     }
 }
 
+// check profile info
+function checkProfileInfo(dogodek) {
+    let biotitle = document.getElementById("biotitle");
+    let bio = document.getElementById('bio')
+    biotitle.value = biotitle.value.substring(0,20);
+    bio.value = bio.value.substring(0,20);
+    if(biotitle.value == "") {
+        biotitle.value = "Default bio title";
+    }
+    if(bio.value == "") {
+        bio.value = "This is default bio";
+    }
+}
+
+// check login
+function checkLoginInfo(dogodek) {
+    let username = document.getElementById("username")
+    let password = document.getElementById('password');
+    let info = document.getElementById("loginInfo");
+    if(!regName.test(username.value)) {
+        info.innerText = "Username does not fit the specification";
+        dogodek.preventDefault();
+        return;
+    }
+    if(!regPass.test(password.value)) {
+        info.innerText = "Password does not fit the specification";
+        dogodek.preventDefault();
+        return;
+    }
+}
+
+// check register
 function checkRegisterInfo(dogodek) {
+    console.log(this);
     // preveri pravilno vnosa imena in gesla
     let email = document.getElementById('email');
     let name = document.getElementById('usernameRegister');
     let password = document.getElementById('passwordRegister');
-    let regEmail = /^\S+@\S+$/;
-    let regName = /[A-Za-z0-9]*/;
-    let lengthPass = 3;
-
     let info = document.getElementById("registerInfo");
 
     if(!regEmail.test(email.value)) {
         info.innerText = "Email address has a typo";
         dogodek.preventDefault();
+        return;
     }
     if(!regName.test(name.value)) {
         info.innerText = "Username should consist only of letters or numbers";
         dogodek.preventDefault();
+        return;
     }
-    if(password.value.length < lengthPass) {
+    if(!regPass.test(password.value)) {
         info.innerText = "Password is too short";
         dogodek.preventDefault();
+        return;
     }
 }
 
