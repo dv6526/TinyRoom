@@ -41,6 +41,10 @@ const verification = (req, res) => {
             //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
             //req.session.weather = weatherData.weather;
             //res.redirect('/');
+            if(longit === "" &&  latit === "") {
+                req.body.longitude = 14.5058;
+                req.body.latitude = 46.0569;
+            }
             apiWeatherCall(req, res);
         }
     })
@@ -56,7 +60,6 @@ function apiWeatherCall(req, res) {
       };
       
       axios.request(options).then(function (response) {
-        console.log(response.data);
         formatWeatherData(response.data, req, res);
       }).catch(function (error) {
           console.error(error);
@@ -68,19 +71,12 @@ function formatWeatherData(data, req, res) {
     var days= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
     var weather7 = [];
-    var day = {
-        id: "day1",
-        day: "MONDAY",
-        type: "sun",
-        type_string: "Sunny",
-        temperature: "12 °C | 60 °F"
-      };
     myArray = data.daily;
 
     myArray.forEach((val, index, array) => {
         var d = new Date(val.dt * 1000);
         var dayName = days[d.getDay()];
-        day = {};
+        var day = {};
         day.id = "day" + index+1;
         day.day =  dayName;
         day.icon = val.weather[0].icon;
@@ -144,7 +140,7 @@ const registerin = (req, res) => {
 
 const logout = (req, res) => {
     req.session.destroy();
-    register(req, res);
+    res.redirect('/');
 }
 
 

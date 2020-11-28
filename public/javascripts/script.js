@@ -485,16 +485,22 @@ class Chat {
 
                 if (found) {
                     chat.dropdown_active = true;
-                    messageDropdown({x: click.clientX, y: click.clientY},{
-                        'rank': 'user',
-                        'muted': false,
-                        'g_muted': false,
-                        'target_user_id': 12,
-                        'username': found_user,
-                        'bio_pic': 'static/avatar.png',
-                        'bio_title': 'This is my title',
-                        'bio_description': 'I am too lazy to change my bio description'
-                    }, chat);
+                    //getProfileInfo
+                    $.ajax({url: "api/uporabniki/" + found_user + "/profile", success: function(result){
+                        console.log(result);
+                        messageDropdown({x: click.clientX, y: click.clientY},{
+                                'rank': 'user',
+                                'muted': false,
+                                'g_muted': false,
+                                'target_user_id': 12,
+                                'username': found_user,
+                                'bio_pic': 'static/avatar.png',
+                                'bio_title': result.bio_title,
+                                'bio_description': result.bio
+                            }, chat);
+                    }});
+
+                    
                 }
 
             }

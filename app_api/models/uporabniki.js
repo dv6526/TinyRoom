@@ -7,8 +7,8 @@ const uporabnikiShema = new mongoose.Schema({
     email: String,
     password: String,
     profile_picture: String,
-    bio_title: String,
-    bio: String,
+    bio_title: {type: String, default: ''},
+    bio: {type: String, default: ''},
     chosen_skin: String,
     private_room: [privateRoomShema]
 });
