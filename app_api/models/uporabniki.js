@@ -9,7 +9,7 @@ const uporabnikiShema = new mongoose.Schema({
     profile_picture: String,
     bio_title: {type: String, default: ''},
     bio: {type: String, default: ''},
-    chosen_skin: String,
+    chosen_skin: {type: String, default: "bunny"},
     private_room: [privateRoomShema]
 });
 
