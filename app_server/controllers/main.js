@@ -27,7 +27,6 @@ const verification = (req, res) => {
     console.log("latitude: " + req.body.latitude);
     var longit = req.body.longitude;
     var latit = req.body.latitude;
-            //console.log("latitude: " + req.data.latitude);
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
@@ -39,15 +38,15 @@ const verification = (req, res) => {
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
-            req.session.weather = weatherData;
-            console.log(odgovor.data[0]._id);
-            //apiWeatherCall(req);
+            //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
+            req.session.weather = weatherData.weather;
             res.redirect('/');
+            //apiWeatherCall(req, res);
         }
     })
 }
 
-function apiWeatherCall(req) {
+function apiWeatherCall(req, res) {
     var options = {
         method: 'GET',
         url: 'https://community-open-weather-map.p.rapidapi.com/forecast/daily',
@@ -60,14 +59,16 @@ function apiWeatherCall(req) {
       
       axios.request(options).then(function (response) {
         console.log(response.data);
-        formatWeatherData(response.data, req);
+        formatWeatherData(response.data, req, res);
       }).catch(function (error) {
           console.error(error);
       }); 
     
 }
 
-function formatWeatherData(data, req) {
+function formatWeatherData(data, req, res) {
+    var days= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
     var weather7 = [];
     var day = {
         id: "day1",
@@ -76,19 +77,22 @@ function formatWeatherData(data, req) {
         type_string: "Sunny",
         temperature: "12 °C | 60 °F"
       };
+    myArray = data.list;
 
-    data.list.forEach(function(val, idx) {
+    myArray.forEach((val, index, array) => {
+        var d = new Date(val.dt * 1000);
+        var dayName = days[d.getDay()];
         day = {};
-        day.id = "day" + idx;
-        day.day = "MONDAY";
-        day.type = "sun";
+        day.id = "day" + index+1;
+        day.day =  dayName;
+        day.icon = val.weather[0].icon;
         day.type_string = val.weather[0].main;
         day.temperature = val.temp.day;
         weather7.push(day);
     });
     req.session.weather = weather7;
+    res.redirect('/');
     console.log(weather7.toString());
-    var weathertest = req.session.weather;
     
 }
 
@@ -131,7 +135,6 @@ const logout = (req, res) => {
 
 /* GET home page */
 const index = (req, res) => {
-
     res.render('index', {
         title: 'TinyRoom',
         user: {
@@ -140,7 +143,7 @@ const index = (req, res) => {
         },
         navigation : navigation,
         active_tab : 0,
-        weather : weatherData
+        weather : req.session.weather
     });
 };
 
