@@ -38,7 +38,81 @@ class Vector {
     }
 }
 
+var mutedPlayers = [];
+
 // UTILITY FUNCTIONS =======================================
+const regPass = /^.{3,}$/;
+const regEmail = /^\S+@\S+$/;
+const regName = /^[a-zA-Z0-9]{1,10}$/;
+
+// check profile password
+function checkPassword(dogodek) {
+    let password = document.getElementById('password');
+    let info = document.getElementById("passwordInfo");
+    if(!regPass.test(password.value)) {
+        info.innerText = "Password is too short";
+        dogodek.preventDefault();
+        return;
+    }
+}
+
+// check profile info
+function checkProfileInfo(dogodek) {
+    let biotitle = document.getElementById("biotitle");
+    let bio = document.getElementById('bio')
+    biotitle.value = biotitle.value.substring(0,20);
+    bio.value = bio.value.substring(0,20);
+    if(biotitle.value == "") {
+        biotitle.value = "Default bio title";
+    }
+    if(bio.value == "") {
+        bio.value = "This is default bio";
+    }
+}
+
+// check login
+function checkLoginInfo(dogodek) {
+    let username = document.getElementById("username")
+    let password = document.getElementById('password');
+    let info = document.getElementById("loginInfo");
+    if(!regName.test(username.value)) {
+        info.innerText = "Username does not fit the specification";
+        dogodek.preventDefault();
+        return;
+    }
+    if(!regPass.test(password.value)) {
+        info.innerText = "Password does not fit the specification";
+        dogodek.preventDefault();
+        return;
+    }
+}
+
+// check register
+function checkRegisterInfo(dogodek) {
+    console.log(this);
+    // preveri pravilno vnosa imena in gesla
+    let email = document.getElementById('email');
+    let name = document.getElementById('usernameRegister');
+    let password = document.getElementById('passwordRegister');
+    let info = document.getElementById("registerInfo");
+
+    if(!regEmail.test(email.value)) {
+        info.innerText = "Email address has a typo";
+        dogodek.preventDefault();
+        return;
+    }
+    if(!regName.test(name.value)) {
+        info.innerText = "Username should consist only of letters or numbers";
+        dogodek.preventDefault();
+        return;
+    }
+    if(!regPass.test(password.value)) {
+        info.innerText = "Password is too short";
+        dogodek.preventDefault();
+        return;
+    }
+}
+
 function returnImageObject(image_link, onload) {
     var img = document.createElement('img');
     img.src = image_link;
@@ -102,6 +176,17 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                     "username": undefined
                 }));
                 break;
+            case "mute":
+                chat.socket.send("MU " + JSON.stringify({
+                    "username" : dropdown_info.username}));
+                mutedPlayers.push(dropdown_info.username);
+                break;
+            case "unmute":
+                chat.socket.send("UN " + JSON.stringify({
+                    "username" : dropdown_info.username}));
+                mutedPlayers = mutedPlayers.filter(player => player !== dropdown_info.username);
+                break;
+
             default:
                 break;
         }
@@ -232,6 +317,7 @@ class User {
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
         this.sprite_idx = sprite_idx;
+
         this.draw_avatar();
 
     }
@@ -405,7 +491,8 @@ class Chat {
         var name = username;
         // default weather
         var weather = "sunny";
-        var player = new User(position, name, weather, 1);
+        
+        var player = new User(position, name, weather, sprite_idx);
         this.addUser(player, true);
     }
 
@@ -463,16 +550,27 @@ class Chat {
 
                 if (found) {
                     chat.dropdown_active = true;
-                    messageDropdown({x: click.clientX, y: click.clientY},{
-                        'rank': 'user',
-                        'muted': false,
-                        'g_muted': false,
-                        'target_user_id': 12,
-                        'username': found_user,
-                        'bio_pic': 'static/avatar.png',
-                        'bio_title': 'This is my title',
-                        'bio_description': 'I am too lazy to change my bio description'
-                    }, chat);
+                    var isMuted = false;
+                    if(mutedPlayers.includes(found_user)) {
+                        isMuted = true;
+                    }
+                    //getProfileInfo
+                    $.ajax({url: "api/uporabniki/" + found_user + "/profile", success: function(result){
+                        console.log(result);
+
+                        messageDropdown({x: click.clientX, y: click.clientY},{
+                                'rank': 'user',
+                                'muted': isMuted,
+                                'g_muted': false,
+                                'target_user_id': 12,
+                                'username': found_user,
+                                'bio_pic': 'static/avatar.png',
+                                'bio_title': result.bio_title,
+                                'bio_description': result.bio
+                            }, chat);
+                    }});
+
+                    
                 }
 
             }
@@ -628,7 +726,7 @@ class Chat {
 
                     for (let i = 0; i < players.length; i++) {
                         const player = players[i];
-                        var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                        var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
                         var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                         player_to_add.setWantedPos(pos);
                         player_to_add.setPosition(pos);
@@ -656,7 +754,8 @@ class Chat {
 
                     // player joined the room
                     var player = command_data["player"];
-                    var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                    console.log(player);
+                    var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
                     var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                     player_to_add.setWantedPos(pos);
                     player_to_add.setPosition(pos);
@@ -783,8 +882,30 @@ $(function () {
 
     var chat = new Chat('tinyroom');
     formatPage();
+    
     // End of Code =========================================
+    
 
 
 
 });
+
+function getLocation() {
+    console.log("Pridobivam lokacijo...");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
+}
+
+function success(position) {
+    console.log(position);
+    $("#getlon").val(position.coords.longitude);
+    $("#getlat").val(position.coords.latitude);
+
+    $("#signinform").submit(); // here the form is submit
+}
+
+function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+

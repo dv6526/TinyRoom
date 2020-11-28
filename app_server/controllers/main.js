@@ -3,39 +3,92 @@ const { NotExtended } = require('http-errors');
 var apiParametri = {
   streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
-
 const cookieExists = false;
 
-
 var weatherData = require('../models/weather.json')
+var n = require('../models/navigation.json')
 
-var navigation = [
-    {href: '/',
-    value: 'CHAT'},
+const regPass = /^.{3,}$/;
+const regEmail = /^\S+@\S+$/;
+const regName = /^[a-zA-Z0-9]{1,10}$/;
 
-    {href: '/private',
-    value: 'MY ROOM'},
-
-    {href: '/profile',
-    value: 'PROFILE'},
-
-    {href: '/logout',
-    value: 'LOG OUT'},
-]
 const verification = (req, res) => {
+    if(!regName.test(req.body.username)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Username does not fit the specification'});
+        return;
+    }
+    if(!regPass.test(req.body.password)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Password does not fit the specification'});
+        return;
+    }
+
+    console.log("longitude: " + req.body.longitude);
+    console.log("latitude: " + req.body.latitude);
+    var longit = req.body.longitude;
+    var latit = req.body.latitude;
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
         if(odgovor.data.length == 0) {
-            res.status(400).json({
-                "sporocilo": "uporabnika nismo nasli."
-            });
+            res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
-            console.log(odgovor.data[0]._id);
-            res.redirect('/');
+
+            var skins = {"bunny" : 0, "goat":1, "rat":2};
+            req.session.sprite_idx = skins[odgovor.data[0].chosen_skin];
+            //req.session.sprite_idx = odgovor.data[0].chosen_skin;
+            //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
+            //req.session.weather = weatherData.weather;
+            //res.redirect('/');
+            if(longit === "" &&  latit === "") {
+                req.body.longitude = 14.5058;
+                req.body.latitude = 46.0569;
+            }
+            apiWeatherCall(req, res);
         }
     })
+}
+
+function apiWeatherCall(req, res) {
+    var options = {
+        method: 'GET',
+        url: 'https://api.openweathermap.org/data/2.5/onecall',
+        params: {lat: req.body.latitude, lon: req.body.longitude, units: 'metric', lang: '-sl',exclude : 'current,minutely,hourly,alerts', appid: 'd62b2d57190388b445a9b96264ba0e44'
+        //https://api.openweathermap.org/data/2.5/onecall?lat=14.12&lon=43&appid=d62b2d57190388b445a9b96264ba0e44
+        }
+      };
+      
+      axios.request(options).then(function (response) {
+        formatWeatherData(response.data, req, res);
+      }).catch(function (error) {
+          console.error(error);
+      }); 
+    
+}
+
+function formatWeatherData(data, req, res) {
+    var days= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    var weather7 = [];
+    myArray = data.daily;
+
+    myArray.forEach((val, index, array) => {
+        var d = new Date(val.dt * 1000);
+        var dayName = days[d.getDay()];
+        var day = {};
+        day.id = "day" + index+1;
+        day.day =  dayName;
+        day.icon = val.weather[0].icon;
+        day.icon_string = val.weather[0].main;
+        day.temperature = Math.round(val.temp.day) + ' °C';
+        weather7.push(day);
+    });
+    req.session.weather = weather7;
+    res.redirect('/');
+    console.log(weather7.toString());
+    
 }
 
 const validateCookie = (req, res, next) => {
@@ -48,7 +101,21 @@ const validateCookie = (req, res, next) => {
 }
 
 const registerin = (req, res) => {
-    console.log(req.body.username + " " + req.body.password + " " + req.body.email);
+    if(!regEmail.test(req.body.email)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Email address has a typo'});
+        return;
+    }
+    if(!regName.test(req.body.username)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Username should consist only of letters or numbers'});
+        return;
+    }
+    if(!regPass.test(req.body.password)) {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+            active_tab : 3, error2: 'Password is too short'});
+        return;
+    }
     axios({
         method: 'post',
         url: apiParametri.streznik + '/api/uporabniki',
@@ -59,37 +126,40 @@ const registerin = (req, res) => {
             rank : "admin"
         }
       }).then((odgovor) => {
-        res.status(400).json(odgovor.data);
+        req.session.user = odgovor.data.username;
+        req.session.user_id = odgovor.data._id;
+        res.redirect('/');
+      }).catch((napaka) => {
+        res.render('register', {title: "Login or Register", navigation : n.navigation,
+        active_tab : 3, error2: 'Username already exists!'});
       });
 
 }
 
 const logout = (req, res) => {
     req.session.destroy();
-    register(req, res);
+    res.redirect('/');
 }
 
 
 /* GET home page */
 const index = (req, res) => {
-    
     res.render('index', {
         title: 'TinyRoom',
         user: {
             username: req.session.user,
             id: req.session.user_id,
+            sprite_idx : req.session.sprite_idx
         },
-        navigation : navigation,
+        navigation : n.navigation,
         active_tab : 0,
-        weatherData
+        weather : req.session.weather
     });
-    
-    
 };
 
 const private = (req, res) => {
 
-    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : navigation, active_tab : 1});
+    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
 
     
 }
@@ -99,40 +169,34 @@ const profile = (req, res) => {
     axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
         //console.log(req.session.user_id);
         //console.log(odgovor.data);
-        res.render('profile', { 
-            
+        res.render('profile', {
             title: 'Profile', 
-            navigation : navigation,
+            navigation : n.navigation,
             active_tab : 2,
             user : {rank: odgovor.data.rank, 
                     username: odgovor.data.username,
                     id: odgovor.data._id,
                     email: odgovor.data.email,
+                    skin: odgovor.data.chosen_skin,
                     bio : odgovor.data.bio,
-                    bio_title: odgovor.data.bio_title}
-            
+                    bio_title: odgovor.data.bio_title},
+            error : ""
         });
     });
 }
 
 const profileUpdate = (req, res) => {
     //posodobi profil
-    console.log("profileUpdate");
-    console.log(req.body);
+    req.body.biotitle = req.body.biotitle.substr(0,20);
+    req.body.bio = req.body.bio.substr(0,20);
+    if(req.body.biotitle == "") {
+        req.body.biotitle = "Default bio title";
+    }
+    if(req.body.bio == "") {
+        req.body.bio = "This is default bio";
+    }
+
     // TODO save file
-    axios({
-        method: 'put',
-        url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
-        data: {
-            bio_title: req.body.biotitle,
-            bio: req.body.bio,
-            chosen_skin: req.body.skin
-        }
-    }).catch((napaka) => {
-        res.status(404).json({
-            "sporocilo": "uporabnika nismo nasli."
-        });
-    });
 
     if(req.body.pfp) {
         let koncnica = req.body.pfp.split(".")
@@ -143,17 +207,54 @@ const profileUpdate = (req, res) => {
             data: {
                 profile_picture: req.session.user + "." + koncnica
             }
-        }).then((odgovor) => {
-            res.redirect('/profile');
         }).catch((napaka) => {
             res.status(404).json({
                 "sporocilo": "uporabnika nismo nasli."
             });
         });
     }
+
+    axios({
+        method: 'put',
+        url: apiParametri.streznik + '/api/profile/' + req.session.user_id + '/info',
+        data: {
+            bio_title: req.body.biotitle,
+            bio: req.body.bio,
+            chosen_skin: req.body.skin
+        }
+    }).then((odgovor) => {
+        var skins = {"bunny" : 0, "goat":1, "rat":2};
+        req.session.sprite_idx = skins[req.body.skin];
+        res.redirect('/profile');
+    }).catch((napaka) => {
+        res.status(404).json({
+            "sporocilo": "uporabnika nismo nasli."
+        });
+    });
 }
 
 const profileChangePassword = (req, res) => {
+    // preverba dolzine passworda
+
+    if(!regPass.test(req.body.password)) {
+        axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+            res.render('profile', {
+                title: 'Profile',
+                navigation : n.navigation,
+                active_tab : 2,
+                user : {rank: odgovor.data.rank,
+                    username: odgovor.data.username,
+                    id: odgovor.data._id,
+                    email: odgovor.data.email,
+                    skin: odgovor.data.chosen_skin,
+                    bio : odgovor.data.bio,
+                    bio_title: odgovor.data.bio_title},
+                error : 'Password is too short'
+            });
+        });
+        return;
+    }
+
     //api klic
     axios({
           method: 'put',
@@ -190,7 +291,7 @@ const profileTerminate = (req, res) => {
 }
 
 const register = (req, res) => {
-    res.render('register', {title: "Login or Register", navigation : navigation, active_tab : 3, user : {id: 230}});
+    res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}});
 }
 
 const novosporocilo = (req, res) => {

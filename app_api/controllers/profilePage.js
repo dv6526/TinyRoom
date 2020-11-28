@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Profile = mongoose.model('Uporabnik');
 
 const terminateProfile = (req, res) => {
-    console.log("blabla");
     if(req.params.idUporabnika) {
         Profile.findByIdAndRemove(req.params.idUporabnika).exec((napaka) => {
             if (napaka) {

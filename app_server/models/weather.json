@@ -3,50 +3,50 @@
     {
       "id": "day1",
       "day": "MONDAY",
-      "type": "sun",
-      "type_string": "Sunny",
+      "icon": "01d",
+      "icon_string": "Sunny",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day2",
       "day": "TUESDAY",
-      "type": "cloud",
-      "type_string": "Cloudy",
+      "icon": "01d",
+      "icon_string": "Cloudy",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day3",
       "day": "WEDNESDAY",
-      "type": "smog",
-      "type_string": "Foggy",
+      "icon": "01d",
+      "icon_string": "Foggy",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day4",
       "day": "THURSDAY",
-      "type": "cloud-sun",
-      "type_string": "Partly cloudy",
+      "icon": "01d",
+      "icon_string": "Partly cloudy",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day5",
       "day": "FRIDAY",
-      "type": "cloud-sun-rain",
-      "type_string": "Showers",
+      "icon": "01d",
+      "icon_string": "Showers",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day6",
       "day": "SATURDAY",
-      "type": "cloud-showers-heavy",
-      "type_string": "Rain",
+      "icon": "01d",
+      "icon_string": "Rain",
       "temperature": "12 °C | 60 °F"
     },
     {
       "id": "day7",
       "day": "SUNDAY",
-      "type": "snowflake",
-      "type_string": "Snow",
+      "icon": "01d",
+      "icon_string": "Snow",
       "temperature": "12 °C | 60 °F"
     }
   ]

@@ -42,29 +42,35 @@ const vrniUporabnikaById = (req, res) => {
 
 const vrniUporabnikaByUi = (req, res) => {
     console.log("izpis: "+ req.params.ui);
-    Uporabnik.find({"username" : req.params.ui}).exec((napaka, uporabnik) => {
+    Uporabnik.findOne({"username" : req.params.ui}).exec((napaka, uporabnik) => {
         if(!uporabnik) {
             return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
         } else if(napaka) {
             return res.status(500).json(napaka);
         } else {
-            console.log("izpis: "+ uporabnik[0]._id);
-            res.status(200).json({"id" : uporabnik[0]._id});
+            console.log("izpis: "+ uporabnik._id);
+            res.status(200).json({"id" : uporabnik._id});
         }
     })
 }
 
 const uporabnikKreiraj = (req, res) => {
-    Uporabnik.create({
-        username : req.body.username,
-        email : req.body.email,
-        password : req.body.password,
-        rank : req.body.rank
-    },(napaka, uporabnik) => {
-        if (napaka) {
-          res.status(400).json(napaka);
+    Uporabnik.findOne({"username" : req.body.username}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            Uporabnik.create({
+                username : req.body.username,
+                email : req.body.email,
+                password : req.body.password,
+                rank : req.body.rank
+            },(napaka, uporabnik) => {
+                if (napaka) {
+                  res.status(400).json(napaka);
+                } else {
+                  res.status(201).json(uporabnik);
+                }
+            });
         } else {
-          res.status(201).json(uporabnik);
+            return res.status(400).json(napaka);
         }
     });
 
@@ -76,4 +82,24 @@ const uporabnikKreiraj = (req, res) => {
     })
 }
 
-module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass};
+const getUserInfo = (req, res) => {
+    console.log("getUserInfo: " + req.params.ui);
+    Uporabnik.findOne({"username" : req.params.ui}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
+        } else if(napaka) {
+            return res.status(500).json(napaka);
+        } else {
+            console.log("izpis: "+ uporabnik._id);
+            res.status(200).json({
+                "bio_title" : uporabnik.bio_title,
+                "bio" :  uporabnik.bio,
+                "profile_picture" : uporabnik.profile_picture,
+                "chosen_skin" : uporabnik.chosen_skin
+                //"username" : uporabnik[0].username
+            });
+        }
+    })
+}
+
+module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass, getUserInfo};
