@@ -188,7 +188,7 @@ const profile = (req, res) => {
 const profileUpdate = (req, res) => {
     //posodobi profil
     req.body.biotitle = req.body.biotitle.substr(0,20);
-    req.body.bio = req.body.bio.substr(0,20);
+    req.body.bio = req.body.bio.substr(0,200);
     if(req.body.biotitle == "") {
         req.body.biotitle = "Default bio title";
     }

@@ -61,7 +61,7 @@ function checkProfileInfo(dogodek) {
     let biotitle = document.getElementById("biotitle");
     let bio = document.getElementById('bio')
     biotitle.value = biotitle.value.substring(0,20);
-    bio.value = bio.value.substring(0,20);
+    bio.value = bio.value.substring(0,200);
     if(biotitle.value == "") {
         biotitle.value = "Default bio title";
     }
