@@ -39,9 +39,9 @@ const verification = (req, res) => {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
             //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
-            req.session.weather = weatherData.weather;
-            res.redirect('/');
-            //apiWeatherCall(req, res);
+            //req.session.weather = weatherData.weather;
+            //res.redirect('/');
+            apiWeatherCall(req, res);
         }
     })
 }
@@ -49,11 +49,9 @@ const verification = (req, res) => {
 function apiWeatherCall(req, res) {
     var options = {
         method: 'GET',
-        url: 'https://community-open-weather-map.p.rapidapi.com/forecast/daily',
-        params: {lat: req.body.latitude, lon: req.body.longitude, cnt: '7', units: 'metric', lang: '-sl'},
-        headers: {
-          'x-rapidapi-key': 'a28a440c2cmsh76b9e28767d45dcp1c6c69jsndd4d49aa3d7d',
-          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com'
+        url: 'https://api.openweathermap.org/data/2.5/onecall',
+        params: {lat: req.body.latitude, lon: req.body.longitude, units: 'metric', lang: '-sl',exclude : 'current,minutely,hourly,alerts', appid: 'd62b2d57190388b445a9b96264ba0e44'
+        //https://api.openweathermap.org/data/2.5/onecall?lat=14.12&lon=43&appid=d62b2d57190388b445a9b96264ba0e44
         }
       };
       
@@ -77,7 +75,7 @@ function formatWeatherData(data, req, res) {
         type_string: "Sunny",
         temperature: "12 °C | 60 °F"
       };
-    myArray = data.list;
+    myArray = data.daily;
 
     myArray.forEach((val, index, array) => {
         var d = new Date(val.dt * 1000);
