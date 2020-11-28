@@ -7,6 +7,7 @@ class UserSocket {
     constructor(socket) {
         this.username = undefined;
         this.friends = [];
+        this.mute = [];
         this.room = undefined;
         this.socket = socket;
 
@@ -184,7 +185,9 @@ wsserver.on('connection', function(socket) {
 
                 sockets.forEach(s => {
                     // dont send to itself
-                    if (s !== user && s.getRoom() == user.getRoom()) {
+                    //we are sending from user to s
+                    //we dont send if s muted user
+                    if (s !== user && s.getRoom() == user.getRoom() && !s.mute.includes(user.getUsername())) {
                         s.socket.send("MS " + JSON.stringify({
                             "message": msg,
                             "username": user.getUsername()
@@ -207,7 +210,14 @@ wsserver.on('connection', function(socket) {
                 else {
                     console.log(user.getUsername(), "does not have permission for", command_data.username);
                 }
-                
+            }
+        
+            else if (command == "MU") {
+                user.mute.push(command_data.username);
+            }
+
+            else if (command == "UN") {
+                user.mute = user.mute.filter(u => u !== command_data.username);
             }
         }
     });
