@@ -25,6 +25,8 @@ var navigation = [
 const verification = (req, res) => {
     console.log("longitude: " + req.body.longitude);
     console.log("latitude: " + req.body.latitude);
+    var longit = req.body.longitude;
+    var latit = req.body.latitude;
             //console.log("latitude: " + req.data.latitude);
 
     axios.get(apiParametri.streznik + '/api/uporabniki', {params : {username : req.body.username, password : req.body.password}}).then((odgovor) => {
@@ -37,11 +39,57 @@ const verification = (req, res) => {
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
+            req.session.weather = weatherData;
             console.log(odgovor.data[0]._id);
-            
+            //apiWeatherCall(req);
             res.redirect('/');
         }
     })
+}
+
+function apiWeatherCall(req) {
+    var options = {
+        method: 'GET',
+        url: 'https://community-open-weather-map.p.rapidapi.com/forecast/daily',
+        params: {lat: req.body.latitude, lon: req.body.longitude, cnt: '7', units: 'metric', lang: '-sl'},
+        headers: {
+          'x-rapidapi-key': 'a28a440c2cmsh76b9e28767d45dcp1c6c69jsndd4d49aa3d7d',
+          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com'
+        }
+      };
+      
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+        formatWeatherData(response.data, req);
+      }).catch(function (error) {
+          console.error(error);
+      }); 
+    
+}
+
+function formatWeatherData(data, req) {
+    var weather7 = [];
+    var day = {
+        id: "day1",
+        day: "MONDAY",
+        type: "sun",
+        type_string: "Sunny",
+        temperature: "12 °C | 60 °F"
+      };
+
+    data.list.forEach(function(val, idx) {
+        day = {};
+        day.id = "day" + idx;
+        day.day = "MONDAY";
+        day.type = "sun";
+        day.type_string = val.weather[0].main;
+        day.temperature = val.temp.day;
+        weather7.push(day);
+    });
+    req.session.weather = weather7;
+    console.log(weather7.toString());
+    var weathertest = req.session.weather;
+    
 }
 
 const validateCookie = (req, res, next) => {
@@ -83,6 +131,7 @@ const logout = (req, res) => {
 
 /* GET home page */
 const index = (req, res) => {
+
     res.render('index', {
         title: 'TinyRoom',
         user: {
@@ -91,7 +140,7 @@ const index = (req, res) => {
         },
         navigation : navigation,
         active_tab : 0,
-        weatherData
+        weather : weatherData
     });
 };
 
