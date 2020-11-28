@@ -38,6 +38,8 @@ class Vector {
     }
 }
 
+var mutedPlayers = [];
+
 // UTILITY FUNCTIONS =======================================
 function checkPassword(dogodek) {
     let password = document.getElementById('password');
@@ -137,6 +139,17 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                     "username": undefined
                 }));
                 break;
+            case "mute":
+                chat.socket.send("MU " + JSON.stringify({
+                    "username" : dropdown_info.username}));
+                mutedPlayers.push(dropdown_info.username);
+                break;
+            case "unmute":
+                chat.socket.send("UN " + JSON.stringify({
+                    "username" : dropdown_info.username}));
+                mutedPlayers = mutedPlayers.filter(player => player !== dropdown_info.username);
+                break;
+
             default:
                 break;
         }
@@ -495,12 +508,17 @@ class Chat {
 
                 if (found) {
                     chat.dropdown_active = true;
+                    var isMuted = false;
+                    if(mutedPlayers.includes(found_user)) {
+                        isMuted = true;
+                    }
                     //getProfileInfo
                     $.ajax({url: "api/uporabniki/" + found_user + "/profile", success: function(result){
                         console.log(result);
+
                         messageDropdown({x: click.clientX, y: click.clientY},{
                                 'rank': 'user',
-                                'muted': false,
+                                'muted': isMuted,
                                 'g_muted': false,
                                 'target_user_id': 12,
                                 'username': found_user,
@@ -823,6 +841,7 @@ $(function () {
 
     var chat = new Chat('tinyroom');
     formatPage();
+    
     // End of Code =========================================
     
 
