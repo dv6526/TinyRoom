@@ -27,26 +27,28 @@
 
             <div class="col-lg-6 col-md-12 text-center" style="color:white;">
                 <h2>Register</h2>
-                <form action="/register" method="post">
+                <form action="/register" method="post" id="formRegister" onsubmit="checkRegisterInfo(event)">
                     <div class="form-group">
                         <label for="email">e-mail:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Insert e-mail address"
+                        <input type="email" class="form-control" id="email" placeholder="Insert e-mail address" required
                             name="email">
                     </div>
+                    <!-- spremenil iz username v usernameRegister -- ce pride do kakega buga -->
                     <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" id="username" placeholder="Select username"
+                        <label for="usernameRegister">Username:</label>
+                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username" required pattern="[A-Za-z0-9]*"
                             name="username">
                     </div>
+                    <!-- spremenil iz password v passwordRegister -- ce pride do kakega buga -->
                     <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Select password"
+                        <label for="passwordRegister">Password:</label>
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password" required minlength="3"
                             name="password">
                     </div>
-                    <button type="submit" class="btn btn-outline-dark">Register</button>
+                    <button type="submit" class="btn btn-outline-dark" >Register</button>
                 </form>
-
-                </br>{{{error2}}}
+                </br>
+                <div id="registerInfo">{{{error2}}}</div>
             </div>
         </div>
 

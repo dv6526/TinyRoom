@@ -104,7 +104,24 @@ const validateCookie = (req, res, next) => {
 }
 
 const registerin = (req, res) => {
-    console.log(req.body.username + " " + req.body.password + " " + req.body.email);
+    let regEmail = /^\S+@\S+$/;
+    let regName = /^[a-zA-Z0-9]+$/;
+    let lengthPass = 3;
+    if(!regEmail.test(req.body.email)) {
+        res.render('register', {title: "Login or Register", navigation : navigation,
+            active_tab : 3, error2: 'Email address has a typo'});
+        return;
+    }
+    if(!regName.test(req.body.username)) {
+        res.render('register', {title: "Login or Register", navigation : navigation,
+            active_tab : 3, error2: 'Username should consist only of letters or numbers'});
+        return;
+    }
+    if(req.body.password.length < lengthPass) {
+        res.render('register', {title: "Login or Register", navigation : navigation,
+            active_tab : 3, error2: 'Password is too short'});
+        return;
+    }
     axios({
         method: 'post',
         url: apiParametri.streznik + '/api/uporabniki',
