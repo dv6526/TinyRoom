@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Uporabnik = mongoose.model('Uporabnik');
+const Soba = mongoose.model('privateRoom');
 
 const vrniUporabnike = (req, res) => {
     Uporabnik.find({"username" : req.query.username, "password" : req.query.password}).exec((napaka, uporabnik) => {
@@ -66,6 +67,13 @@ const uporabnikKreiraj = (req, res) => {
           res.status(201).json(uporabnik);
         }
     });
+
+    Soba.create({
+        username : req.body.username,
+        objects : []
+    }, (napaka, soba) => {
+        
+    })
 }
 
 module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass};

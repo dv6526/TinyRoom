@@ -14,12 +14,17 @@ const vrniSoboById = (req, res) => {
 
 const sobaKreiraj = (req, res) => {
     //če obstaja uporabnik kreiraj njegovo sobo
-    const idUporabnika = req.params.idUporabnika;
-    if (idUporabnika) {
-        soba.create({   // TODO Soba namesto soba?
-            username: req.body.username,
-            //objects: ?
-        }, (napaka, soba) => {
+    const username = req.params.username;
+    const furniture = req.body;
+  
+    if (username) {
+        Soba.updateOne({
+            username: username
+        },
+        {  
+            objects : furniture
+        },
+        (napaka, soba) => {
             if (napaka) {
                 res.status(400).json(napaka);
             } else {

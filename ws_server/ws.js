@@ -70,6 +70,7 @@ class UserSocket {
         // TO DO, check in database if cookie matches username
         // if it does, assign username
         this.username = username;
+
         return true;
         // this function returns true if the identification was correct
         // and false if it was not
