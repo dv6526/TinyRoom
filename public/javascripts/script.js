@@ -317,6 +317,7 @@ class User {
         this.canvas.width = this.sprite_wh;
         this.canvas.height = this.sprite_wh;
         this.sprite_idx = sprite_idx;
+
         this.draw_avatar();
 
     }
@@ -489,7 +490,8 @@ class Chat {
         var name = username;
         // default weather
         var weather = "sunny";
-        var player = new User(position, name, weather, 1);
+        
+        var player = new User(position, name, weather, sprite_idx);
         this.addUser(player, true);
     }
 
@@ -723,7 +725,7 @@ class Chat {
 
                     for (let i = 0; i < players.length; i++) {
                         const player = players[i];
-                        var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                        var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
                         var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                         player_to_add.setWantedPos(pos);
                         player_to_add.setPosition(pos);
@@ -751,7 +753,8 @@ class Chat {
 
                     // player joined the room
                     var player = command_data["player"];
-                    var player_to_add = new User(undefined, player["username"], 'sunny', 0);
+                    console.log(player);
+                    var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
                     var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                     player_to_add.setWantedPos(pos);
                     player_to_add.setPosition(pos);

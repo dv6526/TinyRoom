@@ -35,6 +35,13 @@ const verification = (req, res) => {
         } else {
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
+
+            var skins = {"bunny" : 0, "goat":1, "rat":2};
+            req.session.sprite_idx = skins[odgovor.data[0].chosen_skin];
+            //req.session.sprite_idx = odgovor.data[0].chosen_skin;
+            //zakomentiraj naslednji dve vrstici, ce zelis apiWeatherCall()
+            //req.session.weather = weatherData.weather;
+            //res.redirect('/');
             if(longit === "" &&  latit === "") {
                 req.body.longitude = 14.5058;
                 req.body.latitude = 46.0569;
@@ -142,6 +149,7 @@ const index = (req, res) => {
         user: {
             username: req.session.user,
             id: req.session.user_id,
+            sprite_idx : req.session.sprite_idx
         },
         navigation : n.navigation,
         active_tab : 0,
@@ -215,6 +223,8 @@ const profileUpdate = (req, res) => {
             chosen_skin: req.body.skin
         }
     }).then((odgovor) => {
+        var skins = {"bunny" : 0, "goat":1, "rat":2};
+        req.session.sprite_idx = skins[req.body.skin];
         res.redirect('/profile');
     }).catch((napaka) => {
         res.status(404).json({

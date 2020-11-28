@@ -1,4 +1,8 @@
 const WebSocket = require('ws');
+const axios = require('axios');
+var apiParametri = {
+    streznik: 'http://localhost:' + (process.env.PORT || 3000)
+  };
 const wsserver = new WebSocket.Server({
     port: 8070
 });
@@ -6,6 +10,7 @@ const wsserver = new WebSocket.Server({
 class UserSocket {
     constructor(socket) {
         this.username = undefined;
+        this.sprite_idx = undefined;
         this.friends = [];
         this.mute = [];
         this.room = undefined;
@@ -60,6 +65,10 @@ class UserSocket {
         return this.username;
     }
 
+    getSkin() {
+        return this.sprite_idx;
+    }
+
     isIdentified() {
         if (this.username == undefined) {
             return false;
@@ -67,11 +76,25 @@ class UserSocket {
         return true;
     }
 
-    identify(username, token) {
+    identify(username, token, callback) {
         // TO DO, check in database if cookie matches username
         // if it does, assign username
         this.username = username;
-        return true;
+        var chosenSkin;
+        var user = this;
+        //api call
+        axios.get(apiParametri.streznik + "/api/uporabniki/" + username + "/profile").then((odgovor) => {
+            if(odgovor.length == 0) {
+                callback(false);
+            } else {
+                var skins = {"bunny" : 0, "goat":1, "rat":2};
+                user.sprite_idx = skins[odgovor.data.chosen_skin];
+                rcallback(true);
+            }
+        })
+
+
+        
         // this function returns true if the identification was correct
         // and false if it was not
     }
@@ -79,7 +102,8 @@ class UserSocket {
     getPublicInfo() {
         return {
             "username": this.getUsername(),
-            "position": this.getPosition()
+            "position": this.getPosition(),
+            "skin": this.getSkin()
         }
     }
 }
@@ -136,29 +160,31 @@ wsserver.on('connection', function(socket) {
         if (!user.isIdentified()) {
             if (command == "ID") {
                 // the user is trying to identify himself
-                var success = user.identify(command_data.username, command_data.token);
+                user.identify(command_data.username, command_data.token, function (success) {
+                    if (success) {
+                        console.log(user.username, "has identified himself");
+    
+                        // Notify everyone of new player!
+                        var join_info = JSON.stringify(
+                            {"player": user.getPublicInfo()}
+                        );
+                        sockets.forEach(s => {
+                            // dont send to itself
+                            if (s !== user) {
+                                s.socket.send("JO " + join_info);
+                            }
+                        });
+    
+                        // Now notify the new user of all the other players
+                        user.socket.send("LI " + JSON.stringify(dto_for_LI(user)));
+                        //socket.send('You are logged in');
+                    }
+                    else {
+                        socket.send('Unable to log you in!');
+                    }
+                });
                 
-                if (success) {
-                    console.log(user.username, "has identified himself");
-
-                    // Notify everyone of new player!
-                    var join_info = JSON.stringify(
-                        {"player": user.getPublicInfo()}
-                    );
-                    sockets.forEach(s => {
-                        // dont send to itself
-                        if (s !== user) {
-                            s.socket.send("JO " + join_info);
-                        }
-                    });
-
-                    // Now notify the new user of all the other players
-                    user.socket.send("LI " + JSON.stringify(dto_for_LI(user)));
-                    //socket.send('You are logged in');
-                }
-                else {
-                    socket.send('Unable to log you in!');
-                }
+                
 
             }
         }

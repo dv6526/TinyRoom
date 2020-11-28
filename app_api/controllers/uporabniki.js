@@ -86,7 +86,8 @@ const getUserInfo = (req, res) => {
             res.status(200).json({
                 "bio_title" : uporabnik.bio_title,
                 "bio" :  uporabnik.bio,
-                "profile_picture" : uporabnik.profile_picture
+                "profile_picture" : uporabnik.profile_picture,
+                "chosen_skin" : uporabnik.chosen_skin
                 //"username" : uporabnik[0].username
             });
         }
