@@ -47,8 +47,8 @@ const vrniUporabnikaByUi = (req, res) => {
         } else if(napaka) {
             return res.status(500).json(napaka);
         } else {
-            console.log("izpis: "+ uporabnik[0]._id);
-            res.status(200).json({"id" : uporabnik[0]._id});
+            console.log("izpis: "+ uporabnik._id);
+            res.status(200).json({"id" : uporabnik._id});
         }
     })
 }
@@ -72,7 +72,25 @@ const uporabnikKreiraj = (req, res) => {
             return res.status(400).json(napaka);
         }
     })
-    
 }
 
-module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass};
+const getUserInfo = (req, res) => {
+    console.log("getUserInfo: " + req.params.ui);
+    Uporabnik.findOne({"username" : req.params.ui}).exec((napaka, uporabnik) => {
+        if(!uporabnik) {
+            return res.status(404).json({"sporocilo" : "uporabnik ne obstaja"});
+        } else if(napaka) {
+            return res.status(500).json(napaka);
+        } else {
+            console.log("izpis: "+ uporabnik._id);
+            res.status(200).json({
+                "bio_title" : uporabnik.bio_title,
+                "bio" :  uporabnik.bio,
+                "profile_picture" : uporabnik.profile_picture
+                //"username" : uporabnik[0].username
+            });
+        }
+    })
+}
+
+module.exports = {vrniUporabnike, uporabnikKreiraj, vrniUporabnikaById, vrniUporabnikaByUi, vrniUporabnikaByUiPass, getUserInfo};
