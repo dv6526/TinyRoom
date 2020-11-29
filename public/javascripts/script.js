@@ -246,8 +246,10 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
 
     // picture
     picture.src = dropdown_info.bio_pic;
-    picture.alt = "Profile picture";
+    picture.alt = "Profile Picture not found or cannot be shown";
     picture.style.width = "170px";
+    picture.style.height = "170px";
+    picture.style.objectFit = 'cover';
     // bio title (uppercased)
     title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
     title.className = "text-center";
@@ -416,6 +418,17 @@ class User {
 
 }
 
+class Furniture {
+    constructor(type, position) {
+        this.type = type;
+        this.position = position;
+    }
+
+    setPosition(position) {
+        this.position = position;
+    }
+}
+
 class Chat {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
@@ -430,6 +443,9 @@ class Chat {
             // logged in user
             this.player;
             this.room = undefined;
+
+            // furniture
+            this.furniture = [];
 
             // set up background drawing offset
             this.background_clear_color = '#387eb4';
@@ -486,8 +502,8 @@ class Chat {
                 'clear_color': '#387eb4'
             },
             "room": {
-                'file':'/images/room.png',
-                'width': 600,
+                'file':'/editor/room.png',
+                'width': 400,
                 'center': {
                     'x': 0.5,
                     'y': 0.5
@@ -610,7 +626,7 @@ class Chat {
                                 'g_muted': false,
                                 'target_user_id': 12,
                                 'username': found_user,
-                                'bio_pic': 'static/avatar.png',
+                                'bio_pic': 'profileImages/' + found_user + '.' + result.profile_picture,
                                 'bio_title': result.bio_title,
                                 'bio_description': result.bio
                             }, chat);
@@ -731,6 +747,37 @@ class Chat {
         }));
     }
 
+    fillRoom() {
+
+        //var position = room_details.position;
+        //var type = room_details.type;
+        //loop through objects in room_details
+        var furniture = this.furniture;
+        var room = this;
+        $.ajax({
+            type: "GET",
+            url: '/api/privateRoom/' + username,
+            contentType: 'application/json',
+            success: function(result,status,xhr) {
+                console.log(result);
+                for(var i = 0; i < result.objects.length; i++) {
+                    var room_object = result.objects[i];
+                    var position = room_object.position;
+                    position.x += 0.5;
+                    position.y += 0.5;
+                    position.x *= 400;
+                    position.y *= 400;
+                    furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
+                    
+                }
+            }
+        });
+    }
+
+    clearRoom() {
+
+    }
+
     joinRoom(username_to_join) {
         this.room = username_to_join;
 
@@ -743,9 +790,11 @@ class Chat {
 
         if (username_to_join) {
             this.changeBackground('room');
+            this.fillRoom(username_to_join);
         }
         else {
             this.changeBackground('map');
+            this.clearRoom();
         }
     }
 
@@ -937,6 +986,9 @@ $(function () {
     var chat = new Chat('tinyroom');
     formatPage();
     
+
+
+
     // End of Code =========================================
     
 
@@ -951,10 +1003,25 @@ function getLocation() {
     }
 }
 
+function getLocation1() {
+    console.log("Pridobivam lokacijo...");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success1, error);
+    }
+}
+
+function success1(position) {
+    console.log(position);
+    $("getlon1").val(position.coords.longitude);
+    $("getlat1").val(position.coords.latitude);
+
+    $("#formRegister").submit(); // here the form is submit
+}
+
 function success(position) {
     console.log(position);
-    $("#getlon").val(position.coords.longitude);
-    $("#getlat").val(position.coords.latitude);
+    $("getlon").val(position.coords.longitude);
+    $("getlat").val(position.coords.latitude);
 
     $("#signinform").submit(); // here the form is submit
 }

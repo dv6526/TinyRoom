@@ -35,16 +35,18 @@
                     <!-- spremenil iz username v usernameRegister -- ce pride do kakega buga -->
                     <div class="form-group">
                         <label for="usernameRegister">Username:</label>
-                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username" required
-                            name="username">
+                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username"
+                            required name="username">
                     </div>
                     <!-- spremenil iz password v passwordRegister -- ce pride do kakega buga -->
                     <div class="form-group">
                         <label for="passwordRegister">Password:</label>
-                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password" required
-                            name="password">
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password"
+                            required name="password">
+                        <input type="hidden" name="longitude" id="getlon1" />
+                        <input type="hidden" name="latitude" id="getlat1" />
                     </div>
-                    <button type="submit" class="btn btn-outline-dark" >Register</button>
+                    <button onclick="getLocation1()" class="btn btn-outline-dark">Register</button>
                 </form>
                 </br>
                 <div id="registerInfo">{{{error2}}}</div>

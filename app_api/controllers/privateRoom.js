@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 const Soba = mongoose.model('privateRoom');
 
-const vrniSoboById = (req, res) => {
-    Soba.findById(req.params.idSobe).exec((napaka, soba) => {
+const vrniSoboByUsername = (req, res) => {
+    Soba.findOne({"owner" : req.params.username}).exec((napaka, soba) => {
         if(!soba) {
             res.status(404).json({"sporočilo" : "Ne najdem sobe z idjem!"});
         } else if(napaka) {
             res.status(500).json(napaka);
+        } else {
+            res.status(200).json(soba);
         }
-        res.status(200).json(soba);
+        
     });
 }
 
@@ -28,7 +30,7 @@ const sobaKreiraj = (req, res) => {
 
     if (username) {
         Soba.updateOne({
-            username: username
+            owner: username
         },
         {  
             objects : furniture
@@ -45,4 +47,4 @@ const sobaKreiraj = (req, res) => {
     }
 }
 
-module.exports = {vrniSoboById, sobaKreiraj};
+module.exports = {vrniSoboByUsername, sobaKreiraj};

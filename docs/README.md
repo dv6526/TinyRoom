@@ -8,11 +8,11 @@ Zaslonska maska vsebuje “svet” na katerem se nahajajo avatarji nas in drugih
     * Ko z desnim klikom klikneš na avatarja, se odpre podmeni, kjer lahko utišaš uporabnika, mu pošlješ privatno sporočilo, ga povabiš v svojo privatno sobo ali pa se mu pridružiš v privatni sobi. Poleg se nahajajo tudi informacije uporabnika (njegovo ime[], profilna slika ter kratka biografija z naslovom - master/detail vzorec).
     * Nad njegovim imenom se [lahko] nahaja simbol [srčka s katerim nam daje vedeti, da smo povabljeni v njegovo privatno sobo.]_[, ki ponazarja njegovo trenutno vreme].
     * Desno spodaj se nahaja gumb za iskanje uporabnikov s katerim lahko lociraš prijatelje. Omogočal bo autocomplete glede na prijavljene uporabnike.
-* “Sporočilno polje”: sestavljeno je iz vnosnega polja kamor natipkamo sporočilo in gumba "send" s katerim ga pošljemo. Pod njima se nahaja zgodovina sporočil. Za izmenjavanje sporočil smo uporabili Web Socket npm knjižnico.
+* “Sporočilno polje”: sestavljeno je iz vnosnega polja kamor natipkamo sporočilo in gumba "send" s katerim ga pošljemo. Pod njima se nahaja zgodovina sporočil. Za izmenjavanje sporočil smo uporabili Web Socket npm knjižnico. Na odjemalcu in na web socket strežniku se preverja dolžina sporočila (biti mora večja od nič).
 * “Vremenska napoved”: vsebuje lokalno 7 dnevno vremensko napoved, ki se prenaša preko OpenWeather API.
 
 # [Private room](../private.html) 
-Uporabniki, ki so sprejeli prošnjo, se ti lahko pridružijo v privatni sobi. Namen privatne sobe je da razkažemo svojo ureditev pohištva in, da lahko pogovor z uporabniki, ki si jih spoznal v javni sobi, nadaljujemo brez motenja ostalih uporabnikov. Ureditev pohištva je narejena tako, da lahko dodajaš ali odstranjuješ (drag&drop) elemente, ki se nahajajo pod privatnim svetom. [ Podrobneje je potrebno opisati zaslonsko masko za dodajanje elementa kot so recimo atributi elementa?!][Tu bo omogočeno dodajanje oziroma odstranjevanje elementov s katerimi si lahko urediš svojo sobo.]
+Uporabniki, ki so sprejeli prošnjo, se ti lahko pridružijo v privatni sobi. Namen privatne sobe je da razkažemo svojo ureditev pohištva in, da lahko pogovor z uporabniki, ki si jih spoznal v javni sobi, nadaljujemo brez motenja ostalih uporabnikov. Ureditev pohištva je narejena tako, da lahko dodajaš ali odstranjuješ (drag&drop) elemente, ki se nahajajo pod privatnim svetom. Tu je omogočeno dodajanje oziroma odstranjevanje elementov (drag&drop) s katerimi si lahko urediš svojo sobo. Preverja se pravilnost vnosa na strani odjemalca in na strani strežnika (kliče se direktno API).
 
 # [Profile](../profile.html) 
 Zaslonska maska profil vsebuje podatke o prijavljenem uporabniku, ki so deljeni na nastavitve(settings) in izgled vašega računa (appearance).

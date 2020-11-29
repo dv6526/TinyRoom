@@ -1,14 +1,3 @@
-class Furniture {
-    constructor(type, position) {
-        this.type = type;
-        this.position = position;
-    }
-
-    setPosition(position) {
-        this.position = position;
-    }
-}
-
 class RoomEditor {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
@@ -21,9 +10,11 @@ class RoomEditor {
         this.furniture = [];
 
         var room = this;
+        room.room_width = Math.min(500, room.canvas.width-50);
 
         this.loadAssets(function() {
             room.animation();
+            room.fillRoom();
             room.enableDragLogic();
             room.hookControls();
         });
@@ -32,6 +23,42 @@ class RoomEditor {
         $(window).resize(function() {
             room.resize();
         });
+    }
+
+    fillRoom() {
+
+        //var position = room_details.position;
+        //var type = room_details.type;
+        //loop through objects in room_details
+        var furniture = this.furniture;
+        var room = this;
+        $.ajax({
+            type: "GET",
+            url: '/api/privateRoom/' + username,
+            contentType: 'application/json',
+            success: function(result,status,xhr) {
+                console.log(result);
+                for(var i = 0; i < result.objects.length; i++) {
+                    var room_object = result.objects[i];
+                    var position = room_object.position;
+                    position.x += 0.5;
+                    position.y += 0.5;
+
+                    position.x *= room.room_width;
+                    position.y *= room.room_width;
+                    position.x += room.roomMargin;
+                    position.y += room.roomMargin;
+                    furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
+        
+                    
+                }
+            }
+        });
+
+        
+        
+        //var furniture = new Furniture(type, new Vector(position.x, position.y));
+        //this.furniture.push(furniture);
     }
 
     enableDragLogic() {
@@ -136,8 +163,10 @@ class RoomEditor {
 
             for (let i = 0; i < furniture.length; i++) {
                 const f = furniture[i];
-                f.position.x /= width;
-                f.position.y /= width;
+                f.position.x -= room.roomMargin;
+                f.position.y -= room.roomMargin;
+                f.position.x /= room.room_width;
+                f.position.y /= room.room_width;
                 f.position.x -= 0.5;
                 f.position.y -= 0.5;
             }
@@ -159,14 +188,17 @@ class RoomEditor {
         var context = this.context;
 
         setInterval(function() {
-            const room_width = Math.min(500, room.canvas.width-50);
+            room.room_width = Math.min(500, room.canvas.width-50);
+            const room_width = room.room_width;
             const scale = room_width/500;
 
             context.fillStyle = "#FFFFFF";
             context.imageSmoothingEnabled = false;
             context.fillRect(0, 0, room.canvas.width, room.canvas.height);
 
-            const roomMargin = (room.canvas.width-room_width)*0.5;
+            room.roomMargin = (room.canvas.width-room_width)*0.5;
+            const roomMargin = room.roomMargin;
+
             const roomSize = room_width;
             context.drawImage(room.assets.room, roomMargin, roomMargin, roomSize, roomSize);
 

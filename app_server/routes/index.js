@@ -17,6 +17,10 @@ router.post('/profile/update', ctrlMain.profileUpdate);
 router.post('/profile/changePassword', ctrlMain.profileChangePassword);
 router.post('/profile/terminate', ctrlMain.profileTerminate);
 
+// LP3 assignement
+router.get('/db', ctrlMain.db);
+router.get('/db/deleteAll', ctrlMain.dbDeleteAll);
+router.get('/db/addEntries', ctrlMain.dbAddEntries);
 //router.post('/profile/password')
 
 
