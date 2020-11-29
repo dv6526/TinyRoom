@@ -337,6 +337,10 @@ input {
 	z-index: 550;
 }
 
+.private {
+	background-color: #9e4a01;
+}
+
 #search-field {
 	position:relative;
 	color:#757575;
