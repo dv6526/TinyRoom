@@ -8,7 +8,7 @@ router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
 router.post('/uporabniki', ctrlUporabniki.uporabnikKreiraj);
 
 const ctrlprivateRoom = require('../controllers/privateRoom');
-router.get('/privateRoom/:idSobe', ctrlprivateRoom.vrniSoboById);
+router.get('/privateRoom/:username', ctrlprivateRoom.vrniSoboByUsername);
 router.post('/privateRoom/:username', ctrlprivateRoom.sobaKreiraj);
 
 const ctrlObject = require('../controllers/object');

@@ -1,3 +1,4 @@
+
 class Furniture {
     constructor(type, position) {
         this.type = type;
@@ -24,6 +25,7 @@ class RoomEditor {
 
         this.loadAssets(function() {
             room.animation();
+            room.fillRoom();
             room.enableDragLogic();
             room.hookControls();
         });
@@ -32,6 +34,15 @@ class RoomEditor {
         $(window).resize(function() {
             room.resize();
         });
+    }
+
+    fillRoom() {
+
+        //var position = room_details.position;
+        //var type = room_details.type;
+        //loop through objects in room_details
+        //var furniture = new Furniture(type, new Vector(position.x, position.y));
+        //this.furniture.push(furniture);
     }
 
     enableDragLogic() {
