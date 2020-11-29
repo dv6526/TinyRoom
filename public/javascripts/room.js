@@ -1,3 +1,4 @@
+
 class Furniture {
     constructor(type, position) {
         this.type = type;
@@ -24,6 +25,7 @@ class RoomEditor {
 
         this.loadAssets(function() {
             room.animation();
+            room.fillRoom();
             room.enableDragLogic();
             room.hookControls();
         });
@@ -32,6 +34,15 @@ class RoomEditor {
         $(window).resize(function() {
             room.resize();
         });
+    }
+
+    fillRoom() {
+
+        //var position = room_details.position;
+        //var type = room_details.type;
+        //loop through objects in room_details
+        //var furniture = new Furniture(type, new Vector(position.x, position.y));
+        //this.furniture.push(furniture);
     }
 
     enableDragLogic() {
@@ -136,8 +147,10 @@ class RoomEditor {
 
             for (let i = 0; i < furniture.length; i++) {
                 const f = furniture[i];
-                f.position.x /= width;
-                f.position.y /= width;
+                f.position.x -= room.roomMargin;
+                f.position.y -= room.roomMargin;
+                f.position.x /= room.room_width;
+                f.position.y /= room.room_width;
                 f.position.x -= 0.5;
                 f.position.y -= 0.5;
             }
@@ -159,14 +172,17 @@ class RoomEditor {
         var context = this.context;
 
         setInterval(function() {
-            const room_width = Math.min(500, room.canvas.width-50);
+            room.room_width = Math.min(500, room.canvas.width-50);
+            const room_width = room.room_width;
             const scale = room_width/500;
 
             context.fillStyle = "#FFFFFF";
             context.imageSmoothingEnabled = false;
             context.fillRect(0, 0, room.canvas.width, room.canvas.height);
 
-            const roomMargin = (room.canvas.width-room_width)*0.5;
+            room.roomMargin = (room.canvas.width-room_width)*0.5;
+            const roomMargin = room.roomMargin;
+
             const roomSize = room_width;
             context.drawImage(room.assets.room, roomMargin, roomMargin, roomSize, roomSize);
 

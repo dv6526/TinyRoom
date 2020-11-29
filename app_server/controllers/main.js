@@ -159,7 +159,14 @@ const index = (req, res) => {
 
 const private = (req, res) => {
 
-    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
+    axios.get(apiParametri.streznik + "/api/privateRoom/"+ req.session.user).then((odgovor) => {
+
+        res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id, room_details : odgovor.data.objects}, navigation : n.navigation, active_tab : 1});
+    }).catch(error => {
+        console.log(error);
+    })
+
+    
 
     
 }
