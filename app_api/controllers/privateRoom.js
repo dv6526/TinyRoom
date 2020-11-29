@@ -17,8 +17,17 @@ const vrniSoboByUsername = (req, res) => {
 const sobaKreiraj = (req, res) => {
     //če obstaja uporabnik kreiraj njegovo sobo
     const username = req.params.username;
-    const furniture = req.body;
-  
+    var furniture = req.body;
+
+    const possible_types = ['fotelj', 'stol', 'stolcek', 'light'];
+    // update only furniture with the correct type
+    furniture = furniture.filter(f => possible_types.includes(f.type));
+    // fix all positions if they need fixing
+    furniture.forEach(f => {
+        f.position.x = Math.max(f.position.x, -0.5); f.position.x = Math.min(f.position.x, 0.5);
+        f.position.y = Math.max(f.position.y, -0.5); f.position.y = Math.min(f.position.y, 0.5);
+    });
+
     if (username) {
         Soba.updateOne({
             username: username
