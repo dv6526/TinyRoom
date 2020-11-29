@@ -36,6 +36,7 @@ const verification = (req, res) => {
 
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
+            req.session.rank = odgovor.data[0].rank;
 
             var skins = {"bunny" : 0, "goat":1, "rat":2};
             req.session.sprite_idx = skins[odgovor.data[0].chosen_skin];
@@ -161,7 +162,8 @@ const index = (req, res) => {
             username: req.session.user,
             id: req.session.user_id,
             sprite_idx : req.session.sprite_idx,
-            weather: req.session.current_weather
+            weather: req.session.current_weather,
+            rank: req.session.rank
         },
         navigation : n.navigation,
         active_tab : 0,

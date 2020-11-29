@@ -39,6 +39,7 @@ class Vector {
 }
 
 var mutedPlayers = [];
+var globalMutes = [];
 
 // UTILITY FUNCTIONS =======================================
 const regPass = /^.{3,}$/;
@@ -189,7 +190,21 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                 }));
                 mutedPlayers = mutedPlayers.filter(player => player !== dropdown_info.username);
                 break;
-
+            case "global mute":
+                chat.socket.send("GM " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
+                globalMutes.push(dropdown_info.username);
+                break;
+            case "global unmute":
+                chat.socket.send("GU " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
+                globalMutes = globalMutes.filter(player => player !== dropdown_info.username);
+                break;
+            case "enter room":
+                
+                break;
             default:
                 break;
         }
@@ -645,12 +660,12 @@ class Chat {
                     //getProfileInfo
                     $.ajax({
                         url: "api/uporabniki/" + found_user + "/profile", success: function (result) {
-                            console.log(result);
+                            //console.log(result);
 
                             messageDropdown({ x: click.clientX, y: click.clientY }, {
-                                'rank': 'user',
+                                'rank': rank,
                                 'muted': isMuted,
-                                'g_muted': false,
+                                'g_muted': globalMutes.includes(found_user),
                                 'target_user_id': 12,
                                 'username': found_user,
                                 'bio_pic': 'profileImages/' + found_user + '.' + result.profile_picture,
@@ -934,6 +949,13 @@ class Chat {
                         date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
                         player: false
                     })
+                    break;
+                case 'GM':
+                    globalMutes.push(command_data["username"]);
+                break;
+                case 'GU':
+                    globalMutes = globalMutes.filter(player => player !== command_data["username"]);
+                break;
                 default:
                     break;
             }
