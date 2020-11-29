@@ -88,10 +88,12 @@ class UserSocket {
                 callback(false);
             } else {
                 var skins = {"bunny" : 0, "goat":1, "rat":2};
+                //console.log(odgovor.data.chosen_skin);
                 user.sprite_idx = skins[odgovor.data.chosen_skin];
                 callback(true);
             }
         })
+
 
 
         
