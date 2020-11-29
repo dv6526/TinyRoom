@@ -135,6 +135,7 @@ function addZero(i) {
     return i;
 }
 
+
 // new message
 function novoSporocilo(sporocilo_info) {
     var sporocilo=document.createElement("div");
@@ -304,6 +305,63 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     // HTML okno mora imeti atribut data-user_id z vrednostjo target_user_id
     // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
 }
+
+function openSearchField(screenPosition, chat) {
+
+    function closeSearchField() {
+        if(document.getElementById("search-box")) {
+            document.getElementById("search-box").remove();
+            setTimeout(function() {
+                chat.searchField_active = false;
+            }, 0.5)
+        }
+    }
+
+    closeSearchField();
+
+    // create search Field
+    var searchBox = document.createElement("div");
+    var searchField = document.createElement("input");
+
+    searchBox.id = "search-box";
+
+    searchField.id = "search-field";
+    searchField.className = "input-sm";
+    searchField.setAttribute("type","text");
+    searchField.setAttribute("name","search-field");
+    searchField.setAttribute("placeholder","Search");
+
+    searchField.onkeyup = function(event) {
+
+        var matching_players = chat.users.filter(u => u.getName().includes(searchField.value));
+        if (matching_players.length == 1 && !matching_players.includes(chat.player)) {
+            if (event.key != 'Backspace') {
+                searchField.value = matching_players[0].getName();
+                chat.player.setWantedPos(matching_players[0].getWantedPos().clone().add(new Vector(Math.floor(Math.random()*101)-50, Math.floor(Math.random()*101)-50) ));
+                chat.sendPosition();
+            }
+        }
+
+    }
+
+    searchBox.appendChild(searchField);
+
+    document.body.appendChild(searchBox);
+    
+    searchBox.style.top = screenPosition.y + "px";
+    searchBox.style.left = screenPosition.x + "px";
+
+    // closing on left click
+    function click_handler(click) {
+        if (!$(click.target).closest("#search-box").length) {
+            closeSearchField();
+            document.removeEventListener("click", click_handler);
+        }
+    }
+
+    document.addEventListener("click", click_handler);   
+}
+
 // END OF UTILITY FUNCTIONS ================================
 
 class User {
@@ -401,6 +459,13 @@ class Chat {
 
             // furniture
             this.furniture = [];
+            // furniture assets
+            this.assets = {
+                "fotelj": {img:returnImageObject('/editor/fotelj.png', null), scale: 1.4},
+                "stol": {img:returnImageObject('/editor/stol.png', null), scale: 1.4},
+                "stolcek": {img:returnImageObject('/editor/stolcek.png', null), scale: 1.4},
+                "light": {img:returnImageObject('/editor/light.png', null), scale: 1.4}
+            };
 
             // set up background drawing offset
             this.background_clear_color = '#387eb4';
@@ -411,6 +476,7 @@ class Chat {
             this.offset = undefined;
 
             this.dropdown_active = false;
+            this.searchField_active = false;
 
             var chat = this;
             // set up background
@@ -537,7 +603,7 @@ class Chat {
         // move handler
         document.addEventListener('click', function(click) {
             var position = getCanvasMousePos(click, chat.canvas);
-            if (chat.inMap(position) && !chat.dropdown_active) {
+            if (chat.inMap(position) && !chat.dropdown_active && !chat.searchField_active) {
                 var wanted_position = position.clone().add(chat.offset);
                 chat.player.setWantedPos(wanted_position);
                 // communicate with server
@@ -587,6 +653,13 @@ class Chat {
                     }});
 
                     
+                }
+
+                else {
+                    if (!chat.searchField) {
+                        chat.searchField_active = true;
+                        openSearchField({x: click.clientX, y: click.clientY},chat);
+                    }
                 }
 
             }
@@ -670,6 +743,12 @@ class Chat {
             chat.centerOnPlayer();
             context.drawImage(chat.background, -chat.offset.x, -chat.offset.y, chat.background_width, chat.background_height);
 
+            for (let i = 0; i < chat.furniture.length; i++) {
+                const furnitureObject = chat.furniture[i];
+                const furniture = chat.assets[furnitureObject.type];
+                context.drawImage(furniture.img, furnitureObject.position.x - chat.offset.x, furnitureObject.position.y - chat.offset.y, furniture.img.width*furniture.scale*(4/5), furniture.img.height*furniture.scale*(4/5));
+            }
+
             // draw users
             for (let i = 0; i < chat.users.length; i++) {
                 var user = chat.users[i];
@@ -694,7 +773,7 @@ class Chat {
         }));
     }
 
-    fillRoom() {
+    fillRoom(username_to_join) {
 
         //var position = room_details.position;
         //var type = room_details.type;
@@ -703,7 +782,7 @@ class Chat {
         var room = this;
         $.ajax({
             type: "GET",
-            url: '/api/privateRoom/' + username,
+            url: '/api/privateRoom/' + username_to_join,
             contentType: 'application/json',
             success: function(result,status,xhr) {
                 console.log(result);
@@ -722,7 +801,7 @@ class Chat {
     }
 
     clearRoom() {
-
+        this.furniture = [];
     }
 
     joinRoom(username_to_join) {
@@ -766,6 +845,8 @@ class Chat {
             const msg = event.data;
             var command = msg.substr(0, 2);
             var command_data = JSON.parse(msg.substr(3));
+
+            console.log(msg);
 
             switch (command) {
                 case 'LI':
@@ -905,6 +986,20 @@ $(function () {
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
 
+    function orangeObroba() {
+        var message = document.getElementById("message");
+        var last_color = message.style.borderColor;
+        message.style.borderColor = "orange";
+
+        function setBack() {
+            message.style.borderColor = last_color;
+            document.getElementById("messagesend").removeEventListener("click", setBack);
+        }
+
+        document.getElementById("messagesend").addEventListener("click", setBack);
+    }
+
+
     // End of Event Listeners, Function Declarations =======
 
     // Start of Code =======================================
@@ -917,8 +1012,8 @@ $(function () {
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12})
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'});
     //messageDropdown({'x':200, 'y':300},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum mauris semper est finibus, ornare aliquet metus mollis.'});
-    
-    
+
+
     /*novoSporocilo({
         'date':'18:05',
         'sender':'Janez',
@@ -931,8 +1026,6 @@ $(function () {
 
     var chat = new Chat('tinyroom');
     formatPage();
-    
-
 
 
     // End of Code =========================================
