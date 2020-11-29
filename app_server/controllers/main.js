@@ -332,6 +332,18 @@ const novosporocilo = (req, res) => {
     res.send("poo poo");
 }
 
+const db = (req, res) => {
+    res.render('db', {title: "Database handling", navigation : n.navigation, active_tab : 3, user : {id: 230}});
+}
+
+const dbDeleteAll = (req, res) => {
+
+}
+
+const dbAddEntries = (req, res) => {
+
+}
+
 module.exports = {
     index,
     private,
@@ -344,6 +356,9 @@ module.exports = {
     logout,
     profileUpdate,
     profileTerminate,
-    profileChangePassword
+    profileChangePassword,
+    db,
+    dbDeleteAll,
+    dbAddEntries
 };
 
