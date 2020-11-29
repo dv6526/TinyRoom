@@ -12,6 +12,18 @@ const regPass = /^.{3,}$/;
 const regEmail = /^\S+@\S+$/;
 const regName = /^[a-zA-Z0-9]{1,10}$/;
 
+ // nodemailer
+ var nodemailer = require('nodemailer');
+ var transporter = nodemailer.createTransport({
+   host: "smtp.gmail.com",
+   port: 465,
+   secure: true, // true for 465, false for other ports
+   auth: {
+       user: "tinyroomexample@gmail.com", 
+       pass: "t1nyr00m" 
+  },
+ });
+
 const verification = (req, res) => {
     if(!regName.test(req.body.username)) {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
@@ -103,6 +115,27 @@ const validateCookie = (req, res, next) => {
     }
 }
 
+const sendWelcomeMail = (email, username) => {
+
+    // generate mail
+    var welcomeMail = {
+        from: '"Tinyroom" <tinyroomexample@gmail.com>', // sender address
+        to: email, // receivers
+        subject: "WELCOME TO TINYROOM", // Subject line
+        text: ("Welcome to Tinyroom " + username + "!"),
+        html: "<b>Welcome to Tinyroom.</b>"
+    };
+
+    // send mail 
+    transporter.sendMail(welcomeMail) 
+        .then(function(response) {
+           console.log("Email was sent successfully!");
+        })
+        .catch(function(error) {
+           console.log("An error occured when sending the email: ", error);
+        });
+}
+
 const registerin = (req, res) => {
     if(!regEmail.test(req.body.email)) {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
@@ -141,6 +174,7 @@ const registerin = (req, res) => {
             req.body.latitude = 46.0569;
         }
         apiWeatherCall(req, res);
+        sendWelcomeMail(odgovor.data.email, odgovor.data.username);
       }).catch((napaka) => {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
         active_tab : 3, error2: 'Username already exists!'});
