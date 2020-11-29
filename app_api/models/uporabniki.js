@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const privateRoomShema = require('./privateRoom');
 
 const uporabnikiShema = new mongoose.Schema({
-    username : {type: String, required: true},
+    username : {type: String, required: true, unique: true},
     rank: {type: String, default: "user"},
     email: {type: String, required: true},
     password: {type: String, required: true},
