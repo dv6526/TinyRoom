@@ -11,11 +11,12 @@
     "currently": "*",
     "debug": "*",
     "express": "*",
+    "express-fileupload": "^1.2.0",
     "express-session": "^1.17.1",
     "hbs": "*",
     "http-errors": "*",
     "mongoose": "^5.10.15",
-    "morgan": "*",
+    "morgan": "^1.10.0",
     "ws": "*"
   }
 }
