@@ -12,6 +12,12 @@ var indexApi = require('./app_api/routes/index');
 
 var app = express();
 
+// picture upload
+const fileUpload = require('express-fileupload');
+app.use(fileUpload({
+  createParentPath: true
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'hbs');

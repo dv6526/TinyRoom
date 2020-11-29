@@ -42,7 +42,7 @@
     </form>
 
     <!--APPEARANCE-->
-    <form action='/profile/update' method='post' onsubmit="checkProfileInfo(event)">
+    <form action='/profile/update' method='post' enctype="multipart/form-data" onsubmit="checkProfileInfo(event)">
         <div class="row">
             <h2>APPEARANCE</h2>
         </div>
@@ -51,7 +51,7 @@
         <div class="form-group row infotype">
             <label for="pfp" class="col-sm-2 col-form-label infotype">profile picture</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp" method="POST" enctype="multipart/form-data"/>
+                <input type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp"/>
             </div>
         </div>
 
