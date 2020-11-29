@@ -135,6 +135,7 @@ function addZero(i) {
     return i;
 }
 
+
 // new message
 function novoSporocilo(sporocilo_info) {
     var sporocilo=document.createElement("div");
@@ -302,6 +303,50 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     // HTML okno mora imeti atribut data-user_id z vrednostjo target_user_id
     // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
 }
+
+function openSearchField(screenPosition, chat) {
+
+    function closeSearchField() {
+        if(document.getElementById("search-box")) {
+            document.getElementById("search-box").remove();
+            setTimeout(function() {
+                chat.searchField_active = false;
+            }, 0.5)
+        }
+    }
+
+    closeSearchField();
+
+    // create search Field
+    var searchBox = document.createElement("div");
+    var searchField = document.createElement("input");
+
+    searchBox.id = "search-box";
+
+    searchField.id = "search-field";
+    searchField.className = "input-sm";
+    searchField.setAttribute("type","text");
+    searchField.setAttribute("name","search-field");
+    searchField.setAttribute("placeholder","Search");
+
+    searchBox.appendChild(searchField);
+
+    document.body.appendChild(searchBox);
+    
+    searchBox.style.top = screenPosition.y + "px";
+    searchBox.style.left = screenPosition.x + "px";
+
+    // closing on left click
+    function click_handler(click) {
+        if (!$(click.target).closest("#search-box").length) {
+            closeSearchField();
+            document.removeEventListener("click", click_handler);
+        }
+    }
+
+    document.addEventListener("click", click_handler);   
+}
+
 // END OF UTILITY FUNCTIONS ================================
 
 class User {
@@ -395,6 +440,7 @@ class Chat {
             this.offset = undefined;
 
             this.dropdown_active = false;
+            this.searchField_active = false;
 
             var chat = this;
             // set up background
@@ -521,7 +567,7 @@ class Chat {
         // move handler
         document.addEventListener('click', function(click) {
             var position = getCanvasMousePos(click, chat.canvas);
-            if (chat.inMap(position) && !chat.dropdown_active) {
+            if (chat.inMap(position) && !chat.dropdown_active && !chat.searchField_active) {
                 var wanted_position = position.clone().add(chat.offset);
                 chat.player.setWantedPos(wanted_position);
                 // communicate with server
@@ -571,6 +617,13 @@ class Chat {
                     }});
 
                     
+                }
+
+                else {
+                    if (!chat.searchField) {
+                        chat.searchField_active = true;
+                        openSearchField({x: click.clientX, y: click.clientY},chat);
+                    }
                 }
 
             }
@@ -856,6 +909,7 @@ $(function () {
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
 
+
     // End of Event Listeners, Function Declarations =======
 
     // Start of Code =======================================
@@ -868,8 +922,8 @@ $(function () {
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12})
     //messageDropdown({'x':600, 'y':600},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'I am to lazy to change my bio description'});
     //messageDropdown({'x':200, 'y':300},{'rank':'user', 'muted':false, 'g_muted':false, 'target_user_id':12,'bio_pic':'static/avatar.png', 'bio_title': 'This is my title', 'bio_description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum mauris semper est finibus, ornare aliquet metus mollis.'});
-    
-    
+
+
     /*novoSporocilo({
         'date':'18:05',
         'sender':'Janez',

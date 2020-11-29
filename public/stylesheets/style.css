@@ -324,3 +324,29 @@ input {
 	text-align: center;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
+
+#search-box{
+	position:absolute;
+	width:15%;
+	height:auto;
+	padding:0.5%;
+	background-color:#1d1f21;
+	border-radius:25px;
+	text-align:center;
+}
+
+#search-field {
+	position:relative;
+	color:#757575;
+	width:90%;
+	padding-left:10%;
+	margin:auto;
+	border:none;
+	border-radius:25px;
+	outline:none;
+}
+
+
+
+
+
