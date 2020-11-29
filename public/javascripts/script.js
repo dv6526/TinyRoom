@@ -973,6 +973,14 @@ $(function () {
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
 
+    orangeObroba(){
+        document.getElementById("message").style.borderColor = "orange";
+
+        document.getElementById("messagesend").addEventListener("click", function() {
+            document.getElementById("message").style.border = "none";
+        });
+    }
+
 
     // End of Event Listeners, Function Declarations =======
 
