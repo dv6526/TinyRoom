@@ -95,8 +95,6 @@ class UserSocket {
         })
 
 
-
-        
         // this function returns true if the identification was correct
         // and false if it was not
     }

@@ -333,6 +333,7 @@ input {
 	background-color:#1d1f21;
 	border-radius:25px;
 	text-align:center;
+	z-index: 550;
 }
 
 #search-field {
@@ -345,8 +346,4 @@ input {
 	border-radius:25px;
 	outline:none;
 }
-
-
-
-
 

@@ -331,6 +331,19 @@ function openSearchField(screenPosition, chat) {
     searchField.setAttribute("name","search-field");
     searchField.setAttribute("placeholder","Search");
 
+    searchField.onkeyup = function(event) {
+
+        var matching_players = chat.users.filter(u => u.getName().includes(searchField.value));
+        if (matching_players.length == 1 && !matching_players.includes(chat.player)) {
+            if (event.key != 'Backspace') {
+                searchField.value = matching_players[0].getName();
+                chat.player.setWantedPos(matching_players[0].getWantedPos().clone().add(new Vector(Math.floor(Math.random()*101)-50, Math.floor(Math.random()*101)-50) ));
+                chat.sendPosition();
+            }
+        }
+
+    }
+
     searchBox.appendChild(searchField);
 
     document.body.appendChild(searchBox);
@@ -973,12 +986,17 @@ $(function () {
         var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
     }
 
-    orangeObroba(){
-        document.getElementById("message").style.borderColor = "orange";
+    function orangeObroba() {
+        var message = document.getElementById("message");
+        var last_color = message.style.borderColor;
+        message.style.borderColor = "orange";
 
-        document.getElementById("messagesend").addEventListener("click", function() {
-            document.getElementById("message").style.border = "none";
-        });
+        function setBack() {
+            message.style.borderColor = last_color;
+            document.getElementById("messagesend").removeEventListener("click", setBack);
+        }
+
+        document.getElementById("messagesend").addEventListener("click", setBack);
     }
 
 
@@ -1008,8 +1026,6 @@ $(function () {
 
     var chat = new Chat('tinyroom');
     formatPage();
-    
-
 
 
     // End of Code =========================================

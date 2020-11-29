@@ -87,6 +87,7 @@ function formatWeatherData(data, req, res) {
         weather7.push(day);
     });
     req.session.weather = weather7;
+    req.session.current_weather = data.daily[0].weather[0].description;
     res.redirect('/');
     console.log(weather7.toString());
     
@@ -159,7 +160,8 @@ const index = (req, res) => {
         user: {
             username: req.session.user,
             id: req.session.user_id,
-            sprite_idx : req.session.sprite_idx
+            sprite_idx : req.session.sprite_idx,
+            weather: req.session.current_weather
         },
         navigation : n.navigation,
         active_tab : 0,
