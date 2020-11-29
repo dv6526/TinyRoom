@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const privateRoomShema = require('./privateRoom');
 
 const uporabnikiShema = new mongoose.Schema({
     username : {type: String, required: true, unique: true},
@@ -9,8 +8,7 @@ const uporabnikiShema = new mongoose.Schema({
     profile_picture: {type: String, "default": "default.png"},
     bio_title: {type: String, "default": 'Default bio title'},
     bio: {type: String, "default": 'This is default bio'},
-    chosen_skin: {type: String, "default": "bunny"},
-    private_room: [privateRoomShema]
+    chosen_skin: {type: String, "default": "bunny"}
 });
 
 mongoose.model('Uporabnik', uporabnikiShema, "uporabnik");

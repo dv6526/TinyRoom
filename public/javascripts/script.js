@@ -373,6 +373,17 @@ class User {
 
 }
 
+class Furniture {
+    constructor(type, position) {
+        this.type = type;
+        this.position = position;
+    }
+
+    setPosition(position) {
+        this.position = position;
+    }
+}
+
 class Chat {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
@@ -445,8 +456,8 @@ class Chat {
                 'clear_color': '#387eb4'
             },
             "room": {
-                'file':'/images/room.png',
-                'width': 600,
+                'file':'/editor/room.png',
+                'width': 400,
                 'center': {
                     'x': 0.5,
                     'y': 0.5
@@ -683,13 +694,29 @@ class Chat {
         }));
     }
 
-    fillRoom(username_to_join) {
-        var chat = this;
+    fillRoom() {
+
+        //var position = room_details.position;
+        //var type = room_details.type;
+        //loop through objects in room_details
+        var furniture = this.furniture;
+        var room = this;
         $.ajax({
             type: "GET",
-            url: "/api/privateRoom/" + username_to_join,
+            url: '/api/privateRoom/' + username,
+            contentType: 'application/json',
             success: function(result,status,xhr) {
-
+                console.log(result);
+                for(var i = 0; i < result.objects.length; i++) {
+                    var room_object = result.objects[i];
+                    var position = room_object.position;
+                    position.x += 0.5;
+                    position.y += 0.5;
+                    position.x *= 400;
+                    position.y *= 400;
+                    furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
+                    
+                }
             }
         });
     }

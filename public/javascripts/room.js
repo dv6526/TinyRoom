@@ -1,15 +1,3 @@
-
-class Furniture {
-    constructor(type, position) {
-        this.type = type;
-        this.position = position;
-    }
-
-    setPosition(position) {
-        this.position = position;
-    }
-}
-
 class RoomEditor {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
