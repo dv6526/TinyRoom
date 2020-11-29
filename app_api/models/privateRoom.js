@@ -9,7 +9,7 @@ const objectShema = new mongoose.Schema({
 });
 
 const privateRoomShema = new mongoose.Schema({
-    username: {type: String, required: true, unique: true},
+    owner: {type: String, required: true},
     objects: [objectShema]
 });
 
