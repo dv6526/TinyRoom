@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const chatLogs = mongoose.model('chatLogs');
+
 const chatIzbrisiIzbranega = (req, res) => {
     const idSporocila = req.params;
     if (!idSporocila) {
@@ -6,7 +9,7 @@ const chatIzbrisiIzbranega = (req, res) => {
                 "Ne najdem id sporočila."
         });
     }
-    Sporocila
+    chatLogs
         .findById(idSporocila)
         .exec((napaka, sporocila) => {
             if (!sporocila) {

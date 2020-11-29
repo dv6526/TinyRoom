@@ -7,7 +7,7 @@ Zaslonska maska vsebuje “svet” na katerem se nahajajo avatarji nas in drugih
 * “Svet”: 
     * Ko z desnim klikom klikneš na avatarja, se odpre podmeni, kjer lahko utišaš uporabnika, mu pošlješ privatno sporočilo, ga povabiš v svojo privatno sobo ali pa se mu pridružiš v privatni sobi. Poleg se nahajajo tudi informacije uporabnika (njegovo ime[], profilna slika ter kratka biografija z naslovom - master/detail vzorec).
     * Nad njegovim imenom se [lahko] nahaja simbol [srčka s katerim nam daje vedeti, da smo povabljeni v njegovo privatno sobo.]_[, ki ponazarja njegovo trenutno vreme].
-    * Desno spodaj se nahaja gumb za iskanje uporabnikov s katerim lahko lociraš prijatelje. Omogočal bo autocomplete glede na prijavljene uporabnike.
+    * Ob desnem kliku na svet (ne na uporabnika) se prikaže gumb za iskanje uporabnikov s katerim lahko lociraš prijatelje. Omogočal bo autocomplete glede na prijavljene uporabnike. Uporablja se filtriranje po vnosu izmed vseh uporabnikov sveta.
 * “Sporočilno polje”: sestavljeno je iz vnosnega polja kamor natipkamo sporočilo in gumba "send" s katerim ga pošljemo. Pod njima se nahaja zgodovina sporočil. Za izmenjavanje sporočil smo uporabili Web Socket npm knjižnico. Na odjemalcu in na web socket strežniku se preverja dolžina sporočila (biti mora večja od nič).
 * “Vremenska napoved”: vsebuje lokalno 7 dnevno vremensko napoved, ki se prenaša preko OpenWeather API.
 

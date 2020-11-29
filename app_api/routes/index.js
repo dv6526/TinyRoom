@@ -20,6 +20,9 @@ router.delete('/profile/:idUporabnika', ctrlProfilePage.terminateProfile);
 router.put('/profile/:idUporabnika/password', ctrlProfilePage.changePassword);
 router.put('/profile/:idUporabnika/info', ctrlProfilePage.changeProfileInfo);
 
+const ctrlDb = require('../controllers/db');
+router.get('/db/deleteAll', ctrlDb.deleteAll);
+
 const ctrlChatLogs = require('../controllers/chatLogs');
 //router.post('/chatLogs/:idSporocila', ctrlChatLogs.chatKreiraj);
 //router.get('/chatLogs/:idSporocila', ctrlChatLogs.vrniChatById);

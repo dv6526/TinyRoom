@@ -339,11 +339,40 @@ const db = (req, res) => {
 }
 
 const dbDeleteAll = (req, res) => {
+    console.log("Izbrisal sem vse podatke.");
+    axios({
+        method: 'get',
+        url: apiParametri.streznik + '/api/db/deleteAll'
+    }).then((odgovor) => {
+        req.session.user = undefined;
+        console.log("tole se izvedem");
+        res.redirect('/');
+    }).catch((napaka) => {
+        res.status(404).json(napaka);
+    });
 
 }
 
 const dbAddEntries = (req, res) => {
-
+    const upor = require("../models/uporabnik.json");
+    const u = upor.uporabnik;
+    for(let i=0;i<u.length;i++) {
+        axios({
+            method: 'post',
+            url: apiParametri.streznik + '/api/uporabniki',
+            data: {
+                username: u[i].username,
+                password: u[i].password,
+                email: u[i].email,
+                rank: "admin"
+                }
+            }).then((odgovor) => {
+                console.log("Uspešno sem dodal uporabnika" + u.username)
+            }).catch((napaka) => {
+                res.status(404).json(napaka);
+            });
+    }
+    res.redirect('/');
 }
 
 module.exports = {
