@@ -253,9 +253,9 @@ input {
        -moz-appearance:none;
             appearance:none;
 }
-.goat{background-image:url("/images/sprites.png"); background-position: 25px 0px;}
-.bunny{background-image:url("/images/sprites.png"); background-position: -56px 0px;}
-.rat{background-image:url("/images/sprites.png"); background-position: 25px 0px;}
+.goat{object-position: 50% 0%;}
+.bunny{object-position: 0% 0%;}
+.rat{object-position: 100% 0%;}
 .bla {
 
 }
@@ -269,10 +269,11 @@ input {
 
 .skin-img{
     cursor:pointer;
-	background-size: 140px 70px;
-    background-repeat:no-repeat;
     display:inline-block;
-    width:100px;height:70px;
+	width:100px;height:100px;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+	object-fit: cover;
     -webkit-transition: all 100ms ease-in;
        -moz-transition: all 100ms ease-in;
             transition: all 100ms ease-in;
