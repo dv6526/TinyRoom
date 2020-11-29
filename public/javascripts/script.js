@@ -57,6 +57,19 @@ function checkPassword(dogodek) {
     }
 }
 
+function orangeObroba() {
+    var message = document.getElementById("message");
+    var last_color = message.style.borderColor;
+    message.style.borderColor = "orange";
+
+    function setBack() {
+        message.style.borderColor = last_color;
+        document.getElementById("messagesend").removeEventListener("click", setBack);
+    }
+
+    document.getElementById("messagesend").addEventListener("click", setBack);
+}
+
 // check profile info
 function checkProfileInfo(dogodek) {
     let biotitle = document.getElementById("biotitle");
@@ -69,6 +82,16 @@ function checkProfileInfo(dogodek) {
     if (bio.value == "") {
         bio.value = "This is default bio";
     }
+}
+
+//js za pojavno okno
+function topAlert(message, seconds) {
+    var okno = document.createElement('div');
+    okno.textContent = message;
+    okno.className = 'message-bubble modalnoOkno';
+    document.body.appendChild(okno);
+
+    var cas = setTimeout(function () { okno.remove(); }, seconds * 1000);
 }
 
 // check login
@@ -147,7 +170,19 @@ function novoSporocilo(sporocilo_info) {
         sporocilo.classList.add("player");
     }
 
-    sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + ": " + (sporocilo_info.body));
+    if (!sporocilo_info.private_message) {
+        sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + ": " + (sporocilo_info.body));
+    }
+    else {
+        sporocilo.classList.add("private");
+        if (sporocilo_info.recipient) {
+            sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + " => "+ (sporocilo_info.recipient) + ": " + (sporocilo_info.body));
+        }
+        else {
+            sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + ": " + (sporocilo_info.body));
+        }
+    }
+
     document.querySelector("#chatlogs").prepend(sporocilo);
 }
 
@@ -212,6 +247,14 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                     "username": dropdown_info.username
                 }));
                 break;
+            case 'kick':
+                chat.socket.send("KI " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
+                break;
+            case 'private message':
+                chat.setPrivateMSG(dropdown_info.username);
+                break;
             default:
                 break;
         }
@@ -228,7 +271,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     let row = document.createElement("li");
     let link = document.createElement("a");
     let options = [["mute", "unmute"], "room invite", ["join room", "leave room"], "private message",
-    ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
+    ["global mute", "global unmute"], "warn", "kick", "enter room"];
     let optionsLength = (dropdown_info.rank == "admin") ? options.length : 4;
     /*
         Construct dropdown
@@ -485,6 +528,9 @@ class Chat {
             this.player;
             this.room = undefined;
 
+            this.private_message = false;
+            this.private_message_recepient = undefined;
+
             // furniture
             this.furniture = [];
             // furniture assets
@@ -626,6 +672,12 @@ class Chat {
         this.socket.send("PO " + JSON.stringify(this.player.getWantedPos()));
     }
 
+    setPrivateMSG(recipient) {
+        orangeObroba();
+        this.private_message = true;
+        this.private_message_recepient = recipient;
+    }
+
     hookControls() {
         var chat = this;
         // move handler
@@ -702,19 +754,44 @@ class Chat {
                 "message": message.value
             }
 
-            if (message.value.length > 0) {
+            if (chat.private_message && message.value.length > 0) {
                 var date = new Date();
-                novoSporocilo({
-                    sender: chat.player.getName(),
-                    body: message.value,
-                    date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
-                    player: true
-                })
+                    novoSporocilo({
+                        sender: chat.player.getName(),
+                        body: message.value,
+                        date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                        player: true,
+                        private_message: true,
+                        recipient: chat.private_message_recepient
+                    })
 
-                message.value = "";
-
-                chat.socket.send("MS " + JSON.stringify(to_send));
+                    console.log("private message sent");
+    
+                    message.value = "";
+                    to_send["recipient"] = chat.private_message_recepient;
+    
+                    chat.socket.send("PM " + JSON.stringify(to_send));
             }
+
+            else {
+                if (message.value.length > 0) {
+                    var date = new Date();
+                    novoSporocilo({
+                        sender: chat.player.getName(),
+                        body: message.value,
+                        date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                        player: true,
+                        private_message: false
+                    })
+    
+                    message.value = "";
+    
+                    chat.socket.send("MS " + JSON.stringify(to_send));
+                }
+            }
+
+            chat.private_message = false;
+
         });
     }
 
@@ -954,15 +1031,32 @@ class Chat {
                         sender: command_data["username"],
                         body: command_data["message"],
                         date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
-                        player: false
+                        player: false,
+                        private_message: false
+                    })
+                    break;
+                case 'PM':
+                    var date = new Date();
+                    novoSporocilo({
+                        sender: command_data["username"],
+                        body: command_data["message"],
+                        date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                        player: false,
+                        private_message: true
                     })
                     break;
                 case 'GM':
                     globalMutes.push(command_data["username"]);
-                break;
+                    break;
                 case 'GU':
                     globalMutes = globalMutes.filter(player => player !== command_data["username"]);
-                break;
+                    break;
+                case 'WA':
+                    topAlert(command_data["username"] + " has warned you...", 5);
+                    break;
+                case 'KI':
+                    topAlert(command_data["username"] + " has kicked you. You can rejoin by refreshing this page.", 30);
+                    break;
                 default:
                     break;
             }
@@ -1034,28 +1128,7 @@ $(function () {
     });
     */
 
-    //js za pojavno okno
-    function topAlert(message, seconds) {
-        var okno = document.createElement('div');
-        okno.textContent = message;
-        okno.className = 'message-bubble modalnoOkno';
-        document.body.appendChild(okno);
 
-        var cas = setTimeout(function () { okno.remove(); }, seconds * 1000);
-    }
-
-    function orangeObroba() {
-        var message = document.getElementById("message");
-        var last_color = message.style.borderColor;
-        message.style.borderColor = "orange";
-
-        function setBack() {
-            message.style.borderColor = last_color;
-            document.getElementById("messagesend").removeEventListener("click", setBack);
-        }
-
-        document.getElementById("messagesend").addEventListener("click", setBack);
-    }
 
 
     // End of Event Listeners, Function Declarations =======
@@ -1084,7 +1157,6 @@ $(function () {
 
     var chat = new Chat('tinyroom');
     formatPage();
-
 
     // End of Code =========================================
 

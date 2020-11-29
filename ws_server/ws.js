@@ -163,6 +163,23 @@ function start_ws() {
                         }
                     });
                 }
+
+                else if (command == "WA") {
+                    findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
+                }
+
+                else if (command == "PM") {
+                    findByUsername(command_data.recipient).socket.send("PM " + JSON.stringify({
+                        "username": user.getUsername(),
+                        "message": command_data.message
+                    }));
+                }
+
+                else if (command == "KI") {
+                    var kicked_user = findByUsername(command_data.username);
+                    kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
+                    kicked_user.socket.close();
+                }
             }
         });
     
