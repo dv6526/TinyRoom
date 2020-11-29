@@ -245,8 +245,10 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
 
     // picture
     picture.src = dropdown_info.bio_pic;
-    picture.alt = "Profile picture";
+    picture.alt = "Profile Picture not found or cannot be shown";
     picture.style.width = "170px";
+    picture.style.height = "170px";
+    picture.style.objectFit = 'cover';
     // bio title (uppercased)
     title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
     title.className = "text-center";
@@ -385,6 +387,9 @@ class Chat {
             // logged in user
             this.player;
             this.room = undefined;
+
+            // furniture
+            this.furniture = [];
 
             // set up background drawing offset
             this.background_clear_color = '#387eb4';
@@ -564,7 +569,7 @@ class Chat {
                                 'g_muted': false,
                                 'target_user_id': 12,
                                 'username': found_user,
-                                'bio_pic': 'static/avatar.png',
+                                'bio_pic': 'profileImages/' + found_user + '.' + result.profile_picture,
                                 'bio_title': result.bio_title,
                                 'bio_description': result.bio
                             }, chat);
@@ -678,6 +683,21 @@ class Chat {
         }));
     }
 
+    fillRoom(username_to_join) {
+        var chat = this;
+        $.ajax({
+            type: "GET",
+            url: "/api/privateRoom/" + username_to_join,
+            success: function(result,status,xhr) {
+
+            }
+        });
+    }
+
+    clearRoom() {
+
+    }
+
     joinRoom(username_to_join) {
         this.room = username_to_join;
 
@@ -690,9 +710,11 @@ class Chat {
 
         if (username_to_join) {
             this.changeBackground('room');
+            this.fillRoom(username_to_join);
         }
         else {
             this.changeBackground('map');
+            this.clearRoom();
         }
     }
 
@@ -883,6 +905,9 @@ $(function () {
     var chat = new Chat('tinyroom');
     formatPage();
     
+
+
+
     // End of Code =========================================
     
 

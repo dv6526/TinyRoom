@@ -22,6 +22,7 @@ class RoomEditor {
         this.furniture = [];
 
         var room = this;
+        room.room_width = Math.min(500, room.canvas.width-50);
 
         this.loadAssets(function() {
             room.animation();
@@ -41,6 +42,33 @@ class RoomEditor {
         //var position = room_details.position;
         //var type = room_details.type;
         //loop through objects in room_details
+        var furniture = this.furniture;
+        var room = this;
+        $.ajax({
+            type: "GET",
+            url: '/api/privateRoom/' + username,
+            contentType: 'application/json',
+            success: function(result,status,xhr) {
+                console.log(result);
+                for(var i = 0; i < result.objects.length; i++) {
+                    var room_object = result.objects[i];
+                    var position = room_object.position;
+                    position.x += 0.5;
+                    position.y += 0.5;
+                    if(room.room_width) {
+                        position.x *= room.room_width;
+                        position.y *= room.room_width;
+                        position.x += room.roomMargin;
+                        position.y += room.roomMargin;
+                        furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
+                    }
+                    
+                }
+            }
+        });
+
+        
+        
         //var furniture = new Furniture(type, new Vector(position.x, position.y));
         //this.furniture.push(furniture);
     }
