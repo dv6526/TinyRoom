@@ -388,6 +388,9 @@ class Chat {
             this.player;
             this.room = undefined;
 
+            // furniture
+            this.furniture = [];
+
             // set up background drawing offset
             this.background_clear_color = '#387eb4';
             this.background_width = 2000;
@@ -680,6 +683,21 @@ class Chat {
         }));
     }
 
+    fillRoom(username_to_join) {
+        var chat = this;
+        $.ajax({
+            type: "GET",
+            url: "/api/privateRoom/" + username_to_join,
+            success: function(result,status,xhr) {
+
+            }
+        });
+    }
+
+    clearRoom() {
+
+    }
+
     joinRoom(username_to_join) {
         this.room = username_to_join;
 
@@ -692,9 +710,11 @@ class Chat {
 
         if (username_to_join) {
             this.changeBackground('room');
+            this.fillRoom(username_to_join);
         }
         else {
             this.changeBackground('map');
+            this.clearRoom();
         }
     }
 
@@ -885,6 +905,9 @@ $(function () {
     var chat = new Chat('tinyroom');
     formatPage();
     
+
+
+
     // End of Code =========================================
     
 
