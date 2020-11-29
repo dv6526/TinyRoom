@@ -4,9 +4,7 @@
             <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
                 <h2>Delete all entries in database</h2>
                 <form action="/db/deleteAll" method="get">
-                    <input type="hidden" name="longitude" id="getlon" />
-                    <input type="hidden" name="latitude" id="getlat" />
-                    <button onclick="getLocation()" class="btn btn-outline-dark">Delete</button>
+                    <button class="btn btn-outline-dark">Delete</button>
                 </form>
                 <div id="loginInfo">{{{error}}}</div>
             </div>
@@ -14,9 +12,7 @@
             <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
                 <h2>Add predefined entries in database</h2>
                 <form action="/db/addEntries" method="get">
-                    <input type="hidden" name="longitude" id="getlon" />
-                    <input type="hidden" name="latitude" id="getlat" />
-                    <button onclick="getLocation()" class="btn btn-outline-dark">Add</button>
+                    <button class="btn btn-outline-dark">Add</button>
                 </form>
                 <div id="loginInfo">{{{error}}}</div>
             </div>

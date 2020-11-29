@@ -1,0 +1,13 @@
+{
+  "prRoom": [
+    {
+      "owner": "student"
+    },
+    {
+      "owner": "profesor"
+    },
+    {
+      "owner": "asistent"
+    }
+  ]
+}
