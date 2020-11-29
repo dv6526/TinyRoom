@@ -401,6 +401,13 @@ class Chat {
 
             // furniture
             this.furniture = [];
+            // furniture assets
+            this.assets = {
+                "fotelj": {img:returnImageObject('/editor/fotelj.png', null), scale: 1.4},
+                "stol": {img:returnImageObject('/editor/stol.png', null), scale: 1.4},
+                "stolcek": {img:returnImageObject('/editor/stolcek.png', null), scale: 1.4},
+                "light": {img:returnImageObject('/editor/light.png', null), scale: 1.4}
+            };
 
             // set up background drawing offset
             this.background_clear_color = '#387eb4';
@@ -670,6 +677,12 @@ class Chat {
             chat.centerOnPlayer();
             context.drawImage(chat.background, -chat.offset.x, -chat.offset.y, chat.background_width, chat.background_height);
 
+            for (let i = 0; i < chat.furniture.length; i++) {
+                const furnitureObject = chat.furniture[i];
+                const furniture = chat.assets[furnitureObject.type];
+                context.drawImage(furniture.img, furnitureObject.position.x - chat.offset.x, furnitureObject.position.y - chat.offset.y, furniture.img.width*furniture.scale*(4/5), furniture.img.height*furniture.scale*(4/5));
+            }
+
             // draw users
             for (let i = 0; i < chat.users.length; i++) {
                 var user = chat.users[i];
@@ -694,7 +707,7 @@ class Chat {
         }));
     }
 
-    fillRoom() {
+    fillRoom(username_to_join) {
 
         //var position = room_details.position;
         //var type = room_details.type;
@@ -703,7 +716,7 @@ class Chat {
         var room = this;
         $.ajax({
             type: "GET",
-            url: '/api/privateRoom/' + username,
+            url: '/api/privateRoom/' + username_to_join,
             contentType: 'application/json',
             success: function(result,status,xhr) {
                 console.log(result);
@@ -722,7 +735,7 @@ class Chat {
     }
 
     clearRoom() {
-
+        this.furniture = [];
     }
 
     joinRoom(username_to_join) {
@@ -766,6 +779,8 @@ class Chat {
             const msg = event.data;
             var command = msg.substr(0, 2);
             var command_data = JSON.parse(msg.substr(3));
+
+            console.log(msg);
 
             switch (command) {
                 case 'LI':
