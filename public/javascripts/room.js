@@ -55,13 +55,13 @@ class RoomEditor {
                     var position = room_object.position;
                     position.x += 0.5;
                     position.y += 0.5;
-                    if(room.room_width) {
-                        position.x *= room.room_width;
-                        position.y *= room.room_width;
-                        position.x += room.roomMargin;
-                        position.y += room.roomMargin;
-                        furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
-                    }
+
+                    position.x *= room.room_width;
+                    position.y *= room.room_width;
+                    position.x += room.roomMargin;
+                    position.y += room.roomMargin;
+                    furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
+        
                     
                 }
             }
