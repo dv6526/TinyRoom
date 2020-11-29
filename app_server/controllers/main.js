@@ -33,6 +33,7 @@ const verification = (req, res) => {
         if(odgovor.data.length == 0) {
             res.render('register', {title: "Login or Register", navigation : n.navigation, active_tab : 3, user : {id: 230}, error: 'Wrong username or password'});
         } else {
+
             req.session.user = req.body.username;
             req.session.user_id = odgovor.data[0]._id;
 
@@ -116,6 +117,9 @@ const registerin = (req, res) => {
             active_tab : 3, error2: 'Password is too short'});
         return;
     }
+    var longit = req.body.longitude;
+    var latit = req.body.latitude;
+
     axios({
         method: 'post',
         url: apiParametri.streznik + '/api/uporabniki',
@@ -128,7 +132,13 @@ const registerin = (req, res) => {
       }).then((odgovor) => {
         req.session.user = odgovor.data.username;
         req.session.user_id = odgovor.data._id;
-        res.redirect('/');
+        var skins = {"bunny" : 0, "goat":1, "rat":2};
+        req.session.sprite_idx = skins[odgovor.data.chosen_skin];
+        if(longit === "" &&  latit === "") {
+            req.body.longitude = 14.5058;
+            req.body.latitude = 46.0569;
+        }
+        apiWeatherCall(req, res);
       }).catch((napaka) => {
         res.render('register', {title: "Login or Register", navigation : n.navigation,
         active_tab : 3, error2: 'Username already exists!'});
@@ -161,7 +171,7 @@ const private = (req, res) => {
 
 
     res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
-      
+
 }
 
 const profile = (req, res) => {

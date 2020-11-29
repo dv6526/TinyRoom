@@ -964,10 +964,25 @@ function getLocation() {
     }
 }
 
+function getLocation1() {
+    console.log("Pridobivam lokacijo...");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success1, error);
+    }
+}
+
+function success1(position) {
+    console.log(position);
+    $("getlon1").val(position.coords.longitude);
+    $("getlat1").val(position.coords.latitude);
+
+    $("#formRegister").submit(); // here the form is submit
+}
+
 function success(position) {
     console.log(position);
-    $("#getlon").val(position.coords.longitude);
-    $("#getlat").val(position.coords.latitude);
+    $("getlon").val(position.coords.longitude);
+    $("getlat").val(position.coords.latitude);
 
     $("#signinform").submit(); // here the form is submit
 }
