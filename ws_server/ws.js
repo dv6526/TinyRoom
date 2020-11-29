@@ -134,6 +134,26 @@ function findByUsername(username) {
     }
 }
 
+function sendChatLog(name, msg, room) {
+    var d = new Date();
+    var date = d.getTime();
+    if(room == undefined) {
+        room = "global";
+    }
+    axios({
+        method: 'post',
+        url: apiParametri.streznik + '/api/chatlogs',
+        data: {
+            name: name,
+            date:  d,
+            body: msg,
+            room : room
+        }
+      }).catch((napaka) => {
+        console.log("Sporočilo se ni uspešno poslalo na bazo!");
+      });
+}
+
 // connection list
 let sockets = [];
 
@@ -207,19 +227,23 @@ wsserver.on('connection', function(socket) {
             else if (command == "MS") {
                 
                 var msg = command_data.message;
-                console.log(user.getUsername(), msg, user.getRoom());
-
-                sockets.forEach(s => {
-                    // dont send to itself
-                    //we are sending from user to s
-                    //we dont send if s muted user
-                    if (s !== user && s.getRoom() == user.getRoom() && !s.mute.includes(user.getUsername())) {
-                        s.socket.send("MS " + JSON.stringify({
-                            "message": msg,
-                            "username": user.getUsername()
-                        }));
-                    }
-                });
+                if(msg.length > 0) {
+                    console.log(user.getUsername(), msg, user.getRoom());
+                    sendChatLog(user.getUsername(), msg, user.getRoom());
+    
+                    sockets.forEach(s => {
+                        // dont send to itself
+                        //we are sending from user to s
+                        //we dont send if s muted user
+                        if (s !== user && s.getRoom() == user.getRoom() && !s.mute.includes(user.getUsername())) {
+                            s.socket.send("MS " + JSON.stringify({
+                                "message": msg,
+                                "username": user.getUsername()
+                            }));
+                        }
+                    });
+                }
+                
             }
 
             else if (command == "AL") {
