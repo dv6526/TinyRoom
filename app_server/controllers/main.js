@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { NotExtended } = require('http-errors');
+const fs = require('fs');
 var apiParametri = {
   streznik: 'http://localhost:' + (process.env.PORT || 3000)
 };
@@ -309,12 +310,26 @@ const profileChangePassword = (req, res) => {
 
 const profileTerminate = (req, res) => {
     console.log("profileTerminate" + req.session.user_id);
+/*
+    axios.get(apiParametri.streznik+ '/api/uporabniki/'+ req.session.user_id).then((odgovor) => {
+        const path = './public/profileImages/' + odgovor.data.username + '.' + odgovor.data.bio_pic;
+        console.log("brisem sliko: " + path);
+        fs.unlink(path, (napaka) => {
+            if (napaka) {
+                res.status(404).json(napaka);
+            }
+        });
+        console.log("bla");
+    }).catch((napaka) => {
+        console.log("watafak");
+    });
+    console.log("bla");
+*/
     //api klic
     axios({
         method: 'delete',
         url: apiParametri.streznik + '/api/profile/' + req.session.user_id
     }).then((odgovor) => {
-        // TODO ostane vpisan - briši piškotke al neki
         req.session.user = undefined;
         res.redirect('/');
     }).catch((napaka) => {
@@ -364,7 +379,7 @@ const dbAddEntries = (req, res) => {
                 username: u[i].username,
                 password: u[i].password,
                 email: u[i].email,
-                rank: "admin"
+                rank: u[i].rank
                 }
             }).then((odgovor) => {
                 console.log("Uspešno sem dodal uporabnika" + u.username)

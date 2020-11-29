@@ -1,7 +1,7 @@
 {
   "uporabnik": [{
     "username": "student",
-    "rank": "admin",
+    "rank": "user",
     "profile_picture": "default.png",
     "bio_title": "Default bio title",
     "bio": "This is default bio",

@@ -1,17 +1,25 @@
 const mongoose = require('mongoose');
 // TODO kličem pravi model?
 const Profile = mongoose.model('Uporabnik');
+const Soba = mongoose.model('privateRoom');
 
 const terminateProfile = (req, res) => {
     if(req.params.idUporabnika) {
-        Profile.findByIdAndRemove(req.params.idUporabnika).exec((napaka) => {
+        Profile.findByIdAndRemove(req.params.idUporabnika).exec((napaka, profil) => {
             if (napaka) {
                 return res.status(500).json(napaka);
+            } else {
+                Soba.remove({owner: profil.username}).exec((napaka, soba) => {
+                    if (napaka) {
+                        return res.status(500).json(napaka);
+                    }
+                    console.log("Soba uporabnika je bila uspešno izbrisana");
+                });
             }
-            res.status(204).json({"sporočilo" : "Ne najdem uporabnika!"});
+            return res.status(200).json({"sporočilo" : "Ne najdem uporabnika!"});
         });
     } else {
-        res.status(404).json({
+        return res.status(404).json({
             "sporočilo": "Ne najdem uporabnika, idUporabnika je obvezen parameter."
         });
     }

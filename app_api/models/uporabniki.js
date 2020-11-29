@@ -5,7 +5,7 @@ const uporabnikiShema = new mongoose.Schema({
     rank: {type: String, default: "user"},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    profile_picture: {type: String, "default": "default.png"},
+    profile_picture: {type: String, "default": ""},
     bio_title: {type: String, "default": 'Default bio title'},
     bio: {type: String, "default": 'This is default bio'},
     chosen_skin: {type: String, "default": "bunny"}
