@@ -203,7 +203,14 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                 globalMutes = globalMutes.filter(player => player !== dropdown_info.username);
                 break;
             case "enter room":
-                
+                chat.socket.send("ER " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
+                break;
+            case "warn":
+                chat.socket.send("WA " + JSON.stringify({
+                    "username": dropdown_info.username
+                }));
                 break;
             default:
                 break;

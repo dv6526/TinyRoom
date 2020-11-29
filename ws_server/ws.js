@@ -5,59 +5,13 @@ var apiParametri = {
   };
 
 
+// connection list
+let sockets = [];
+
 function start_ws() {
     const wsserver = new WebSocket.Server({
         port: 8070
     });
-
-    function dto_for_LI(user) {
-        // build structure to send to a new user
-        // tell him about all players in the room
-        var dto = {
-            "room": user.getRoom(),
-            "players": []
-        };
-    
-        sockets.forEach(s => {
-            if (s !== user && s.getRoom() == user.getRoom()) {
-                dto.players.push(s.getPublicInfo());
-            }
-        })
-    
-        return dto;
-    }
-    
-    function findByUsername(username) {
-        for (let i = 0; i < sockets.length; i++) {
-            const user = sockets[i];
-            if (user.getUsername() == username) {
-                return user;
-            }
-        }
-    }
-    
-    function sendChatLog(name, msg, room) {
-        var d = new Date();
-        var date = d.getTime();
-        if(room == undefined) {
-            room = "global";
-        }
-        axios({
-            method: 'post',
-            url: apiParametri.streznik + '/api/chatlogs',
-            data: {
-                name: name,
-                date:  d,
-                body: msg,
-                room : room
-            }
-          }).catch((napaka) => {
-            console.log("Sporočilo se ni uspešno poslalo na bazo!");
-          });
-    }
-    
-    // connection list
-    let sockets = [];
     
     wsserver.on('connection', function(socket) {
         // ko se nov connection naredi, ga dodamo v sockets list
@@ -168,6 +122,15 @@ function start_ws() {
                         console.log(user.getUsername(), "does not have permission for", command_data.username);
                     }
                 }
+
+                else if (command == "ER") {
+                    if (command_data.username == undefined) {
+                        user.joinRoom(undefined);
+                    }
+                    else {
+                        user.joinRoom(command_data.username);
+                    }
+                }
             
                 else if (command == "MU") {
                     user.mute.push(command_data.username);
@@ -218,6 +181,52 @@ function start_ws() {
 }
 
 start_ws();
+
+function dto_for_LI(user) {
+    // build structure to send to a new user
+    // tell him about all players in the room
+    var dto = {
+        "room": user.getRoom(),
+        "players": []
+    };
+
+    sockets.forEach(s => {
+        if (s !== user && s.getRoom() == user.getRoom()) {
+            dto.players.push(s.getPublicInfo());
+        }
+    })
+
+    return dto;
+}
+
+function findByUsername(username) {
+    for (let i = 0; i < sockets.length; i++) {
+        const user = sockets[i];
+        if (user.getUsername() == username) {
+            return user;
+        }
+    }
+}
+
+function sendChatLog(name, msg, room) {
+    var d = new Date();
+    var date = d.getTime();
+    if(room == undefined) {
+        room = "global";
+    }
+    axios({
+        method: 'post',
+        url: apiParametri.streznik + '/api/chatlogs',
+        data: {
+            name: name,
+            date:  d,
+            body: msg,
+            room : room
+        }
+      }).catch((napaka) => {
+        console.log("Sporočilo se ni uspešno poslalo na bazo!");
+      });
+}
 
 class UserSocket {
     constructor(socket) {
