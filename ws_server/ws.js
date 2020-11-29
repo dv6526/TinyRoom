@@ -11,6 +11,7 @@ class UserSocket {
     constructor(socket) {
         this.username = undefined;
         this.sprite_idx = undefined;
+        this.weather = undefined;
         this.friends = [];
         this.mute = [];
         this.room = undefined;
@@ -65,6 +66,10 @@ class UserSocket {
         return this.username;
     }
 
+    getWeather() {
+        return this.weather;
+    }
+
     getSkin() {
         return this.sprite_idx;
     }
@@ -76,10 +81,11 @@ class UserSocket {
         return true;
     }
 
-    identify(username, token, callback) {
+    identify(username, token, weather, callback) {
         // TO DO, check in database if cookie matches username
         // if it does, assign username
         this.username = username;
+        this.weather = weather;
         var chosenSkin;
         var user = this;
         //api call
@@ -103,7 +109,8 @@ class UserSocket {
         return {
             "username": this.getUsername(),
             "position": this.getPosition(),
-            "skin": this.getSkin()
+            "skin": this.getSkin(),
+            "weather": this.getWeather()
         }
     }
 }
@@ -180,7 +187,7 @@ wsserver.on('connection', function(socket) {
         if (!user.isIdentified()) {
             if (command == "ID") {
                 // the user is trying to identify himself
-                user.identify(command_data.username, command_data.token, function (success) {
+                user.identify(command_data.username, command_data.token, command_data.weather, function (success) {
                     if (success) {
                         console.log(user.username, "has identified himself");
     

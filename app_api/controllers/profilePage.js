@@ -8,7 +8,7 @@ const terminateProfile = (req, res) => {
             if (napaka) {
                 return res.status(500).json(napaka);
             }
-            res.status(204).json({"sporočilo" : "Ne najdem uporabnika!"});
+            return res.status(204).json({"sporočilo" : "Ne najdem uporabnika!"});
         });
     } else {
         res.status(404).json({

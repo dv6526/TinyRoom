@@ -30,7 +30,7 @@ class Vector {
     }
 
     length() {
-        return Math.sqrt(this.x*this.x + this.y*this.y);
+        return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
     clone() {
@@ -49,7 +49,7 @@ const regName = /^[a-zA-Z0-9]{1,10}$/;
 function checkPassword(dogodek) {
     let password = document.getElementById('password');
     let info = document.getElementById("passwordInfo");
-    if(!regPass.test(password.value)) {
+    if (!regPass.test(password.value)) {
         info.innerText = "Password is too short";
         dogodek.preventDefault();
         return;
@@ -60,12 +60,12 @@ function checkPassword(dogodek) {
 function checkProfileInfo(dogodek) {
     let biotitle = document.getElementById("biotitle");
     let bio = document.getElementById('bio')
-    biotitle.value = biotitle.value.substring(0,20);
-    bio.value = bio.value.substring(0,200);
-    if(biotitle.value == "") {
+    biotitle.value = biotitle.value.substring(0, 20);
+    bio.value = bio.value.substring(0, 200);
+    if (biotitle.value == "") {
         biotitle.value = "Default bio title";
     }
-    if(bio.value == "") {
+    if (bio.value == "") {
         bio.value = "This is default bio";
     }
 }
@@ -75,12 +75,12 @@ function checkLoginInfo(dogodek) {
     let username = document.getElementById("username")
     let password = document.getElementById('password');
     let info = document.getElementById("loginInfo");
-    if(!regName.test(username.value)) {
+    if (!regName.test(username.value)) {
         info.innerText = "Username does not fit the specification";
         dogodek.preventDefault();
         return;
     }
-    if(!regPass.test(password.value)) {
+    if (!regPass.test(password.value)) {
         info.innerText = "Password does not fit the specification";
         dogodek.preventDefault();
         return;
@@ -96,17 +96,17 @@ function checkRegisterInfo(dogodek) {
     let password = document.getElementById('passwordRegister');
     let info = document.getElementById("registerInfo");
 
-    if(!regEmail.test(email.value)) {
+    if (!regEmail.test(email.value)) {
         info.innerText = "Email address has a typo";
         dogodek.preventDefault();
         return;
     }
-    if(!regName.test(name.value)) {
+    if (!regName.test(name.value)) {
         info.innerText = "Username should consist only of letters or numbers";
         dogodek.preventDefault();
         return;
     }
-    if(!regPass.test(password.value)) {
+    if (!regPass.test(password.value)) {
         info.innerText = "Password is too short";
         dogodek.preventDefault();
         return;
@@ -138,24 +138,24 @@ function addZero(i) {
 
 // new message
 function novoSporocilo(sporocilo_info) {
-    var sporocilo=document.createElement("div");
+    var sporocilo = document.createElement("div");
     sporocilo.classList.add("message-bubble");
-    sporocilo.setAttribute("data-username",sporocilo_info.sender);
+    sporocilo.setAttribute("data-username", sporocilo_info.sender);
 
-    if (sporocilo_info.player==true) {
+    if (sporocilo_info.player == true) {
         sporocilo.classList.add("player");
     }
 
-    sporocilo.textContent=((sporocilo_info.date)+" "+(sporocilo_info.sender)+": "+(sporocilo_info.body));
+    sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + ": " + (sporocilo_info.body));
     document.querySelector("#chatlogs").prepend(sporocilo);
 }
 
 function messageDropdown(screenPosition, dropdown_info, chat) {
     // MessageDropdown
     function dropdownReset() {
-        if(document.getElementById("dropdown")) {
+        if (document.getElementById("dropdown")) {
             document.getElementById("dropdown").remove();
-            setTimeout(function() {
+            setTimeout(function () {
                 chat.dropdown_active = false;
             }, 0.5)
         }
@@ -179,12 +179,14 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
                 break;
             case "mute":
                 chat.socket.send("MU " + JSON.stringify({
-                    "username" : dropdown_info.username}));
+                    "username": dropdown_info.username
+                }));
                 mutedPlayers.push(dropdown_info.username);
                 break;
             case "unmute":
                 chat.socket.send("UN " + JSON.stringify({
-                    "username" : dropdown_info.username}));
+                    "username": dropdown_info.username
+                }));
                 mutedPlayers = mutedPlayers.filter(player => player !== dropdown_info.username);
                 break;
 
@@ -204,8 +206,8 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     let row = document.createElement("li");
     let link = document.createElement("a");
     let options = [["mute", "unmute"], "room invite", ["join room", "leave room"], "private message",
-                    ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
-    let optionsLength = (dropdown_info.rank == "admin")?options.length:4;
+    ["global mute", "global unmute"], "warn", "kick", "ban", "teleport", "enter room"];
+    let optionsLength = (dropdown_info.rank == "admin") ? options.length : 4;
     /*
         Construct dropdown
     */
@@ -214,22 +216,22 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     dropdown.id = "dropdown";
     dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
     dropdown_nav.className = "nav flex-columns";                 // bootstrap
-    for(let i=0;i<optionsLength;i++) {
+    for (let i = 0; i < optionsLength; i++) {
         //row = document.createElement("li");
         link = document.createElement("a");                         // has to be reinitialized every time
-        row.className="nav-item";                                   // bootstrap
+        row.className = "nav-item";                                   // bootstrap
         link.className = "nav-link pt-0 pb-0";                      // bootstrap
         //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
-        
+
         // append childs to parents (look out for mute/unmute, global mute/unmute)
-        if (i==0)
-            link.appendChild(document.createTextNode((dropdown_info.muted)? options[i][1]: options[i][0]));
-        else if (i==4)
-            link.appendChild(document.createTextNode((dropdown_info.g_muted)? options[i][1]: options[i][0]));
-        else if (i==2) {
-            link.appendChild(document.createTextNode((chat.room == undefined)? options[i][0]: options[i][1]));
+        if (i == 0)
+            link.appendChild(document.createTextNode((dropdown_info.muted) ? options[i][1] : options[i][0]));
+        else if (i == 4)
+            link.appendChild(document.createTextNode((dropdown_info.g_muted) ? options[i][1] : options[i][0]));
+        else if (i == 2) {
+            link.appendChild(document.createTextNode((chat.room == undefined) ? options[i][0] : options[i][1]));
         }
-        else 
+        else
             link.appendChild(document.createTextNode(options[i]));
         row.appendChild(link);
         dropdown_nav.appendChild(row);
@@ -242,7 +244,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     let picture = document.createElement("img");
     let title = document.createElement("h5");
     let description = document.createElement("div");
-    profile.id="dropdown_profile";
+    profile.id = "dropdown_profile";
 
     // picture
     picture.src = dropdown_info.bio_pic;
@@ -254,11 +256,11 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     title.appendChild(document.createTextNode(dropdown_info.bio_title.toUpperCase()));
     title.className = "text-center";
     // bio description
-    description.className ="";
+    description.className = "";
     description.append(document.createTextNode(dropdown_info.bio_description));
     description.className = "p-2";
     description.style.fontSize = "12px"
-    
+
     // append everything
     profile.append(picture);
     profile.append(title);
@@ -279,8 +281,8 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
         document.removeEventListener("click", click_handler);
     }
 
-    document.addEventListener("click", click_handler);     
-       
+    document.addEventListener("click", click_handler);
+
 
     // Opens dropdown on x,y position
     // check if clicked closer to the edge than allowed
@@ -297,7 +299,7 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     */
     dropdown.style.top = screenPosition.y + "px";
     dropdown.style.left = screenPosition.x + "px";
-    
+
     // Close dropdown if clicked anywhere else on the screen 
     // klic dropdownButtonClick(brez opcije) ali dropdownReset()
     // PRI RESIZE-U OKNA SKRIJ DIV (klic dropdownReset()), ker se ne premika skladno in bo potem postavljen kr nekje
@@ -309,9 +311,9 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
 function openSearchField(screenPosition, chat) {
 
     function closeSearchField() {
-        if(document.getElementById("search-box")) {
+        if (document.getElementById("search-box")) {
             document.getElementById("search-box").remove();
-            setTimeout(function() {
+            setTimeout(function () {
                 chat.searchField_active = false;
             }, 0.5)
         }
@@ -327,17 +329,17 @@ function openSearchField(screenPosition, chat) {
 
     searchField.id = "search-field";
     searchField.className = "input-sm";
-    searchField.setAttribute("type","text");
-    searchField.setAttribute("name","search-field");
-    searchField.setAttribute("placeholder","Search");
+    searchField.setAttribute("type", "text");
+    searchField.setAttribute("name", "search-field");
+    searchField.setAttribute("placeholder", "Search");
 
-    searchField.onkeyup = function(event) {
+    searchField.onkeyup = function (event) {
 
         var matching_players = chat.users.filter(u => u.getName().includes(searchField.value));
         if (matching_players.length == 1 && !matching_players.includes(chat.player)) {
             if (event.key != 'Backspace') {
                 searchField.value = matching_players[0].getName();
-                chat.player.setWantedPos(matching_players[0].getWantedPos().clone().add(new Vector(Math.floor(Math.random()*101)-50, Math.floor(Math.random()*101)-50) ));
+                chat.player.setWantedPos(matching_players[0].getWantedPos().clone().add(new Vector(Math.floor(Math.random() * 101) - 50, Math.floor(Math.random() * 101) - 50)));
                 chat.sendPosition();
             }
         }
@@ -347,7 +349,7 @@ function openSearchField(screenPosition, chat) {
     searchBox.appendChild(searchField);
 
     document.body.appendChild(searchBox);
-    
+
     searchBox.style.top = screenPosition.y + "px";
     searchBox.style.left = screenPosition.x + "px";
 
@@ -359,7 +361,7 @@ function openSearchField(screenPosition, chat) {
         }
     }
 
-    document.addEventListener("click", click_handler);   
+    document.addEventListener("click", click_handler);
 }
 
 // END OF UTILITY FUNCTIONS ================================
@@ -398,6 +400,10 @@ class User {
         return this.position;
     }
 
+    getWeather() {
+        return this.weather;
+    }
+
     getName() {
         return this.name;
     }
@@ -420,13 +426,13 @@ class User {
         if (distanceToWanted > treshold) {
             vectorToWanted.normalize().multiply(
                 Math.min(
-                    Math.min(speed*(distanceToWanted/slowdown_distance), speed),
+                    Math.min(speed * (distanceToWanted / slowdown_distance), speed),
                     distanceToWanted
-                    )
-                );
+                )
+            );
             this.position.add(vectorToWanted);
         }
-        
+
     }
 
 }
@@ -461,10 +467,11 @@ class Chat {
             this.furniture = [];
             // furniture assets
             this.assets = {
-                "fotelj": {img:returnImageObject('/editor/fotelj.png', null), scale: 1.4},
-                "stol": {img:returnImageObject('/editor/stol.png', null), scale: 1.4},
-                "stolcek": {img:returnImageObject('/editor/stolcek.png', null), scale: 1.4},
-                "light": {img:returnImageObject('/editor/light.png', null), scale: 1.4}
+                "fotelj": { img: returnImageObject('/editor/fotelj.png', null), scale: 1.4 },
+                "stol": { img: returnImageObject('/editor/stol.png', null), scale: 1.4 },
+                "stolcek": { img: returnImageObject('/editor/stolcek.png', null), scale: 1.4 },
+                "light": { img: returnImageObject('/editor/light.png', null), scale: 1.4 },
+                "weather": returnImageObject('/images/weather.png', null)
             };
 
             // set up background drawing offset
@@ -480,17 +487,17 @@ class Chat {
 
             var chat = this;
             // set up background
-            this.background = returnImageObject('/images/map.png', function() {
+            this.background = returnImageObject('/images/map.png', function () {
                 // this executes when the background loads
                 // set background center to center of screen
                 // calculate ratio
-                var ratio = chat.background.width/chat.background.height;
+                var ratio = chat.background.width / chat.background.height;
                 // set height
                 chat.background_height = chat.background_width / ratio;
 
                 chat.offset = new Vector(
-                    chat.background_width * chat.background_center.x - chat.canvas.width/2,
-                    chat.background_height * chat.background_center.y - chat.canvas.height/2
+                    chat.background_width * chat.background_center.x - chat.canvas.width / 2,
+                    chat.background_height * chat.background_center.y - chat.canvas.height / 2
                 );
 
                 // Add Player
@@ -498,7 +505,7 @@ class Chat {
 
                 // Start drawing
                 chat.drawLoop();
-                
+
                 // add event listeners for interacting
                 chat.hookControls();
 
@@ -507,13 +514,13 @@ class Chat {
             });
         }
 
-        
+
     }
 
     changeBackground(background) {
         var backgrounds = {
             "map": {
-                'file':'/images/map.png',
+                'file': '/images/map.png',
                 'width': 2000,
                 'center': {
                     'x': 0.42,
@@ -522,7 +529,7 @@ class Chat {
                 'clear_color': '#387eb4'
             },
             "room": {
-                'file':'/editor/room.png',
+                'file': '/editor/room.png',
                 'width': 400,
                 'center': {
                     'x': 0.5,
@@ -539,17 +546,17 @@ class Chat {
 
         var chat = this;
         // set up background
-        this.background = returnImageObject(backgrounds[background].file, function() {
+        this.background = returnImageObject(backgrounds[background].file, function () {
             // this executes when the background loads
             // set background center to center of screen
             // calculate ratio
-            var ratio = chat.background.width/chat.background.height;
+            var ratio = chat.background.width / chat.background.height;
             // set height
             chat.background_height = chat.background_width / ratio;
 
             chat.offset = new Vector(
-                chat.background_width * chat.background_center.x - chat.canvas.width/2,
-                chat.background_height * chat.background_center.y - chat.canvas.height/2
+                chat.background_width * chat.background_center.x - chat.canvas.width / 2,
+                chat.background_height * chat.background_center.y - chat.canvas.height / 2
             );
 
             chat.player.setPosition(new Vector(chat.background_width * chat.background_center.x, chat.background_height * chat.background_center.y));
@@ -572,8 +579,7 @@ class Chat {
         var position = new Vector(600, 600);
         var name = username;
         // default weather
-        var weather = "sunny";
-        
+
         var player = new User(position, name, weather, sprite_idx);
         this.addUser(player, true);
     }
@@ -586,7 +592,7 @@ class Chat {
             this.canvas.height = this.canvas.width;
         }
     }
-    
+
     inMap(position) {
         if (position.x <= this.canvas.width && position.y <= this.canvas.height && 0 <= position.x && 0 <= position.y) {
             return true;
@@ -601,7 +607,7 @@ class Chat {
     hookControls() {
         var chat = this;
         // move handler
-        document.addEventListener('click', function(click) {
+        document.addEventListener('click', function (click) {
             var position = getCanvasMousePos(click, chat.canvas);
             if (chat.inMap(position) && !chat.dropdown_active && !chat.searchField_active) {
                 var wanted_position = position.clone().add(chat.offset);
@@ -611,7 +617,7 @@ class Chat {
             }
         });
 
-        document.addEventListener('contextmenu', function(click) {
+        document.addEventListener('contextmenu', function (click) {
             var position = getCanvasMousePos(click, chat.canvas);
             if (chat.inMap(position)) {
                 click.preventDefault();
@@ -623,7 +629,7 @@ class Chat {
                 var found_user = '';
                 for (let i = 0; i < chat.users.length; i++) {
                     const user = chat.users[i];
-                    
+
                     if (user.getPosition().clone().subtract(chat.offset).subtract(position).length() <= treshold) {
                         found = true;
                         found_user = user.getName();
@@ -633,14 +639,15 @@ class Chat {
                 if (found) {
                     chat.dropdown_active = true;
                     var isMuted = false;
-                    if(mutedPlayers.includes(found_user)) {
+                    if (mutedPlayers.includes(found_user)) {
                         isMuted = true;
                     }
                     //getProfileInfo
-                    $.ajax({url: "api/uporabniki/" + found_user + "/profile", success: function(result){
-                        console.log(result);
+                    $.ajax({
+                        url: "api/uporabniki/" + found_user + "/profile", success: function (result) {
+                            console.log(result);
 
-                        messageDropdown({x: click.clientX, y: click.clientY},{
+                            messageDropdown({ x: click.clientX, y: click.clientY }, {
                                 'rank': 'user',
                                 'muted': isMuted,
                                 'g_muted': false,
@@ -650,24 +657,25 @@ class Chat {
                                 'bio_title': result.bio_title,
                                 'bio_description': result.bio
                             }, chat);
-                    }});
+                        }
+                    });
 
-                    
+
                 }
 
                 else {
                     if (!chat.searchField) {
                         chat.searchField_active = true;
-                        openSearchField({x: click.clientX, y: click.clientY},chat);
+                        openSearchField({ x: click.clientX, y: click.clientY }, chat);
                     }
                 }
 
             }
         });
 
-        document.getElementById("messagesend").addEventListener('click', function() {
+        document.getElementById("messagesend").addEventListener('click', function () {
             var message = document.getElementById("message");
-            
+
             var to_send = {
                 "message": message.value
             }
@@ -680,9 +688,9 @@ class Chat {
                     date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
                     player: true
                 })
-    
+
                 message.value = "";
-                
+
                 chat.socket.send("MS " + JSON.stringify(to_send));
             }
         });
@@ -691,10 +699,10 @@ class Chat {
     centerOnPlayer() {
         var left_upper_corner = this.offset;
         var right_bottom_corner = this.offset.clone().add(new Vector(this.canvas.width, this.canvas.height));
-        var canvas_center = this.offset.clone().add(new Vector(this.canvas.width/2, this.canvas.height/2));
+        var canvas_center = this.offset.clone().add(new Vector(this.canvas.width / 2, this.canvas.height / 2));
         var player_position = this.player.position;
         // check if player is close to border, move if he is
-        const treshold = Math.min(250, this.canvas.width/2-50);
+        const treshold = Math.min(250, this.canvas.width / 2 - 50);
         const move_speed = 2.5;
         // calculate distances from border
         // top, right, bottom, left
@@ -721,9 +729,24 @@ class Chat {
         var textWidth = this.context.measureText(text).width;
         this.context.strokeStyle = 'black';
         this.context.lineWidth = 3;
-        this.context.strokeText(text, x-textWidth/2, y-35);
+        this.context.strokeText(text, x - textWidth / 2, y - 35);
         this.context.fillStyle = 'white';
-        this.context.fillText(text, x-textWidth/2, y-35);
+        this.context.fillText(text, x - textWidth / 2, y - 35);
+    }
+
+    drawWeather(type, x, y) {
+        var dict = { "clear sky": 0,
+                    "few clouds": 3,
+                    "scattered clouds": 3,
+                    "broken clouds": 3,
+                    "mist": 3,
+                    "shower rain": 1,
+                    "rain": 1,
+                    "thunderstorm": 4,
+                    "snow": 2 };
+        var widx = dict[type];
+
+        this.context.drawImage(this.assets.weather, widx*19, 0, 19, 19, x-30, y-95, 60, 60);
     }
 
     drawLoop() {
@@ -743,10 +766,11 @@ class Chat {
             chat.centerOnPlayer();
             context.drawImage(chat.background, -chat.offset.x, -chat.offset.y, chat.background_width, chat.background_height);
 
+            // draw furniture
             for (let i = 0; i < chat.furniture.length; i++) {
                 const furnitureObject = chat.furniture[i];
                 const furniture = chat.assets[furnitureObject.type];
-                context.drawImage(furniture.img, furnitureObject.position.x - chat.offset.x, furnitureObject.position.y - chat.offset.y, furniture.img.width*furniture.scale*(4/5), furniture.img.height*furniture.scale*(4/5));
+                context.drawImage(furniture.img, furnitureObject.position.x - chat.offset.x, furnitureObject.position.y - chat.offset.y, furniture.img.width * furniture.scale * (4 / 5), furniture.img.height * furniture.scale * (4 / 5));
             }
 
             // draw users
@@ -754,9 +778,13 @@ class Chat {
                 var user = chat.users[i];
 
                 user.step();
-                // draw user avatar
+
+                // draw user name
                 chat.drawName(user.getName(), user.position.x - chat.offset.x, user.position.y - chat.offset.y);
-                context.drawImage(user.canvas, user.position.x - chat.offset.x - avatar_size/2, user.position.y - chat.offset.y - avatar_size/2, avatar_size, avatar_size);
+                // draw user avatar
+                context.drawImage(user.canvas, user.position.x - chat.offset.x - avatar_size / 2, user.position.y - chat.offset.y - avatar_size / 2, avatar_size, avatar_size);
+                // draw weather
+                chat.drawWeather(user.getWeather(), user.position.x - chat.offset.x, user.position.y - chat.offset.y);
             }
 
         }
@@ -784,17 +812,17 @@ class Chat {
             type: "GET",
             url: '/api/privateRoom/' + username_to_join,
             contentType: 'application/json',
-            success: function(result,status,xhr) {
+            success: function (result, status, xhr) {
                 console.log(result);
-                for(var i = 0; i < result.objects.length; i++) {
+                for (var i = 0; i < result.objects.length; i++) {
                     var room_object = result.objects[i];
                     var position = room_object.position;
                     position.x += 0.5;
                     position.y += 0.5;
                     position.x *= 400;
                     position.y *= 400;
-                    furniture.push(new Furniture(room_object.type,new Vector(position.x, position.y)));
-                    
+                    furniture.push(new Furniture(room_object.type, new Vector(position.x, position.y)));
+
                 }
             }
         });
@@ -829,19 +857,20 @@ class Chat {
 
         var chat = this;
 
-        this.socket.onopen = function(event) {
+        this.socket.onopen = function (event) {
             // we need to identify ourselves to the server
             // prepare json
             var identification = {
                 "username": chat.player.getName(),
-                "token": 999999
+                "token": 999999,
+                "weather": weather
             }
 
             chat.socket.send("ID " + JSON.stringify(identification));
 
         }
 
-        this.socket.onmessage = function(event) {
+        this.socket.onmessage = function (event) {
             const msg = event.data;
             var command = msg.substr(0, 2);
             var command_data = JSON.parse(msg.substr(3));
@@ -856,7 +885,7 @@ class Chat {
 
                     for (let i = 0; i < players.length; i++) {
                         const player = players[i];
-                        var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
+                        var player_to_add = new User(undefined, player["username"], player["weather"], player["skin"]);
                         var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                         player_to_add.setWantedPos(pos);
                         player_to_add.setPosition(pos);
@@ -869,7 +898,7 @@ class Chat {
                     var position = command_data["position"];
 
                     for (let i = 0; i < chat.users.length; i++) {
-                        
+
                         const user = chat.users[i];
 
                         if (user.getName() == position["username"]) {
@@ -878,14 +907,14 @@ class Chat {
                             break;
                         }
                     }
-                    
+
                     break;
                 case 'JO':
 
                     // player joined the room
                     var player = command_data["player"];
                     console.log(player);
-                    var player_to_add = new User(undefined, player["username"], 'sunny', player["skin"]);
+                    var player_to_add = new User(undefined, player["username"], player["weather"], player["skin"]);
                     var pos = new Vector(player["position"]["x"], player["position"]["y"]);
                     player_to_add.setWantedPos(pos);
                     player_to_add.setPosition(pos);
@@ -910,7 +939,7 @@ class Chat {
             }
         }
 
-        this.socket.onclose = function(event) {
+        this.socket.onclose = function (event) {
             console.log("Socket closed!");
         }
     }
@@ -977,13 +1006,13 @@ $(function () {
     */
 
     //js za pojavno okno
-    function topAlert(message, seconds){
+    function topAlert(message, seconds) {
         var okno = document.createElement('div');
         okno.textContent = message;
         okno.className = 'message-bubble modalnoOkno';
         document.body.appendChild(okno);
 
-        var cas = setTimeout(function() { okno.remove(); }, seconds * 1000);
+        var cas = setTimeout(function () { okno.remove(); }, seconds * 1000);
     }
 
     function orangeObroba() {
@@ -1005,7 +1034,7 @@ $(function () {
     // Start of Code =======================================
     // Tukaj lahko klicete funkcije da jih testirate
     //topAlert("delaj", 7);
-    
+
     /*
         Dropdown test
     */
@@ -1029,7 +1058,7 @@ $(function () {
 
 
     // End of Code =========================================
-    
+
 
 
 
