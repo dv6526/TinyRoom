@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dbURI;
+let dbURI;
 if (process.env.NODE_ENV == "production") {
   dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
 }
