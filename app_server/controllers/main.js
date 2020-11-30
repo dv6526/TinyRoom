@@ -168,6 +168,7 @@ const registerin = (req, res) => {
       }).then((odgovor) => {
         req.session.user = odgovor.data.username;
         req.session.user_id = odgovor.data._id;
+	req.session.rank = odgovor.data.rank;
         var skins = {"bunny" : 0, "goat":1, "rat":2};
         req.session.sprite_idx = skins[odgovor.data.chosen_skin];
         if(longit === "" &&  latit === "") {

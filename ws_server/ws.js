@@ -90,7 +90,9 @@ function start_ws() {
                     var msg = command_data.message;
                     if(msg.length > 0 && !user.g_muted) {
                         console.log(user.getUsername(), msg, user.getRoom());
-                        sendChatLog(user.getUsername(), msg, user.getRoom());
+                        
+			try {sendChatLog(user.getUsername(), msg, user.getRoom());}
+			catch(napaka) {console.log("sendChatLog napaka");}
         
                         sockets.forEach(s => {
                             // dont send to itself
