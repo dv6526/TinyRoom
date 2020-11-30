@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 
-const dbURI = 'mongodb://localhost/smalltalk';
+const dbURI;
+if (process.env.NODE_ENV == "production") {
+  dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
+}
+else {
+  dbURI = 'mongodb://localhost/smalltalk';
+}
+
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
   useCreateIndex: true,
