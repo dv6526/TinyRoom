@@ -3,8 +3,13 @@ const chatLogs = mongoose.model('chatLogs');
 
 const sendChatLog = (req, res) => {
     chatLogs.findOne({}).exec((napaka, log) => {
-        log.messages.push(req.body);
-        log.save(req.body);
+        try {
+            log.messages.push(req.body);
+            log.save(req.body);
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 }
 
