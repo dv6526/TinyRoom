@@ -71,117 +71,123 @@ function start_ws() {
             }
     
             else {
-                if (command == "PO") {
-                    // player has supplied us with his position
-                    user.setPosition(command_data);
-                    //console.log(user);
-                    sockets.forEach(s => {
-                        // dont send to itself
-                        if (s !== user && s.getRoom() == user.getRoom()) {
-                            s.socket.send("PO " + JSON.stringify(
-                                {"position": user.getPublicInfo()}
-                            ));
-                        }
-                    });
-                }
-    
-                else if (command == "MS") {
-                    
-                    var msg = command_data.message;
-                    if(msg.length > 0 && !user.g_muted) {
-                        console.log(user.getUsername(), msg, user.getRoom());
-                        
-			try {sendChatLog(user.getUsername(), msg, user.getRoom());}
-			catch(napaka) {console.log("sendChatLog napaka");}
-        
+                try {
+                    if (command == "PO") {
+                        // player has supplied us with his position
+                        user.setPosition(command_data);
+                        //console.log(user);
                         sockets.forEach(s => {
                             // dont send to itself
-                            //we are sending from user to s
-                            //we dont send if s muted user
-                            if (s !== user && s.getRoom() == user.getRoom() && !s.mute.includes(user.getUsername())) {
-                                s.socket.send("MS " + JSON.stringify({
-                                    "message": msg,
-                                    "username": user.getUsername()
-                                }));
+                            if (s !== user && s.getRoom() == user.getRoom()) {
+                                s.socket.send("PO " + JSON.stringify(
+                                    {"position": user.getPublicInfo()}
+                                ));
                             }
                         });
                     }
-                    
-                }
-    
-                else if (command == "AL") {
-                    user.friends.push(command_data.username);
-                }
-    
-                else if (command == "JO") {
-                    if (command_data.username == undefined) {
-                        user.joinRoom(undefined);
-                    }
-                    else if (user.getUsername() == command_data.username || findByUsername(command_data.username).friends.includes(user.getUsername())) {
-                        user.joinRoom(command_data.username);
-                    }
-                    else {
-                        console.log(user.getUsername(), "does not have permission for", command_data.username);
-                    }
-                }
-
-                else if (command == "ER") {
-                    if (command_data.username == undefined) {
-                        user.joinRoom(undefined);
-                    }
-                    else {
-                        user.joinRoom(command_data.username);
-                    }
-                }
+        
+                    else if (command == "MS") {
+                        
+                        var msg = command_data.message;
+                        if(msg.length > 0 && !user.g_muted) {
+                            console.log(user.getUsername(), msg, user.getRoom());
+                            
+                            try {sendChatLog(user.getUsername(), msg, user.getRoom());}
+                            catch(napaka) {console.log("sendChatLog napaka");}
             
-                else if (command == "MU") {
-                    user.mute.push(command_data.username);
-                }
-    
-                else if (command == "UN") {
-                    user.mute = user.mute.filter(u => u !== command_data.username);
-                }
-    
-                else if (command == "GM") {
-                    findByUsername(command_data.username).g_muted = true;
-                    sockets.forEach(s => {
-                        // dont send to itself
-                        if (s !== user) {
-                            s.socket.send("GM " + JSON.stringify(
-                                {"username": command_data.username}
-                            ));
+                            sockets.forEach(s => {
+                                // dont send to itself
+                                //we are sending from user to s
+                                //we dont send if s muted user
+                                if (s !== user && s.getRoom() == user.getRoom() && !s.mute.includes(user.getUsername())) {
+                                    s.socket.send("MS " + JSON.stringify({
+                                        "message": msg,
+                                        "username": user.getUsername()
+                                    }));
+                                }
+                            });
                         }
-                    });
-                }
-    
-                else if (command == "GU") {
-                    findByUsername(command_data.username).g_muted = false;
-                    sockets.forEach(s => {
-                        // dont send to itself
-                        if (s !== user) {
-                            s.socket.send("GU " + JSON.stringify(
-                                {"username": command_data.username}
-                            ));
+                        
+                    }
+        
+                    else if (command == "AL") {
+                        user.friends.push(command_data.username);
+                    }
+        
+                    else if (command == "JO") {
+                        if (command_data.username == undefined) {
+                            user.joinRoom(undefined);
                         }
-                    });
+                        else if (user.getUsername() == command_data.username || findByUsername(command_data.username).friends.includes(user.getUsername())) {
+                            user.joinRoom(command_data.username);
+                        }
+                        else {
+                            console.log(user.getUsername(), "does not have permission for", command_data.username);
+                        }
+                    }
+    
+                    else if (command == "ER") {
+                        if (command_data.username == undefined) {
+                            user.joinRoom(undefined);
+                        }
+                        else {
+                            user.joinRoom(command_data.username);
+                        }
+                    }
+                
+                    else if (command == "MU") {
+                        user.mute.push(command_data.username);
+                    }
+        
+                    else if (command == "UN") {
+                        user.mute = user.mute.filter(u => u !== command_data.username);
+                    }
+        
+                    else if (command == "GM") {
+                        findByUsername(command_data.username).g_muted = true;
+                        sockets.forEach(s => {
+                            // dont send to itself
+                            if (s !== user) {
+                                s.socket.send("GM " + JSON.stringify(
+                                    {"username": command_data.username}
+                                ));
+                            }
+                        });
+                    }
+        
+                    else if (command == "GU") {
+                        findByUsername(command_data.username).g_muted = false;
+                        sockets.forEach(s => {
+                            // dont send to itself
+                            if (s !== user) {
+                                s.socket.send("GU " + JSON.stringify(
+                                    {"username": command_data.username}
+                                ));
+                            }
+                        });
+                    }
+    
+                    else if (command == "WA") {
+                        findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
+                    }
+    
+                    else if (command == "PM") {
+                        findByUsername(command_data.recipient).socket.send("PM " + JSON.stringify({
+                            "username": user.getUsername(),
+                            "message": command_data.message
+                        }));
+                    }
+    
+                    else if (command == "KI") {
+                        var kicked_user = findByUsername(command_data.username);
+                        kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
+                        kicked_user.socket.close();
+                    }
                 }
-
-                else if (command == "WA") {
-                    findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
+                catch(napaka) {
+                    console.log(napaka);
                 }
-
-                else if (command == "PM") {
-                    findByUsername(command_data.recipient).socket.send("PM " + JSON.stringify({
-                        "username": user.getUsername(),
-                        "message": command_data.message
-                    }));
-                }
-
-                else if (command == "KI") {
-                    var kicked_user = findByUsername(command_data.username);
-                    kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
-                    kicked_user.socket.close();
-                }
+                
             }
         });
     
