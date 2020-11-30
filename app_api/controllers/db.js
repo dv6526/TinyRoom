@@ -26,6 +26,7 @@ const deleteAll = (req, res) => {
             return res.status(500).json(napaka);
         }
     });
+    chatLogs.create({});
     res.status(200).json({"sporocilo": "Izbrisani je bilo vse."});
 }
 
