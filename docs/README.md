@@ -55,5 +55,5 @@ Naložen morate imeti docker.
     * Nekaterih tipov dokumentov (kot je private room) v naši aplikaciji ni logično brisati.
 
 # Uporabljene npm knjižnice
-Uporabili smo knjižnico **ws**, ki jo uporabljamo za prenos sporočil in vso komunikacijo potrebno za delovanje interkativnega chata.
-Dodatno smo uporabili **nodemailer**, ki ob registraciji na mail sporoči, da je bil uporabnik kreiran.
+* Uporabili smo knjižnico **ws**, ki jo uporabljamo za prenos sporočil in vso komunikacijo potrebno za delovanje interkativnega chata.
+* Dodatno smo uporabili **nodemailer**, ki ob registraciji na mail sporoči, da je bil uporabnik kreiran.
