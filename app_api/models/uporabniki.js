@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const uporabnikiShema = new mongoose.Schema({
     username : {type: String, required: true, unique: true},
-    rank: {type: String, default: "user"},
+    rank: {type: String, default: ""},
     email: {type: String, required: true},
     password: {type: String, required: true},
     profile_picture: {type: String, "default": ""},
