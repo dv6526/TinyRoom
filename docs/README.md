@@ -35,13 +35,17 @@ Spletno stran nam je brez težav uspelo odpreti na računalnikih (Google Chrome 
 
 # [Povezava na Heroku](https://fri-tinytalk.herokuapp.com)
 Če povezava ob kliku na naslov ne deluje uporabite spodnjo.
+
     http://157.245.36.23/
 
 # Navodila za zagon aplikacije lokalno
-* Naložen morate imeti node.js:
+Naložen morate imeti node.js.
+
     npm install
     npm start
-* Naložen morate imeti docker.
+    
+Naložen morate imeti docker.
+
     docker-compose up --no-start
     docker start sp-smalltalk-mongodb
     docker start sp-smalltalk-app   // trenutno ne deluje
