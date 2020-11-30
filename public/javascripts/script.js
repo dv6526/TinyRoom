@@ -409,6 +409,12 @@ function openSearchField(screenPosition, chat) {
             }
         }
 
+        if (event.key == 'Enter') {
+            matching_players = chat.users.filter(u => u.getName() == searchField.value);
+            chat.player.setWantedPos(matching_players[0].getWantedPos().clone().add(new Vector(Math.floor(Math.random() * 101) - 50, Math.floor(Math.random() * 101) - 50)));
+            chat.sendPosition();
+        }
+
     }
 
     searchBox.appendChild(searchField);
