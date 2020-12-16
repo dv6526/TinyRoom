@@ -7,6 +7,8 @@ const sendChatLog = (req, res) => {
             log.messages.push(req.body);
             log.save(req.body);
         } catch (error) {
+            chatLogs.create({});
+            console.log("Ponovna inicializacija chat logov!");
             console.log(error);
         }
 
