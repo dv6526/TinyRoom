@@ -1,0 +1,56 @@
+<!-- PAGE CONTENT STARTS HERE -->
+<script src="/javascripts/room.js"></script>
+<div class="container-xl">
+    <div class="page-content pisava">
+        <div class="row mt-2 squares-content">
+            <div class="col-md-6 col-12 pt-2">
+                <div class="svetla robovi square-content center-content map">
+                    <canvas id="room" class="robovi" style="width: 95%; height: 95%;">
+                </div>
+                <button type="button" class="btn btn-outline-dark mt-2" style="float: right;"
+                    id="save-room">Save</button>
+            </div>
+            <div class="col-md-6 col-12 pt-2">
+                <style>
+                    .furniture-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        -moz-user-select: none;
+                        -webkit-user-select: none;
+                    }
+
+                    .furniture-name {
+                        margin-right: 20px;
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+                </style>
+                <div class="robovi square-content" id="furniture">
+                    <div class="svetla robovi furniture-container mb-2">
+                        <div class="furniture-name">Fotelj</div>
+                        <img data-furniture="fotelj" class="furniture" src="/editor/fotelj.png" alt="" height="100"
+                            width="100px" style="object-fit: contain;">
+                    </div>
+                    <div class="svetla robovi furniture-container mb-2">
+                        <div class="furniture-name">Stol</div>
+                        <img data-furniture="stol" class="furniture" src="/editor/stol.png" alt="" height="100"
+                            width="100px" style="object-fit: contain;">
+                    </div>
+                    <div class="svetla robovi furniture-container mb-2">
+                        <div class="furniture-name">Stolček</div>
+                        <img data-furniture="stolcek" class="furniture" src="/editor/stolcek.png" alt="" height="100"
+                            width="100px" style="object-fit: contain;">
+                    </div>
+                    <div class="svetla robovi furniture-container mb-2">
+                        <div class="furniture-name">Luč</div>
+                        <img data-furniture="light" class="furniture" src="/editor/light.png" alt="" height="100"
+                            width="100px" style="object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- PAGE CONTENT ENDS HERE -->

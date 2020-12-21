@@ -1,0 +1,110 @@
+<!-- PAGE CONTENT STARTS HERE -->
+<div class="container-s profile">
+  <div class="row">
+    <h2>SETTINGS</h2>
+  </div>
+  <!--RANK-->
+  <div class="row">
+    <div class="col-sm-2 infotype">rank</div>
+    <div class="col-sm-10"  *ngIf="user">{{user.rank}}</div>
+  </div>
+  <!--USERNAME-->
+  <div class="row">
+    <div class="col-sm-2 infotype">username</div>
+    <div class="col-sm-10"  *ngIf="user">{{user.username}}</div>
+  </div>
+  <!--EMAIL-->
+  <div class="row">
+    <div class="col-sm-2 infotype">email</div>
+    <div class="col-sm-10"  *ngIf="user">{{user.email}}</div>
+  </div>
+  <!--PASSWORD-->
+  <form (ngSubmit)="changePassword()"><!-- action='/profile/changePassword' method='post' > -->
+    <div class="form-group row">
+      <label for="password" class="col-sm-2 col-form-label infotype">password</label>
+      <div class="col-sm-10">
+        <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password" name="password"
+               placeholder="password" >
+        <div class="row align">
+          <input type="submit" class="btn btn-primary btn-sm" value="CHANGE PASSWORD" />
+          <div class="passwordInfo">{{changePasswordMessage}}</div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!--TERMINATE MY ACCOUNT-->
+  <form (ngSubmit)="terminateAccount()"><!-- action='/profile/terminate' method='post'> -->
+    <div class="form-group row infotype">
+      <label for="terminate" class="col-sm-2 col-form-label infotype">Delete my account</label>
+      <div class="col-sm-10">
+        <div class="row align">
+          <input type="submit" class="btn btn-primary btn-sm" value="TERMINATE" />
+          <div class="passwordInfo">{{terminateMessage}}</div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <!--APPEARANCE-->
+  <form (ngSubmit)="updateProfile()"><!-- action='/profile/update' method='post' enctype="multipart/form-data" onsubmit="checkProfileInfo(event)">-->
+    <div class="row">
+      <h2>APPEARANCE</h2>
+    </div>
+    <!--PROFILE PICTURE-->
+
+    <div class="form-group row infotype">
+      <label for="pfp" class="col-sm-2 col-form-label infotype">profile picture</label>
+      <div class="col-sm-10">
+        <input [(ngModel)]="profileInfo.profile_picture" type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp"/>
+      </div>
+    </div>
+
+    <!--SKIN-->
+
+    <div class="form-group row infotype">
+      <label for="skin" class="col-sm-2 col-form-label infotype">skin</label>
+      <div class="col-sm-10 skin-selector" *ngIf="user">
+        <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny" [(ngModel)]="profileInfo.chosen_skin"/>
+                <!-- {{checked user.skin "bunny"}} /> -->
+        <label for="bunny"><img src="/assets/images/sprites.png" alt="" class="skin-img bunny {{profileInfo.chosen_skin | check: 'bunny'}}"></label>
+        <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" [(ngModel)]="profileInfo.chosen_skin"/>
+                <!-- {{checked user.skin "goat"}} /> -->
+        <label for="goat"><img src="/assets/images/sprites.png" alt="" class="skin-img goat {{profileInfo.chosen_skin | check: 'goat'}}"></label>
+        <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" [(ngModel)]="profileInfo.chosen_skin"/>
+               <!-- {{checked user.skin "rat"}} /> -->
+        <label for="rat"><img src="/assets/images/sprites.png" alt="" class="skin-img rat {{profileInfo.chosen_skin | check: 'rat'}}" ></label>
+      </div>
+    </div>
+
+    <!--BIO TITLE-->
+
+    <div class="form-group row">
+      <label for="biotitle" class="col-sm-2 col-form-label infotype">bio title</label>
+      <div class="col-sm-10" *ngIf="user">
+        <input  [(ngModel)]="profileInfo.bio_title" type="text" class="form-control input-sm profile-input" id="biotitle" name="biotitle"
+               value="{{user.bio_title}}">
+      </div>
+    </div>
+
+    <!--BIO-->
+
+    <div class="form-group row">
+      <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
+      <div class="col-sm-10">
+                <textarea  [(ngModel)]="profileInfo.bio" class="form-control input-sm profile-input" id="bio" name="bio"
+                          rows="5" *ngIf="user">{{user.bio}}</textarea>
+      </div>
+    </div>
+
+    <!--SUBMIT CHANGES-->
+    <div class="row">
+      <button type="submit" class="btn btn-outline-dark">UPDATE PROFILE</button>
+      <div id="updateProfileInfo">{{updateProfileMessage}}</div>
+    </div>
+
+
+  </form>
+</div>
+<!-- PAGE CONTENT ENDS HERE -->

@@ -1,0 +1,22 @@
+.skin-img-selected{
+  -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+  -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+  filter: brightness(1.2) grayscale(.5) opacity(.9);
+}
+
+#updateProfileInfo{
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.passwordInfo{
+  font-weight: normal;
+  padding-left: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.align {
+  margin-left: 0px;
+}

@@ -1,42 +1,4 @@
-<!-- PAGE CONTENT STARTS HERE -->
-<div class="container-xl">
-    <div class="page-content pisava">
-        <div class="row mt-2 squares-content">
-            <div class="col-md-6 col-12 pt-2">
-                <div class="svetla robovi square-content center-content map">
-                    <canvas id="tinyroom" class="robovi" style="width: 95%; height: 95%;" />
-                </div>
-            </div>
-            <div class="col-md-6 col-12 pt-2">
-                <div class="svetla robovi square-content" id="chat">
-                    <div id="messagebox" class="mb-2">
-                        <textarea id="message" class="robovi temna pisava" name="message" id="" cols="30" rows="3"
-                            placeholder="Enter your message here!"></textarea>
-                        <input type="button" class="robovi pisava text-center" id="messagesend" value="Send">
-                    </div>
-                    <div id="chatlogs" class="robovi temna">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="robovi svetla pisava" id="weather">
-                    <div class="row justify-content-md-around justify-content-center flex-wrap">
-                        {{#each weather}}
-                        <div id="{{id }}" class="pb-3 pt-3 text-center mr-2 ml-2">
-                            <div class="pb-2">{{day}}</div>
-                            <div><img src="http://openweathermap.org/img/wn/{{icon}}@2x.png" alt="Weather icon"
-                                    style="font-size:50px"></div>
-                            <div>{{icon_string}}</div>
-                            <div>{{temperature}}</div>
-                        </div>
-                        {{/each}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- PAGE CONTENT ENDS HERE -->
+<app-frame></app-frame>
+<script src="build/runtime.0e49e2b53282f40c8925.js"></script>
+<script src="build/polyfills.8c151b8375e767ff858f.js"></script>
+<script src="build/main.2d8bec847b7922d38a2b.js"></script>

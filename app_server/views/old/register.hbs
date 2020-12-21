@@ -1,0 +1,58 @@
+<!-- PAGE CONTENT STARTS HERE -->
+<div class="container-xl">
+    <div class="page-content pisava">
+        <div class="row mt-5">
+            <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
+                <h2>Login</h2>
+                <form action="/signin" method="post" id="signinform" onsubmit="checkLoginInfo(event)">
+                    <div class="form-group">
+                        <label for="text">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="remember">Remember me</label>
+                    </div>
+                    <input type="hidden" name="longitude" id="getlon" />
+                    <input type="hidden" name="latitude" id="getlat" />
+                    <button onclick="getLocation()" class="btn btn-outline-dark">Login</button>
+                </form>
+                <div id="loginInfo">{{{error}}}</div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-12 text-center" style="color:white;">
+                <h2>Register</h2>
+                <form action="/register" method="post" id="formRegister" onsubmit="checkRegisterInfo(event)">
+                    <div class="form-group">
+                        <label for="email">e-mail:</label>
+                        <input type="email" class="form-control" id="email" placeholder="Insert e-mail address" required
+                            name="email">
+                    </div>
+                    <!-- spremenil iz username v usernameRegister -- ce pride do kakega buga -->
+                    <div class="form-group">
+                        <label for="usernameRegister">Username:</label>
+                        <input type="text" class="form-control" id="usernameRegister" placeholder="Select username"
+                            required name="username">
+                    </div>
+                    <!-- spremenil iz password v passwordRegister -- ce pride do kakega buga -->
+                    <div class="form-group">
+                        <label for="passwordRegister">Password:</label>
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="Select password"
+                            required name="password">
+                        <input type="hidden" name="longitude" id="getlon1" />
+                        <input type="hidden" name="latitude" id="getlat1" />
+                    </div>
+                    <button onclick="getLocation1()" class="btn btn-outline-dark">Register</button>
+                </form>
+                </br>
+                <div id="registerInfo">{{{error2}}}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- PAGE CONTENT ENDS HERE -->

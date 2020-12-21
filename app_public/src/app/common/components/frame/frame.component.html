@@ -1,0 +1,21 @@
+<!-- TODO: move user data in its own component -->
+<!-- USER DATA -->
+
+<div class="wrapper">
+  <!-- PAGE NAVIGATION STARTS HERE -->
+  <app-nav [activeTab]="activeTab"></app-nav>
+
+  <div class="main-container">
+    <div class="top-bar">
+      <div class="hamburger">
+        <i class="fa fa-bars fa-3x"></i>
+      </div>
+    </div>
+  <!-- PAGE NAVIGATION ENDS HERE -->
+
+    <!-- PAGE CONTENT STARTS HERE -->
+      <router-outlet *ngIf="name" (activate)="changeActive($event)" ></router-outlet>
+      <app-signin *ngIf="!name"></app-signin>
+    <!-- PAGE CONTENT ENDS HERE -->
+  </div>
+</div>

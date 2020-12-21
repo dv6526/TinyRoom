@@ -1,0 +1,42 @@
+<!-- PAGE CONTENT STARTS HERE -->
+<!-- TODO: allert.pretty ali pa opozorilo vpisati v weather -->
+<div class="alert alert-warning" [hidden]="!message">{{message}}</div>
+<div class="container-xl">
+  <div class="page-content pisava">
+    <div class="row mt-2 squares-content">
+      <div class="col-md-6 col-12 pt-2">
+        <div class="svetla robovi square-content center-content map">
+          <canvas id="tinyroom" class="robovi" style="width: 95%; height: 95%;"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6 col-12 pt-2">
+        <div class="svetla robovi square-content" id="chat">
+          <div id="messagebox" class="mb-2">
+            <textarea id="message" class="robovi temna pisava" name="message" cols="30" rows="3"
+                                  placeholder="Enter your message here!" ></textarea>
+            <input type="button" class="robovi pisava text-center" id="messagesend" value="Send">
+          </div>
+          <div id="chatlogs" class="robovi temna">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="robovi svetla pisava" id="weather">
+          <div class="row justify-content-md-around justify-content-center flex-wrap">
+            <div id="{{day.id }}" class="pb-3 pt-3 text-center mr-2 ml-2" *ngFor="let day of weather">
+              <div class="pb-2">{{day.day}}</div>
+              <div><img src="http://openweathermap.org/img/wn/{{day.icon}}@2x.png" alt="Weather icon"
+                        style="font-size:50px"></div>
+              <div>{{day.icon_string}}</div>
+              <div>{{day.temperature}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PAGE CONTENT ENDS HERE -->
