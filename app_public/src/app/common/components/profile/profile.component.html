@@ -57,7 +57,7 @@
     <div class="form-group row infotype">
       <label for="pfp" class="col-sm-2 col-form-label infotype">profile picture</label>
       <div class="col-sm-10">
-        <input [(ngModel)]="profileInfo.profile_picture" type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp"/>
+        <input [(ngModel)]="user.profile_picture" type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp"/>
       </div>
     </div>
 
@@ -66,15 +66,15 @@
     <div class="form-group row infotype">
       <label for="skin" class="col-sm-2 col-form-label infotype">skin</label>
       <div class="col-sm-10 skin-selector" *ngIf="user">
-        <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny" [(ngModel)]="profileInfo.chosen_skin"/>
+        <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny" [(ngModel)]="user.chosen_skin"/>
                 <!-- {{checked user.skin "bunny"}} /> -->
-        <label for="bunny"><img src="/assets/images/sprites.png" alt="" class="skin-img bunny {{profileInfo.chosen_skin | check: 'bunny'}}"></label>
-        <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" [(ngModel)]="profileInfo.chosen_skin"/>
+        <label for="bunny"><img src="/assets/images/sprites.png" alt="" class="skin-img bunny {{user.chosen_skin | check: 'bunny'}}"></label>
+        <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" [(ngModel)]="user.chosen_skin"/>
                 <!-- {{checked user.skin "goat"}} /> -->
-        <label for="goat"><img src="/assets/images/sprites.png" alt="" class="skin-img goat {{profileInfo.chosen_skin | check: 'goat'}}"></label>
-        <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" [(ngModel)]="profileInfo.chosen_skin"/>
+        <label for="goat"><img src="/assets/images/sprites.png" alt="" class="skin-img goat {{user.chosen_skin | check: 'goat'}}"></label>
+        <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" [(ngModel)]="user.chosen_skin"/>
                <!-- {{checked user.skin "rat"}} /> -->
-        <label for="rat"><img src="/assets/images/sprites.png" alt="" class="skin-img rat {{profileInfo.chosen_skin | check: 'rat'}}" ></label>
+        <label for="rat"><img src="/assets/images/sprites.png" alt="" class="skin-img rat {{user.chosen_skin | check: 'rat'}}" ></label>
       </div>
     </div>
 
@@ -83,8 +83,7 @@
     <div class="form-group row">
       <label for="biotitle" class="col-sm-2 col-form-label infotype">bio title</label>
       <div class="col-sm-10" *ngIf="user">
-        <input  [(ngModel)]="profileInfo.bio_title" type="text" class="form-control input-sm profile-input" id="biotitle" name="biotitle"
-               value="{{user.bio_title}}">
+        <input  [(ngModel)]="user.bio_title" type="text" class="form-control input-sm profile-input" id="biotitle" name="biotitle">
       </div>
     </div>
 
@@ -93,8 +92,7 @@
     <div class="form-group row">
       <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
       <div class="col-sm-10">
-                <textarea  [(ngModel)]="profileInfo.bio" class="form-control input-sm profile-input" id="bio" name="bio"
-                          rows="5" *ngIf="user">{{user.bio}}</textarea>
+                <textarea  [(ngModel)]="user.bio" class="form-control input-sm profile-input" id="bio" name="bio" rows="5" *ngIf="user"></textarea>
       </div>
     </div>
 

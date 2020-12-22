@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from "../../services/data.service";
+
 import {RoomEditor} from "../../classes/room-editor";
+
+// TODO: typescriptify our game
 
 @Component({
   selector: 'app-room',

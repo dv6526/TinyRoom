@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataService } from "../../services/data.service";
 import { RoomEditor } from "../../classes/room-editor";
-import {Room} from "../../classes/room";
 
 @Component({
   selector: 'app-private',
@@ -11,25 +10,13 @@ import {Room} from "../../classes/room";
 })
 export class PrivateComponent implements OnInit {
 
-  constructor(public dataService: DataService) { }
+  constructor(
+    public dataService: DataService
+  ) { }
 
-  private body: any = <HTMLDivElement>document.body;
-  public script: any = document.createElement('script');
+  public message: string = "";
 
   private room: RoomEditor;
-/*
-  // Start script  (socket)
-  public loadStartGameScript() {
-    //this.script.innerHTML = 'newRoom();';
-    this.script.async = true;
-    this.script.defer = true;
-    this.body.appendChild(this.script);
-  }
-  // Clean after yourself
-  public cleanScript() {
-    this.body.removeChild(this.script);
-  }
-*/
 
   updateFurniture() {
     let furniture = JSON.parse(JSON.stringify(this.room.furniture));
@@ -45,7 +32,9 @@ export class PrivateComponent implements OnInit {
       f.position.y -= 0.5;
     }
     if(this.dataService.user) {
-      this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).subscribe();
+      this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).then( response => {
+        this.message = "Furniture has been updated!";
+      });
     } else {
       console.log("User is not aquired yet!");
     }
@@ -66,16 +55,8 @@ export class PrivateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  //this.loadStartGameScript();
     this.initPrivateRoom();
-
   }
-/*
-  ngOnDestroy(): void {
-    //this.cleanScript();
-  }
-*/
-
 }
 
 

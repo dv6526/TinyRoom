@@ -3,7 +3,7 @@
 
 <div class="wrapper">
   <!-- PAGE NAVIGATION STARTS HERE -->
-  <app-nav [activeTab]="activeTab"></app-nav>
+  <app-nav [activeTab]="activeTab" [username]="username"></app-nav>
 
   <div class="main-container">
     <div class="top-bar">
@@ -14,8 +14,11 @@
   <!-- PAGE NAVIGATION ENDS HERE -->
 
     <!-- PAGE CONTENT STARTS HERE -->
-      <router-outlet *ngIf="name" (activate)="changeActive($event)" ></router-outlet>
-      <app-signin *ngIf="!name"></app-signin>
+
+    <!-- Prvotno nam zahteva world component. Tam preverimo, če obstaja veljaven piškotek. Če ne ga preusmerimo na SignIn -->
+    <router-outlet (activate)="changeActive($event)" ></router-outlet>
+    <!--<app-signin *ngIf="!name"></app-signin>-->
+
     <!-- PAGE CONTENT ENDS HERE -->
   </div>
 </div>

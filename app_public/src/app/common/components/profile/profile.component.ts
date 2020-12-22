@@ -5,6 +5,7 @@ import { DataService } from "../../services/data.service";
 import { ProfileInfo} from "../../classes/profile-info";
 import { Password } from "../../classes/password";
 import { CookieService } from "ngx-cookie-service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -13,46 +14,25 @@ import { CookieService } from "ngx-cookie-service";
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private dataService: DataService, private cookieService: CookieService) {
-  }
+  constructor(
+    private dataService: DataService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
-  public user: User; /*= {
-    username: "",
-    rank: "",
-    email: "",
-    password: "",
-    profile_picture: "",
-    bio_title: "",
-    bio: "",
-    chosen_skin: "",
-    _id: ""
-  };*/
+  public user: User;
+
+  public profileInfo: ProfileInfo;
 
   public newPassword: Password = {
     password: ""
   };
 
-  public profileInfo: ProfileInfo = {
-    profile_picture: "",
-    bio_title: "",
-    bio: "",
-    chosen_skin: ""
-  }
-
   public changePasswordMessage: string;
-  public updateProfileMessage: string;
-  public terminateMessage: string;
 
-  private getUserData(): void {
-    // pricakujemo samo en zadetek (ali nobenega) zato iz tabele vzamemo prvi element
-    this.dataService.getUserData(this.cookieService.get('user'), this.cookieService.get('password')).then(foundUser => {
-      this.user = foundUser[0]
-      this.profileInfo.profile_picture = this.user.profile_picture;
-      this.profileInfo.bio_title = this.user.bio_title;
-      this.profileInfo.bio = this.user.bio;
-      this.profileInfo.chosen_skin = this.user.chosen_skin;
-    });
-  }
+  public updateProfileMessage: string;
+
+  public terminateMessage: string;
 
   public checkPassword(): boolean {
     const regPass = /^.{3,}$/;
@@ -65,22 +45,49 @@ export class ProfileComponent implements OnInit {
 
   public changePassword(): void {
     if(this.checkPassword()) {
-      this.dataService.changePassword(this.user._id, this.newPassword).then(response => this.changePasswordMessage = "Password is changed.").catch(error => this.changePasswordMessage = error);
+      this.dataService.changePassword(this.user._id, this.newPassword)
+        .then(response => {
+          // update data
+          this.user = response;
+          this.dataService.user = this.user;
+          this.changePasswordMessage = "Password is changed."
+        })
+        .catch(error => this.changePasswordMessage = error);
     } else {
       this.changePasswordMessage = "Password is too short!";
     }
   }
 
   public terminateAccount(): void {
-    this.dataService.terminateAccount(this.user._id).then(response => this.terminateMessage = "Treba brisati piškotke!"/*deleteCookies oziroma brisi avtorizacijo */).catch(error => this.terminateMessage = error);
-    console.log("terminateAccount");
+    this.dataService.terminateAccount(this.user._id)
+      .then(response => {
+        this.terminateMessage = "Account has been terminated!";
+        this.cookieService.deleteAll();
+        this.router.navigate(['']);
+      })
+      .catch(error => this.terminateMessage = error);
+    console.log("Account has been terminated!");
   }
 
   public updateProfile(): void {
-    this.dataService.updateProfile(this.user._id, this.profileInfo).then(response => this.updateProfileMessage = "Profile info is UPDATED.").catch(error => this.updateProfileMessage = error);
+    // DTO
+    this.profileInfo.profile_picture = this.user.profile_picture;
+    this.profileInfo.chosen_skin = this.user.chosen_skin;
+    this.profileInfo.bio_title = this.user.bio_title;
+    this.profileInfo.bio = this.user.bio;
+
+    this.dataService.updateProfile(this.user._id, this.profileInfo)
+      .then(response => {
+        // update data
+        this.user = response;
+        this.dataService.user = this.user;
+        this.updateProfileMessage = "Profile info is UPDATED.";
+        console.log("Profile info is updated!");
+      })
+      .catch(error => this.updateProfileMessage = error);
   }
 
   ngOnInit(): void {
-    this.getUserData();
+    this.user = this.dataService.user;
   }
 }

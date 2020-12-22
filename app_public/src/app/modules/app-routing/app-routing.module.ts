@@ -4,19 +4,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 import { WorldComponent } from '../../common/components/world/world.component';
-import { RegisterComponent } from '../../common/components/register/register.component';
 import { SigninComponent } from '../../common/components/signin/signin.component';
 import { PrivateComponent } from '../../common/components/private/private.component';
 import { ProfileComponent } from '../../common/components/profile/profile.component';
 
+// TODO: catch any other invalid url
 const paths: Routes = [
-  { // validate cookie? index : register
+  {
     path: '',
     component: WorldComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
   },
   {
     path: 'signin',
@@ -29,10 +25,6 @@ const paths: Routes = [
   {
     path: 'profile',
     component: ProfileComponent
-  },
-  {
-    path: 'logout',
-    component: SigninComponent
   }
 ];
 

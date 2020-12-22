@@ -53,7 +53,7 @@ export class RoomEditor {
     var room = this;
     if(this.dataService.user) {
       //let result: Room;
-      this.dataService.getFurnitureLocation(this.dataService.user.username).subscribe(result => {
+      this.dataService.getFurnitureLocation(this.dataService.user.username).then(result => {
         console.log(result);
         for(var i = 0; i < result.objects.length; i++) {
           var room_object = result.objects[i];

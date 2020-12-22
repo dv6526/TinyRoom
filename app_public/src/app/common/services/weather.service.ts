@@ -10,14 +10,9 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  public weather: any[];
+  public weather: Weather[];
 
   public getWeatherData(lat: string, lng: string): Promise<Weather[]> {
-    //let latitude: string = "45.853760";
-    //let longitude: string = "15.384120";
-    //longitude = "14.5058";
-    //latitude = "46.0569";
-
     const url: string = "https://api.openweathermap.org/data/2.5/onecall";
     return this.http
       .get(url, {params: {lat: lat, lon: lng, units: 'metric', lang: '-sl',exclude : 'current,minutely,hourly,alerts', appid: 'd62b2d57190388b445a9b96264ba0e44'}})

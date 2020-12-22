@@ -483,7 +483,7 @@ export class Chat {
   addPlayer() {
     // default spawn position
     var position = new Vector(600, 600);
-    var name = this.cookieService.get('name'); //username;
+    var name = JSON.parse(this.cookieService.get('user')).username; //username;
     // default weather
 
     var player = new User(position, name, this.cookieService.get('weather'), this.cookieService.get('sprite_idx'));

@@ -5,9 +5,6 @@ import { User } from '../classes/user';
 import { environment } from "../../../environments/environment";
 import { ProfileInfo } from "../classes/profile-info";
 import { Password } from "../classes/password";
-import {Furniture} from "../classes/furniture";
-import {Vector} from "../classes/vector";
-import {Observable} from "rxjs";
 import { Room } from "../classes/room";
 
 @Injectable({
@@ -30,7 +27,7 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public changePassword(userId:string, newPassword: Password): Promise<any> {
+  public changePassword(userId:string, newPassword: Password): Promise<User> {
     const url: string = `${this.apiUrl}/profile/${userId}/password`;
     return this.http
       .put(url, newPassword)
@@ -48,7 +45,7 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public updateProfile(userId:string, newInfo: ProfileInfo): Promise<any> {
+  public updateProfile(userId:string, newInfo: ProfileInfo): Promise<User> {
     const url: string = `${this.apiUrl}/profile/${userId}/info`;
     return this.http
       .put(url, newInfo)
@@ -57,16 +54,42 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public getFurnitureLocation(username:string): Observable<any> {
+  public getFurnitureLocation(username:string): Promise<any> {
     const url: string = `${this.apiUrl}/privateRoom/${username}`;
     return this.http
-      .get(url);
+      .get(url)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processException);
   }
 
-  public updatePrivateRoom(username:string, furniture: any): Observable<any> {
+  public updatePrivateRoom(username:string, furniture: any): Promise<any> {
     const url: string = `${this.apiUrl}/privateRoom/${username}`;
     return this.http
-      .post(url, furniture);
+      .post(url, furniture)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processException);
+  }
+
+  public createNewUser(email:string, username:string, password:string, rank:string): Promise<any> {
+    let newUser: User = {
+      username : username,
+      rank: rank,
+      email: email,
+      password: password,
+      profile_picture: "",
+      bio_title: "",
+      bio: "",
+      chosen_skin: "",
+      _id: "",
+    }
+    const url: string = `${this.apiUrl}/uporabniki/`;
+    return this.http
+      .post(url, newUser)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processException);
   }
 
   private processException(napaka: any): Promise<any> {

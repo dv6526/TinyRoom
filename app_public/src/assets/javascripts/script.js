@@ -1078,6 +1078,12 @@ class Chat {
 }
 
 let chat;
+let username = "";
+let sprite_idx = "";
+let my_id = "";
+let weather = "clear sky";
+let rank = "";
+
 function exit() {
   if(chat && chat.socket.readyState == 1) {
     chat.socket.close();
@@ -1101,7 +1107,7 @@ function newStart() {
   //chat.socket = new WebSocket("ws://157.245.36.23:8070");
   chat = new Chat('tinyroom');
   formatPage();
-  console.log("Zaganjam skripto!");
+  console.log("Zaganjam svet!");
 }
 
 $(function () {
