@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataService } from "../../services/data.service";
-import { RoomEditor } from "../../classes/room-editor";
+import { RoomEditor } from "../../classes/game/room-editor";
 
 @Component({
   selector: 'app-private',
@@ -52,6 +52,10 @@ export class PrivateComponent implements OnInit {
         event.dataTransfer.setData('furniture', event.target.dataset.furniture);
       }
     }
+  }
+
+  private getComponentName(): string {
+    return "PrivateComponent";
   }
 
   ngOnInit(): void {

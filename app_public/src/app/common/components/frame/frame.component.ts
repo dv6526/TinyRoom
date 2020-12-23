@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataService } from "../../services/data.service";
 import { CookieService } from "ngx-cookie-service";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Router, RouterEvent} from "@angular/router";
+
+declare const setUserData: any;
 
 @Component({
   selector: 'app-frame',
@@ -18,18 +20,26 @@ export class FrameComponent implements OnInit {
     private router: Router
   ) { }
 
-  public activeTab: number = 1;
+  public activeTab: number = 0;
   public username: string;
 
   changeActive(event: any): void {
     // If credentials aren't there redirect to signin else set navigation username
     if(this.cookieService.get('user') == "") {
-      this.router.navigate(['signin']);
-      //return;
+      // exception if we want to get to db
+      if(event.getComponentName() != 'DbComponent')
+        this.router.navigate(['signin']);
     } else {
       this.username = this.dataService.user.username;
     }
-    let active: string = event.constructor.name;
+    let active: string = "";
+    try {
+      active = event.getComponentName();
+      console.log("Active link position succesfully acquired!");
+    } catch(error) {
+      active = "Something went wrong";
+      console.log("Something went wrong when coloring current active link! (With acquireing data)");
+    }
     switch(active) {
       case 'WorldComponent': {
         this.activeTab = 0;
@@ -46,9 +56,14 @@ export class FrameComponent implements OnInit {
         console.log("profile");
         break;
       }
-      case 'SigninComponent': {
-        //this.activeTab = 0;
+      case 'DbComponent': {
         this.activeTab = -1;
+        console.log("db");
+        break;
+      }
+      case 'SigninComponent': {
+        this.activeTab = -1;
+        this.username = "";
         console.log("signin");
         break;
       }
@@ -63,18 +78,10 @@ export class FrameComponent implements OnInit {
     // If user refreshes we lose our name - lets aquire it again from cookies
     if(this.cookieService.get('user')) {
       this.dataService.user = JSON.parse(this.cookieService.get('user'));
-      let body: any = <HTMLDivElement> document.body;
-      let script: any = document.createElement('script');
+
       let skins = {"bunny" : 0, "goat":1, "rat":2};
-      script.innerHTML  = 'username="' + this.dataService.user.username + '";';
-      script.innerHTML += 'sprite_idx = "' + skins[this.dataService.user.chosen_skin] + '";';
-      script.innerHTML += 'my_id = "' + this.dataService.user._id + '";';
-      script.innerHTML += 'weather = "clear sky";'                    // TODO: get weather or check for weather availibility in script!
-      script.innerHTML += 'rank = "' + this.dataService.user.rank + '";';
-      script.async = true;
-      script.defer = true;
-      body.appendChild(script);
-      body.removeChild(script);
+      // "script.js" call
+      setUserData(this.dataService.user.username, skins[this.dataService.user.chosen_skin], this.dataService.user._id, "clear sky", this.dataService.user.rank);
     }
   }
 }

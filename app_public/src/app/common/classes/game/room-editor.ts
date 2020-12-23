@@ -1,9 +1,7 @@
-import {DataService} from "../services/data.service";
+import {DataService} from "../../services/data.service";
 import { Vector } from './vector';
 import { Furniture } from './furniture';
 import * as $ from 'jquery';
-import {Observable} from "rxjs";
-import { Room, Objects } from "../classes/room";
 
 function returnImageObject(image_link, onload) {
   var img = document.createElement('img');
@@ -52,9 +50,8 @@ export class RoomEditor {
     var furniture = this.furniture;
     var room = this;
     if(this.dataService.user) {
-      //let result: Room;
+      //let result: PrivateRoom;
       this.dataService.getFurnitureLocation(this.dataService.user.username).then(result => {
-        console.log(result);
         for(var i = 0; i < result.objects.length; i++) {
           var room_object = result.objects[i];
           var position = room_object.position;

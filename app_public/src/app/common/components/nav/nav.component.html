@@ -7,16 +7,11 @@
       TINYROOM
     </div>
     <div class="pisava kaligrafija pl-3" *ngIf="username">
-      {{username}}
+      {{username | shorten}}
     </div>
 
     <div class="d-flex flex-column pl-3 kaligrafija pisava povezave-strani" *ngFor="let nav of navigation; index as i">
-      <!-- TODO: treba namesto 0 notri pripeljat dejanski active_tab -->
-      <!-- class={{ifEquals @index ../active_tab}} -->
-      <a routerLink="{{nav.href}}" class="{{i | isActive:activeTab}}" *ngIf="nav.value=='CHAT'">{{nav.value}}</a>
-      <a routerLink="{{nav.href}}" onClick="exit()" class="{{i | isActive:activeTab}}" *ngIf="nav.value!='CHAT' && nav.value!='LOG OUT'">{{nav.value}}</a>
-      <a routerLink="{{nav.href}}" (click)="deleteCookies()" onClick="exit()" class="{{i | isActive:activeTab}}" *ngIf="nav.value=='LOG OUT'">{{nav.value}}</a>
-
+      <a routerLink="{{nav.href}}" (click)="deleteCookies(nav.value); onExit(nav.value);" class="{{i | isActive:activeTab}}">{{nav.value}}</a>
     </div>
   </div>
 </div>

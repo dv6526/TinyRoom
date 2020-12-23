@@ -9,7 +9,7 @@ export class Objects {
   position: Position;
 }
 
-export class Room {
+export class PrivateRoom {
   owner: string;
   objects: Objects[];
 }

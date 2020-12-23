@@ -677,7 +677,11 @@ class Chat {
     }
 
     sendPosition() {
+      if(this.socket.readyState == 1) { // ker nam chrome meče napako
         this.socket.send("PO " + JSON.stringify(this.player.getWantedPos()));
+      } else {
+        console.log("Socket is closed or closing. Couldn't send data!");
+      }
     }
 
     setPrivateMSG(recipient) {
@@ -1083,8 +1087,16 @@ let sprite_idx = "";
 let my_id = "";
 let weather = "clear sky";
 let rank = "";
+function setUserData(setUsername, setSprite_idx, setMy_id, setWeather, setRank) {
+  username = setUsername;
+  sprite_idx = setSprite_idx;
+  my_id = setMy_id;
+  weather = setWeather;
+  rank = setRank;
+}
 
 function exit() {
+  console.log("exit se zgodi");
   if(chat && chat.socket.readyState == 1) {
     chat.socket.close();
     console.log("Ugašam skripto!");

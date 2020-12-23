@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { User } from '../classes/user';
+import { User } from '../classes/models/user';
 import { environment } from "../../../environments/environment";
-import { ProfileInfo } from "../classes/profile-info";
-import { Password } from "../classes/password";
-import { Room } from "../classes/room";
+import { ProfileInfoDto } from "../classes/DTOs/profile-info-dto";
+import { PasswordDto } from "../classes/DTOs/password-dto";
+import { PrivateRoom } from "../classes/models/privateRoom";
+import { UserDto } from "../classes/DTOs/user-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class DataService {
 
   private apiUrl = environment.apiUrl;
   public user: User;
-  public room: Room;
+  public room: PrivateRoom;
 
   public getUserData(username: string, password: string): Promise<User[]> {
     const url: string = `${this.apiUrl}/uporabniki`;
@@ -27,12 +28,12 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public changePassword(userId:string, newPassword: Password): Promise<User> {
+  public changePassword(userId:string, newPassword: PasswordDto): Promise<User> {
     const url: string = `${this.apiUrl}/profile/${userId}/password`;
     return this.http
       .put(url, newPassword)
       .toPromise()
-      .then(response => response as any)
+      .then(response => response as User)
       .catch(this.processException);
   }
 
@@ -45,12 +46,12 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public updateProfile(userId:string, newInfo: ProfileInfo): Promise<User> {
+  public updateProfile(userId:string, newInfo: ProfileInfoDto): Promise<User> {
     const url: string = `${this.apiUrl}/profile/${userId}/info`;
     return this.http
       .put(url, newInfo)
       .toPromise()
-      .then(response => response as any)
+      .then(response => response as User)
       .catch(this.processException);
   }
 
@@ -63,33 +64,35 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public updatePrivateRoom(username:string, furniture: any): Promise<any> {
+  public updatePrivateRoom(username:string, furniture: any): Promise<User> {
     const url: string = `${this.apiUrl}/privateRoom/${username}`;
     return this.http
       .post(url, furniture)
+      .toPromise()
+      .then(response => response as User)
+      .catch(this.processException);
+  }
+
+  public createNewUser(newUser: UserDto): Promise<User> {
+    const url: string = `${this.apiUrl}/uporabniki/`;
+    return this.http
+      .post(url, newUser)
+      .toPromise()
+      .then(response => response as User)
+      .catch(this.processException);
+  }
+
+  public dbDeleteAll(): Promise<any> {
+    const url: string = `${this.apiUrl}/db/deleteAll/`;
+    return this.http
+      .get(url)
       .toPromise()
       .then(response => response as any)
       .catch(this.processException);
   }
 
-  public createNewUser(email:string, username:string, password:string, rank:string): Promise<any> {
-    let newUser: User = {
-      username : username,
-      rank: rank,
-      email: email,
-      password: password,
-      profile_picture: "",
-      bio_title: "",
-      bio: "",
-      chosen_skin: "",
-      _id: "",
-    }
-    const url: string = `${this.apiUrl}/uporabniki/`;
-    return this.http
-      .post(url, newUser)
-      .toPromise()
-      .then(response => response as any)
-      .catch(this.processException);
+  public dbAddEntries(newUser: UserDto): Promise<User> {
+    return this.createNewUser(newUser);
   }
 
   private processException(napaka: any): Promise<any> {

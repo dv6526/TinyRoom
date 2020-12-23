@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '../../classes/user';
+import { User } from '../../classes/models/user';
 import { DataService } from "../../services/data.service";
-import { ProfileInfo} from "../../classes/profile-info";
-import { Password } from "../../classes/password";
+import { ProfileInfoDto} from "../../classes/DTOs/profile-info-dto";
+import { PasswordDto } from "../../classes/DTOs/password-dto";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
 
@@ -22,9 +22,14 @@ export class ProfileComponent implements OnInit {
 
   public user: User;
 
-  public profileInfo: ProfileInfo;
+  public profileInfo: ProfileInfoDto = {
+    profile_picture: "",
+    chosen_skin: "",
+    bio_title: "",
+    bio: ""
+  };
 
-  public newPassword: Password = {
+  public newPassword: PasswordDto = {
     password: ""
   };
 
@@ -61,12 +66,12 @@ export class ProfileComponent implements OnInit {
   public terminateAccount(): void {
     this.dataService.terminateAccount(this.user._id)
       .then(response => {
+        console.log("Account has been terminated!");
         this.terminateMessage = "Account has been terminated!";
         this.cookieService.deleteAll();
         this.router.navigate(['']);
       })
       .catch(error => this.terminateMessage = error);
-    console.log("Account has been terminated!");
   }
 
   public updateProfile(): void {
@@ -85,6 +90,10 @@ export class ProfileComponent implements OnInit {
         console.log("Profile info is updated!");
       })
       .catch(error => this.updateProfileMessage = error);
+  }
+
+  private getComponentName(): string {
+    return "ProfileComponent";
   }
 
   ngOnInit(): void {

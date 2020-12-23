@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Weather } from "../../classes/weather";
+import { Weather } from "../../classes/other/weather";
 import { DataService } from "../../services/data.service";
 import { WeatherService } from "../../services/weather.service";
 import { GeoLocationService } from "../../services/geo-location.service";
 import { CookieService } from "ngx-cookie-service";
+import { User } from "../../classes/models/user";
+
+declare const setUserData: any;
+declare const newStart: any;
 
 @Component({
   selector: 'app-world',
@@ -38,7 +42,6 @@ export class WorldComponent implements OnInit {
         // save to cookies
         this.cookieService.set('weather', JSON.stringify(weather));
         let date = new Date();
-        console.log(date.getDate() + " " + date.getMonth() + " " + date.getFullYear());
         this.cookieService.set('weatherAquireDate', date.getDate() + "." + date.getMonth() + "." + date.getFullYear());
       });
   }
@@ -60,15 +63,17 @@ export class WorldComponent implements OnInit {
     );
   }
 
+  private getComponentName(): string {
+    return "WorldComponent";
+  }
+
   // Start script  (socket)
-  public loadStartGameScript() {
-    let body: any = <HTMLDivElement>document.body;
-    let script: any = document.createElement('script');
-    script.innerHTML = 'newStart();';
-    script.async = true;
-    script.defer = true;
-    body.appendChild(script);
-    body.removeChild(script);
+  public startTheWorld() {
+    // "script.js" call
+    let u: User = this.dataService.user
+    let skins:any = {"bunny" : 0, "goat":1, "rat":2};
+    setUserData(u.username, skins[u.chosen_skin], u._id, "clear sky", u.rank);
+    newStart();
   }
 
   ngOnInit(): void {
@@ -85,6 +90,6 @@ export class WorldComponent implements OnInit {
       this.weather = this.weatherService.weather;
     }
 
-    this.loadStartGameScript();
+    this.startTheWorld();
   }
 }

@@ -3,6 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import { DataService } from "../../services/data.service";
 import { Router } from "@angular/router";
+import {User} from "../../classes/models/user";
+import {UserDto} from "../../classes/DTOs/user-dto";
+
+declare const setUserData: any;
 
 @Component({
   selector: 'app-signin',
@@ -17,49 +21,44 @@ export class SigninComponent implements OnInit {
     private router: Router
   ) { }
 
-  public signInError: string = "";
-  public registerError: string = "";
+  public signInError: string;
+  public registerError: string;
 
-  public username: string = "";
-  public password: string = "";
+  public username: string;
+  public password: string;
 
-  public registerEmail: string = "";
-  public registerUsername: string = "";
-  public registerPassword: string = "";
+  public registerEmail: string;
+  public registerUsername: string;
+  public registerPassword: string;
 
+  private skins:any = {"bunny" : 0, "goat":1, "rat":2};
   // TODO: separate validation from login (look in profile.component.ts)
 
-  login(): void {
+  public login(): void {
     // validation
-    const regName = /^[a-zA-Z0-9]{1,10}$/;
+    const regName = /^[a-zA-Z0-9]+$/;    ///^[a-zA-Z0-9]{1,10}$/;
     const regPass = /^.{3,}$/;
     if(!regName.test(this.username)) {
+      console.log("Username does not fit the specification");
       this.signInError = 'Username does not fit the specification';
       return;
     }
     if(!regPass.test(this.password)) {
+      console.log("Password does not fit the specification");
       this.signInError = 'Password does not fit the specification';
       return;
     }
     // verification
     this.dataService.getUserData(this.username, this.password).then(response => {
       if(response.length == 0) {
+        console.log('Wrong username or password!');
         this.signInError = 'Wrong username or password!';
         return;
       } else {
-        console.log("Loged in.");
-        // execute script for world credentials
-        let body: any = <HTMLDivElement> document.body;
-        let script: any = document.createElement('script');
-        let skins = {"bunny" : 0, "goat":1, "rat":2};
-        script.innerHTML  = 'username="' + response[0].username + '";';
-        script.innerHTML += 'sprite_idx = "' + skins[response[0].chosen_skin] + '";';
-        script.innerHTML += 'my_id = "' + response[0]._id + '";';
-        script.innerHTML += 'weather = "clear sky";'                    // TODO: get weather or check for weather availibility in script!
-        script.innerHTML += 'rank = "' + response[0].rank + '";';
-        script.async = true;
-        script.defer = true;
-        body.appendChild(script);
+        console.log("Logged in.");
+
+        // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
+        setUserData(response[0].username, this.skins[response[0].chosen_skin], response[0]._id, "clear sky", response[0].rank);
 
         // save data to dataService
         this.dataService.user = response[0];
@@ -67,86 +66,66 @@ export class SigninComponent implements OnInit {
         // save cookie (stringify object data)
         this.cookieService.set('user', JSON.stringify(response[0]));
 
-        // Clean executed script after yourself
-        body.removeChild(script);
-
         // Show world
-        this.router.navigate(['']);
-
-        console.log(this.dataService.user);
-
+        this.router.navigate(['']).then().catch();
         return;
       }
     });
   }
 
-  register(): void {
+  public register(): void {
     const regEmail = /^\S+@\S+$/;
-    const regName = /^[a-zA-Z0-9]{1,10}$/;
+    const regName = /^[a-zA-Z0-9]+$/;  ///^[a-zA-Z0-9]{1,10}$/;
     const regPass = /^.{3,}$/;
 
     // Validation
-
     if(!regEmail.test(this.registerEmail)) {
       this.registerError = 'Email does not fit the specification';
       return;
     }
-    if(!regName.test(this.registerUsername)) {
+    if(!this.registerUsername || !regName.test(this.registerUsername)) {
       this.registerError = 'Username does not fit the specification';
       return;
     }
-    if(!regPass.test(this.registerPassword)) {
+    if(!this.registerPassword || !regPass.test(this.registerPassword)) {
       this.registerError = 'Password does not fit the specification';
       return;
     }
+    // Verification
+    // TODO: watch out! admin is harcoded @Warning
+    // Prepare User data transfer object
+    let newUser: UserDto = {
+      username : this.registerUsername,
+      rank: "admin",
+      email: this.registerEmail,
+      password: this.registerPassword
+    }
+    this.dataService.createNewUser(newUser)
+      .then(response => {
+        console.log("Registered successfully and logged in.");
 
-    // // Verification
-    // // TODO: watch out! admin is harcoded @Warning
-    // this.dataService.createNewUser(this.registerEmail, this.registerUsername, this.registerPassword, "admin")
-    //   .then(response => {
-    //     console.log(response);
-    //     // TODO: send email
-    //
-    //     // TODO: navigate to world
-    //     this.router.navigate(['']);
-    //     console.log("Registered succesfully");
-    //     /*
-    //     console.log("Loged in.");
-    //     // execute script for world credentials
-    //     let body: any = <HTMLDivElement> document.body;
-    //     let script: any = document.createElement('script');
-    //     let skins = {"bunny" : 0, "goat":1, "rat":2};
-    //     script.innerHTML  = 'username="' + response[0].username + '";';
-    //     script.innerHTML += 'sprite_idx = "' + skins[response[0].chosen_skin] + '";';
-    //     script.innerHTML += 'my_id = "' + response[0]._id + '";';
-    //     script.innerHTML += 'weather = "clear sky";'                    // TODO: get weather or check for weather availibility in script!
-    //     script.innerHTML += 'rank = "' + response[0].rank + '";';
-    //     script.async = true;
-    //     script.defer = true;
-    //     body.appendChild(script);
-    //
-    //     // save data to dataService
-    //     this.dataService.user = response[0];
-    //
-    //     // save cookie (stringify object data)
-    //     this.cookieService.set('user', JSON.stringify(response[0]));
-    //
-    //     // Clean executed script after yourself
-    //     body.removeChild(script);
-    //
-    //     // Show world
-    //     this.router.navigate(['']);
-    //
-    //     console.log(this.dataService.user);
-    //
-    //     return;*/
-    //   }).catch(error => {
-    //     this.registerError = "Username or Email is already in use!";
-    //   });
+        // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
+        setUserData(response.username, this.skins[response.chosen_skin], response._id, "clear sky", response.rank);
+
+        // save data to dataService
+        this.dataService.user = response;
+
+        // save cookie (stringify object data)
+        this.cookieService.set('user', JSON.stringify(response));
+
+        // Show world
+        this.router.navigate(['']).then().catch();
+        return;
+      }).catch(error => {
+        this.registerError = "Username or Email is already in use!";
+      });
 
   }
 
-  ngOnInit(): void {
+  private getComponentName(): string {
+    return "SigninComponent";
   }
+
+  ngOnInit(): void { }
 
 }

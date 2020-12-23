@@ -210,7 +210,7 @@ const index = (req, res) => {
 const private = (req, res) => {
 
 
-    res.render('private', { title: 'Private Room', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
+    res.render('private', { title: 'Private PrivateRoom', user: {username: req.session.user, id: req.session.user_id}, navigation : n.navigation, active_tab : 1});
 
 }
 
@@ -419,7 +419,7 @@ const dbAddEntries = (req, res) => {
                 rank: u[i].rank
                 }
             }).then((odgovor) => {
-                console.log("Uspešno sem dodal uporabnika" + u.username)
+                console.log("Uspešno sem dodal uporabnika" + u[i].username)
             }).catch((napaka) => {
                 res.status(404).json(napaka);
             });

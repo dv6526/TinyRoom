@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Navigation } from '../../classes/navigation';
+import { Navigation } from '../../classes/other/navigation';
 import { DataService } from "../../services/data.service";
 import { CookieService } from "ngx-cookie-service";
-
-// TODO: Ko se loginamo je okej, ko se logoutamo je okej, ko se loginamo ponovno ni username-a
-// Če pa je refresh in se loginamo oziroma, če že imamo piškotke potem je tud okej
+import { Router } from "@angular/router";
+// V angular.json -> scripts sem dodal naš script.js. S tem deklariraš funkcijo iz tiste skripte in jo lahko kasneje kličeš
+declare const exit: any;
 
 @Component({
   selector: 'app-nav',
@@ -16,7 +16,8 @@ export class NavComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) { }
 
   @Input() public activeTab: number = 0;
@@ -33,13 +34,18 @@ export class NavComponent implements OnInit {
       value: "LOG OUT"}
   ];
 
-  private body: any = <HTMLDivElement> document.body;
-  public script: any = document.createElement('script');
+  deleteCookies(link: string) {
+    if(link == 'LOG OUT') {
+      this.dataService.user = null;
+      this.cookieService.deleteAll();
+      this.router.navigate(['signin']);
+    }
+  }
 
-  deleteCookies() {
-    console.log("bla");
-    this.username = undefined;
-    this.cookieService.deleteAll();
+  onExit(link: string): void {
+    if(link != 'CHAT')
+      // "script.js" call => call if not entering the world
+      exit();
   }
 
   ngOnInit(): void {

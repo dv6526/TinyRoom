@@ -4,7 +4,7 @@
     <div class="row mt-5">
       <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
         <h2>Login</h2>
-        <form action="/signin" method="post" id="signinform" onsubmit="checkLoginInfo(event)">
+        <form id="signinform" (ngSubmit)="login()">
           <div class="form-group">
             <label for="text">Username:</label>
             <input [(ngModel)]="username" type="text" class="form-control" id="username" name="username" placeholder="Username" required>
@@ -18,39 +18,38 @@
           </div>
           <input type="hidden" name="longitude" id="getlon" />
           <input type="hidden" name="latitude" id="getlat" />
-          <!--onclick="getLocation()"-->
-          <button (click)="login()" routerLink="" class="btn btn-outline-dark">Login</button>
+          <button class="btn btn-outline-dark">Login</button>
         </form>
-        <div id="loginInfo">{{signInError}}</div>
+        <div id="loginInfo" class="mt-2">{{signInError}}</div>
       </div>
 
 
       <div class="col-lg-6 col-md-12 text-center" style="color:white;">
         <h2>Register</h2>
-        <form action="/register" method="post" id="formRegister" onsubmit="checkRegisterInfo(event)">
+        <form id="formRegister" (ngSubmit)="register()">
           <div class="form-group">
             <label for="email">e-mail:</label>
-            <input type="email" class="form-control" id="email" placeholder="Insert e-mail address" required
+            <input [(ngModel)]="registerEmail" type="email" class="form-control" id="email" placeholder="Insert e-mail address" required
                    name="email">
           </div>
           <!-- spremenil iz username v usernameRegister -- ce pride do kakega buga -->
           <div class="form-group">
             <label for="usernameRegister">Username:</label>
-            <input type="text" class="form-control" id="usernameRegister" placeholder="Select username"
+            <input [(ngModel)]="registerUsername" type="text" class="form-control" id="usernameRegister" placeholder="Select username"
                    required name="username">
           </div>
           <!-- spremenil iz password v passwordRegister -- ce pride do kakega buga -->
           <div class="form-group">
             <label for="passwordRegister">Password:</label>
-            <input type="password" class="form-control" id="passwordRegister" placeholder="Select password"
+            <input [(ngModel)]="registerPassword" type="password" class="form-control" id="passwordRegister" placeholder="Select password"
                    required name="password">
             <input type="hidden" name="longitude" id="getlon1" />
             <input type="hidden" name="latitude" id="getlat1" />
           </div>
-          <button (click)="register()" class="btn btn-outline-dark">Register</button>
+          <button class="btn btn-outline-dark">Register</button>
         </form>
         <!--</br>-->
-        <div id="registerInfo">{{registerError}}</div>
+        <div id="registerInfo" class="mt-2">{{registerError}}</div>
       </div>
     </div>
 

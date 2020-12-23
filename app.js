@@ -47,7 +47,7 @@ app.use('/api', (req, res, next) => {
 
 //app.use('/', indexRouter);
 app.use('/api', indexApi);
-app.get(/(\/private)|(\/profile)|(\/signin)|(\/logout)/, (req, res, next) => {
+app.get(/(\/private)|(\/profile)|(\/signin)|(\/logout)|(\/db)/, (req, res, next) => {
   res.sendFile(path.join(__dirname, 'app_public', 'build', 'index.html'));
 });
 

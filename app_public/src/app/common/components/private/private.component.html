@@ -6,8 +6,10 @@
         <div class="svetla robovi square-content center-content map">
           <canvas id="room" class="robovi" style="width: 95%; height: 95%;"></canvas>
         </div>
-        <button (click)="updateFurniture()" type="button" class="btn btn-outline-dark mt-2" style="float: right;"
-                id="save-room">Save</button>
+        <div class="row float-right mr-1">
+          <div class="m-3 h-100" style=";color: white">{{message}}</div>
+          <button (click)="updateFurniture()" type="button" class="btn btn-outline-dark mt-2 h-100" style="float: right;" id="save-room">Save</button>
+        </div>
       </div>
       <div class="col-md-6 col-12 pt-2">
         <style>
@@ -49,7 +51,6 @@
         </div>
       </div>
     </div>
-    {{message}}
   </div>
 </div>
 <!-- PAGE CONTENT ENDS HERE -->

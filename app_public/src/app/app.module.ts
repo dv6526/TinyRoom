@@ -13,13 +13,12 @@ import { ProfileComponent } from './common/components/profile/profile.component'
 import { WorldComponent} from './common/components/world/world.component';
 import { NavComponent } from './common/components/nav/nav.component';
 import { FrameComponent } from './common/components/frame/frame.component';
-import { RoomComponent } from './common/components/room/room.component';
+import { DbComponent } from './common/components/db/db.component';
 
 /* Pipes */
 import { IsActivePipe } from './common/pipes/is-active.pipe';
 import { CheckedPipe } from './common/pipes/checked.pipe';
-
-
+import { ShortenPipe } from './common/pipes/shorten.pipe';
 
 
 @NgModule({
@@ -32,7 +31,8 @@ import { CheckedPipe } from './common/pipes/checked.pipe';
     FrameComponent,
     IsActivePipe,
     CheckedPipe,
-    RoomComponent
+    ShortenPipe,
+    DbComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +40,6 @@ import { CheckedPipe } from './common/pipes/checked.pipe';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule
- //   $
   ],
   providers: [],
   bootstrap: [FrameComponent]

@@ -8,12 +8,5 @@ export class User {
   bio: string;
   chosen_skin: string;
   _id: string;
-  /*
-  username: string;
-  sprite_idx: number;
-  my_id: string;
-  weather: string;
-  rank: string;
-*/
 }
 
