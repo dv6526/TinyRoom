@@ -4,4 +4,5 @@ export class Weather {
   icon: string;
   icon_string: string;
   temperature: string;
+  description: string;
 }

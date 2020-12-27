@@ -22,7 +22,7 @@ export class WorldComponent implements OnInit {
     private geoLocationService: GeoLocationService,
     private dataService: DataService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   public weather: Weather[];
 
@@ -71,13 +71,13 @@ export class WorldComponent implements OnInit {
   public startTheWorld() {
     // "script.js" call
     let u: User = this.dataService.user
-    let skins:any = {"bunny" : 0, "goat":1, "rat":2};
-    setUserData(u.username, skins[u.chosen_skin], u._id, "clear sky", u.rank);
+    let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
+    setUserData(u.username, skins[u.chosen_skin], u._id, this.weather[0].description, u.rank);
     newStart();
   }
 
   ngOnInit(): void {
-    if(this.weatherService.weather == null) {
+    if (this.weatherService.weather == null) {
       let date = new Date();
       // if weather is not cookied or if weather is from yesterday
       if (this.cookieService.get('weather') == "" || this.cookieService.get('weather') == "" || this.cookieService.get('weatherAquireDate') != (date.getDate() + "." + date.getMonth() + "." + date.getFullYear())) {
