@@ -30,6 +30,8 @@ export class NavComponent implements OnInit {
       value: "MY ROOM"},
     { href: "profile",
       value: "PROFILE"},
+    { href: "graphAndData",
+      value: "STATISTICS"},
     { href: "signin",
       value: "LOG OUT"}
   ];

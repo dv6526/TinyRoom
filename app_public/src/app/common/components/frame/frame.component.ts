@@ -67,6 +67,11 @@ export class FrameComponent implements OnInit {
         console.log("signin");
         break;
       }
+      case 'GraphAndDataComponent': {
+        this.activeTab = 3;
+        console.log("graphAndData");
+        break;
+      }
       default: {
         console.log("Something went wrong when coloring current active link!");
         break;

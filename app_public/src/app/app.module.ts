@@ -20,6 +20,7 @@ import { IsActivePipe } from './common/pipes/is-active.pipe';
 import { CheckedPipe } from './common/pipes/checked.pipe';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
 import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
+import { GraphAndDataComponent } from './common/components/graph-and-data/graph-and-data.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
     CheckedPipe,
     ShortenPipe,
     DbComponent,
-    ToFahrenheitPipe
+    ToFahrenheitPipe,
+    GraphAndDataComponent
   ],
   imports: [
     BrowserModule,
