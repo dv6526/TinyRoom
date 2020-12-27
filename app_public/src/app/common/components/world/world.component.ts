@@ -25,6 +25,7 @@ export class WorldComponent implements OnInit {
   ) { }
 
   public weather: Weather[];
+  public user: User;
 
   public message: string;
 
@@ -38,6 +39,8 @@ export class WorldComponent implements OnInit {
       .then(weather => {
         this.message = weather.length > 0 ? "" : "Something went south with gathering weather information.";
         this.weather = weather;
+        let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
+        setUserData(this.user.username, skins[this.user.chosen_skin], this.user._id, this.weather[0].description, this.user.rank);
         this.weatherService.weather = weather;
         // save to cookies
         this.cookieService.set('weather', JSON.stringify(weather));
@@ -72,7 +75,10 @@ export class WorldComponent implements OnInit {
     // "script.js" call
     let u: User = this.dataService.user
     let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
-    setUserData(u.username, skins[u.chosen_skin], u._id, this.weather[0].description, u.rank);
+    let sprite_idx: string = "";
+    if(this.weather)
+      sprite_idx = this.weather[0].description;
+    setUserData(u.username, skins[u.chosen_skin], u._id, sprite_idx, u.rank);
     newStart();
   }
 
@@ -80,7 +86,7 @@ export class WorldComponent implements OnInit {
     if (this.weatherService.weather == null) {
       let date = new Date();
       // if weather is not cookied or if weather is from yesterday
-      if (this.cookieService.get('weather') == "" || this.cookieService.get('weather') == "" || this.cookieService.get('weatherAquireDate') != (date.getDate() + "." + date.getMonth() + "." + date.getFullYear())) {
+      if (this.cookieService.get('weather') == "" || this.cookieService.get('weatherAquireDate') != (date.getDate() + "." + date.getMonth() + "." + date.getFullYear())) {
         this.getGeoLocation();
       } else {
         this.weather = JSON.parse(this.cookieService.get("weather"));

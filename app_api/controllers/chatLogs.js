@@ -15,4 +15,8 @@ const sendChatLog = (req, res) => {
     });
 }
 
-module.exports = {sendChatLog};
+const getChatLogs = (req, res) => {
+    // get query parameters  api/chatLogs/datum?limit=x
+}
+
+module.exports = {sendChatLog, getChatLogs};
