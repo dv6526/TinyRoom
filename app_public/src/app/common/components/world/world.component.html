@@ -31,7 +31,7 @@
               <div><img src="http://openweathermap.org/img/wn/{{day.icon}}@2x.png" alt="Weather icon"
                         style="font-size:50px"></div>
               <div>{{day.icon_string}}</div>
-              <div>{{day.temperature}}</div>
+              <div>{{day.temperature | toFahrenheit}}</div>
             </div>
           </div>
         </div>

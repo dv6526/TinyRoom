@@ -19,6 +19,7 @@ import { DbComponent } from './common/components/db/db.component';
 import { IsActivePipe } from './common/pipes/is-active.pipe';
 import { CheckedPipe } from './common/pipes/checked.pipe';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
+import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ShortenPipe } from './common/pipes/shorten.pipe';
     IsActivePipe,
     CheckedPipe,
     ShortenPipe,
-    DbComponent
+    DbComponent,
+    ToFahrenheitPipe
   ],
   imports: [
     BrowserModule,
