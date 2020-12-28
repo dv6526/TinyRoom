@@ -40,7 +40,7 @@ export class WorldComponent implements OnInit {
         this.message = weather.length > 0 ? "" : "Something went south with gathering weather information.";
         this.weather = weather;
         let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
-        setUserData(this.user.username, skins[this.user.chosen_skin], this.user._id, this.weather[0].description, this.user.rank);
+        //setUserData(this.user.username, skins[this.user.chosen_skin], this.user._id, this.weather[0].description, this.user.rank);
         this.weatherService.weather = weather;
         // save to cookies
         this.cookieService.set('weather', JSON.stringify(weather));
@@ -76,8 +76,9 @@ export class WorldComponent implements OnInit {
     let u: User = this.dataService.user
     let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
     let sprite_idx: string = "";
-    if(this.weather)
-      sprite_idx = this.weather[0].description;
+    if (this.weather)
+      sprite_idx = this.weather[0].icon_string;
+    console.log("spriteidx: " + sprite_idx);
     setUserData(u.username, skins[u.chosen_skin], u._id, sprite_idx, u.rank);
     newStart();
   }
