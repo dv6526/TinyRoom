@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /* Modules */
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 /* Components */
 import { SigninComponent } from './common/components/signin/signin.component';
 import { PrivateComponent } from './common/components/private/private.component';
 import { ProfileComponent } from './common/components/profile/profile.component';
-import { WorldComponent} from './common/components/world/world.component';
+import { WorldComponent } from './common/components/world/world.component';
 import { NavComponent } from './common/components/nav/nav.component';
 import { FrameComponent } from './common/components/frame/frame.component';
 import { DbComponent } from './common/components/db/db.component';
@@ -21,6 +23,8 @@ import { CheckedPipe } from './common/pipes/checked.pipe';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
 import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
 import { GraphAndDataComponent } from './common/components/graph-and-data/graph-and-data.component';
+import { ModalnoOknoComponent } from './common/components/modalno-okno/modalno-okno.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -36,14 +40,17 @@ import { GraphAndDataComponent } from './common/components/graph-and-data/graph-
     ShortenPipe,
     DbComponent,
     ToFahrenheitPipe,
-    GraphAndDataComponent
+    GraphAndDataComponent,
+    ModalnoOknoComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [FrameComponent]

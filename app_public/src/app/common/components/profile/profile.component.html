@@ -6,49 +6,57 @@
   <!--RANK-->
   <div class="row">
     <div class="col-sm-2 infotype">rank</div>
-    <div class="col-sm-10"  *ngIf="user">{{user.rank}}</div>
+    <div class="col-sm-10" *ngIf="user">{{user.rank}}</div>
   </div>
   <!--USERNAME-->
   <div class="row">
     <div class="col-sm-2 infotype">username</div>
-    <div class="col-sm-10"  *ngIf="user">{{user.username}}</div>
+    <div class="col-sm-10" *ngIf="user">{{user.username}}</div>
   </div>
   <!--EMAIL-->
   <div class="row">
     <div class="col-sm-2 infotype">email</div>
-    <div class="col-sm-10"  *ngIf="user">{{user.email}}</div>
+    <div class="col-sm-10" *ngIf="user">{{user.email}}</div>
   </div>
   <!--PASSWORD-->
-  <form (ngSubmit)="changePassword()">
+  <form>
     <div class="form-group row">
       <label for="password" class="col-sm-2 col-form-label infotype">password</label>
       <div class="col-sm-10">
-        <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password" name="password"
-               placeholder="password" >
+        <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password"
+          name="password" placeholder="password">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" value="CHANGE PASSWORD" />
+          <input type="submit" class="btn btn-primary btn-sm" (click)="modal=true" value="CHANGE PASSWORD" />
           <div class="passwordInfo">{{changePasswordMessage}}</div>
+          <app-modalno-okno *ngIf="modal" action="Change password"
+            details="Are you sure you want to change your password?"
+            (buttonClickConfirm)="onClickConfirmPassword($event)" (buttonClickDeny)="onClickDeny($event)">
+          </app-modalno-okno>
         </div>
       </div>
     </div>
   </form>
 
   <!--TERMINATE MY ACCOUNT-->
-  <form (ngSubmit)="terminateAccount()">
+  <form>
     <div class="form-group row infotype">
       <label for="terminate" class="col-sm-2 col-form-label infotype">Delete my account</label>
       <div class="col-sm-10">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" value="TERMINATE" />
+          <input type="submit" class="btn btn-primary btn-sm" (click)="modal=true" value="TERMINATE" />
           <div class="passwordInfo">{{terminateMessage}}</div>
+          <app-modalno-okno *ngIf="modal" action="Terminate account"
+            details="Are you sure you want to terminate your account?"
+            (buttonClickConfirm)="onClickConfirmTerminate($event)" (buttonClickDeny)="onClickDeny($event)">
+          </app-modalno-okno>
         </div>
-
       </div>
     </div>
   </form>
 
   <!--APPEARANCE-->
-  <form (ngSubmit)="updateProfile()"><!-- action='/profile/update' method='post' enctype="multipart/form-data" onsubmit="checkProfileInfo(event)">-->
+  <form>
+    <!-- action='/profile/update' method='post' enctype="multipart/form-data" onsubmit="checkProfileInfo(event)">-->
     <div class="row">
       <h2>APPEARANCE</h2>
     </div>
@@ -57,7 +65,8 @@
     <div class="form-group row infotype">
       <label for="pfp" class="col-sm-2 col-form-label infotype">profile picture</label>
       <div class="col-sm-10">
-        <input [(ngModel)]="user.profile_picture" type="file" class="form-control-file input-sm appearance-form" id="pfp" name="pfp"/>
+        <input [(ngModel)]="user.profile_picture" type="file" class="form-control-file input-sm appearance-form"
+          id="pfp" name="pfp" />
       </div>
     </div>
 
@@ -66,15 +75,19 @@
     <div class="form-group row infotype">
       <label for="skin" class="col-sm-2 col-form-label infotype">skin</label>
       <div class="col-sm-10 skin-selector" *ngIf="user">
-        <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny" [(ngModel)]="user.chosen_skin"/>
-                <!-- {{checked user.skin "bunny"}} /> -->
-        <label for="bunny"><img src="/assets/images/sprites.png" alt="" class="skin-img bunny {{user.chosen_skin | check: 'bunny'}}"></label>
-        <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" [(ngModel)]="user.chosen_skin"/>
-                <!-- {{checked user.skin "goat"}} /> -->
-        <label for="goat"><img src="/assets/images/sprites.png" alt="" class="skin-img goat {{user.chosen_skin | check: 'goat'}}"></label>
-        <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" [(ngModel)]="user.chosen_skin"/>
-               <!-- {{checked user.skin "rat"}} /> -->
-        <label for="rat"><img src="/assets/images/sprites.png" alt="" class="skin-img rat {{user.chosen_skin | check: 'rat'}}" ></label>
+        <input id="bunny" class="appearance-form" type="radio" name="skin" value="bunny"
+          [(ngModel)]="user.chosen_skin" />
+        <!-- {{checked user.skin "bunny"}} /> -->
+        <label for="bunny"><img src="/assets/images/sprites.png" alt=""
+            class="skin-img bunny {{user.chosen_skin | check: 'bunny'}}"></label>
+        <input id="goat" class="appearance-form" type="radio" name="skin" value="goat" [(ngModel)]="user.chosen_skin" />
+        <!-- {{checked user.skin "goat"}} /> -->
+        <label for="goat"><img src="/assets/images/sprites.png" alt=""
+            class="skin-img goat {{user.chosen_skin | check: 'goat'}}"></label>
+        <input id="rat" class="appearance-form" type="radio" name="skin" value="rat" [(ngModel)]="user.chosen_skin" />
+        <!-- {{checked user.skin "rat"}} /> -->
+        <label for="rat"><img src="/assets/images/sprites.png" alt=""
+            class="skin-img rat {{user.chosen_skin | check: 'rat'}}"></label>
       </div>
     </div>
 
@@ -83,7 +96,8 @@
     <div class="form-group row">
       <label for="biotitle" class="col-sm-2 col-form-label infotype">bio title</label>
       <div class="col-sm-10" *ngIf="user">
-        <input  [(ngModel)]="user.bio_title" type="text" class="form-control input-sm profile-input" id="biotitle" name="biotitle">
+        <input [(ngModel)]="user.bio_title" type="text" class="form-control input-sm profile-input" id="biotitle"
+          name="biotitle">
       </div>
     </div>
 
@@ -92,14 +106,18 @@
     <div class="form-group row">
       <label for="bio" class="col-sm-2 col-form-label infotype">bio</label>
       <div class="col-sm-10">
-                <textarea  [(ngModel)]="user.bio" class="form-control input-sm profile-input" id="bio" name="bio" rows="5" *ngIf="user"></textarea>
+        <textarea [(ngModel)]="user.bio" class="form-control input-sm profile-input" id="bio" name="bio" rows="5"
+          *ngIf="user"></textarea>
       </div>
     </div>
 
     <!--SUBMIT CHANGES-->
     <div class="row">
-      <button type="submit" class="btn btn-outline-dark">UPDATE PROFILE</button>
+      <button class="btn btn-outline-dark" (click)="modal=true">UPDATE PROFILE</button>
       <div id="updateProfileInfo">{{updateProfileMessage}}</div>
+      <app-modalno-okno *ngIf="modal" action="Update profile" details="Are you sure you want to update your profile?"
+        (buttonClickConfirm)="onClickConfirmUpdate($event)" (buttonClickDeny)="onClickDeny($event)">
+      </app-modalno-okno>
     </div>
 
 
