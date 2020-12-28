@@ -26,5 +26,8 @@ router.get('/db/deleteAll', ctrlDb.deleteAll);
 const ctrlChatLogs = require('../controllers/chatLogs');
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
 router.get('/chatLogs', ctrlChatLogs.getChatLogs);
+//
+router.post('/message', ctrlChatLogs.sendMessage);
+router.get('/messages', ctrlChatLogs.getMessages);
 
 module.exports = router;

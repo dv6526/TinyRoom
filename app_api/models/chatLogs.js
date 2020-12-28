@@ -11,4 +11,5 @@ const chatLogsShema = new mongoose.Schema({
     messages: [messageShema]
 });
 
+mongoose.model('messages', messageShema, 'messages');
 mongoose.model('chatLogs', chatLogsShema, 'chatlogs');

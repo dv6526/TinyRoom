@@ -16,6 +16,7 @@
     "hbs": "*",
     "http-errors": "*",
     "mongoose": "^5.10.15",
+    "mongoose-paginate-v2": "^1.3.13",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.16",
     "ws": "*"
