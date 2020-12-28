@@ -7,6 +7,7 @@ import { ProfileInfoDto } from "../classes/DTOs/profile-info-dto";
 import { PasswordDto } from "../classes/DTOs/password-dto";
 import { PrivateRoom } from "../classes/models/privateRoom";
 import { UserDto } from "../classes/DTOs/user-dto";
+import {Message} from "../classes/models/message";
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +94,15 @@ export class DataService {
 
   public dbAddEntries(newUser: UserDto): Promise<User> {
     return this.createNewUser(newUser);
+  }
+
+  public getMessages(date: string, currentPage: number, perPage: number): Promise<Message[]> {
+    const url: string = `${this.apiUrl}/messages`;
+    return this.http
+      .get(url, {params:{date: date, page: currentPage.toString(), perPage: perPage.toString()}})
+      .toPromise()
+      .then(response => response as Message[])
+      .catch(this.processException);
   }
 
   private processException(napaka: any): Promise<any> {
