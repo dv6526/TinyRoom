@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const axios = require('axios');
 var apiParametri = {
     streznik: 'http://localhost:' + (process.env.PORT || 3000)
-  };
+};
 
 
 // connection list
@@ -12,19 +12,19 @@ function start_ws() {
     const wsserver = new WebSocket.Server({
         port: 8070
     });
-    
+
     wsserver.on('connection', function(socket) {
         // ko se nov connection naredi, ga dodamo v sockets list
         // prvo naredimo object
         var user = new UserSocket(socket)
         sockets.push(user);
-    
+
         socket.on('message', function(msg) {
             // for debugging! This stuff bloats your logging
             //console.log(msg);
-    
+
             var command = msg.substr(0, 2);
-    
+
             try {
                 var command_data = JSON.parse(msg.substring(3));
             } catch (err) {
@@ -32,14 +32,14 @@ function start_ws() {
                 // abandon processing the message
                 return;
             }
-    
+
             if (!user.isIdentified()) {
                 if (command == "ID") {
                     // the user is trying to identify himself
                     user.identify(command_data.username, command_data.token, command_data.weather, function (success) {
                         if (success) {
                             console.log(user.username, "has identified himself");
-        
+
                             // Notify everyone of new player!
                             var join_info = JSON.stringify(
                                 {"player": user.getPublicInfo()}
@@ -50,7 +50,7 @@ function start_ws() {
                                     s.socket.send("JO " + join_info);
                                 }
                             });
-        
+
                             // Now notify the new user of all the other players
                             user.socket.send("LI " + JSON.stringify(dto_for_LI(user)));
                             sockets.forEach(s => {
@@ -64,12 +64,12 @@ function start_ws() {
                             socket.send('Unable to log you in!');
                         }
                     });
-                    
-                    
-    
+
+
+
                 }
             }
-    
+
             else {
                 try {
                     if (command == "PO") {
@@ -85,16 +85,16 @@ function start_ws() {
                             }
                         });
                     }
-        
+
                     else if (command == "MS") {
-                        
+
                         var msg = command_data.message;
                         if(msg.length > 0 && !user.g_muted) {
                             console.log(user.getUsername(), msg, user.getRoom());
-                            
+
                             try {sendChatLog(user.getUsername(), msg, user.getRoom());}
                             catch(napaka) {console.log("sendChatLog napaka");}
-            
+
                             sockets.forEach(s => {
                                 // dont send to itself
                                 //we are sending from user to s
@@ -107,13 +107,13 @@ function start_ws() {
                                 }
                             });
                         }
-                        
+
                     }
-        
+
                     else if (command == "AL") {
                         user.friends.push(command_data.username);
                     }
-        
+
                     else if (command == "JO") {
                         if (command_data.username == undefined) {
                             user.joinRoom(undefined);
@@ -125,7 +125,7 @@ function start_ws() {
                             console.log(user.getUsername(), "does not have permission for", command_data.username);
                         }
                     }
-    
+
                     else if (command == "ER") {
                         if (command_data.username == undefined) {
                             user.joinRoom(undefined);
@@ -134,15 +134,15 @@ function start_ws() {
                             user.joinRoom(command_data.username);
                         }
                     }
-                
+
                     else if (command == "MU") {
                         user.mute.push(command_data.username);
                     }
-        
+
                     else if (command == "UN") {
                         user.mute = user.mute.filter(u => u !== command_data.username);
                     }
-        
+
                     else if (command == "GM") {
                         findByUsername(command_data.username).g_muted = true;
                         sockets.forEach(s => {
@@ -154,7 +154,7 @@ function start_ws() {
                             }
                         });
                     }
-        
+
                     else if (command == "GU") {
                         findByUsername(command_data.username).g_muted = false;
                         sockets.forEach(s => {
@@ -166,18 +166,18 @@ function start_ws() {
                             }
                         });
                     }
-    
+
                     else if (command == "WA") {
                         findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
                     }
-    
+
                     else if (command == "PM") {
                         findByUsername(command_data.recipient).socket.send("PM " + JSON.stringify({
                             "username": user.getUsername(),
                             "message": command_data.message
                         }));
                     }
-    
+
                     else if (command == "KI") {
                         var kicked_user = findByUsername(command_data.username);
                         kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
@@ -187,10 +187,10 @@ function start_ws() {
                 catch(napaka) {
                     console.log(napaka);
                 }
-                
+
             }
         });
-    
+
         socket.on('close', function() {
             // ce se socket zapre ga odstranimo iz sockets lista
             console.log(user.getUsername(), "left");
@@ -248,9 +248,9 @@ function sendChatLog(name, msg, room) {
             body: msg,
             room : room
         }
-      }).catch((napaka) => {
+    }).catch((napaka) => {
         console.log("Sporočilo se ni uspešno poslalo na bazo!");
-      });
+    });
 }
 
 class UserSocket {

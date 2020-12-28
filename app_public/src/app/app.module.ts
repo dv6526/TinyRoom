@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChartsModule } from "ng2-charts";
 
 /* Modules */
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
@@ -16,16 +17,20 @@ import { WorldComponent } from './common/components/world/world.component';
 import { NavComponent } from './common/components/nav/nav.component';
 import { FrameComponent } from './common/components/frame/frame.component';
 import { DbComponent } from './common/components/db/db.component';
+import { GraphAndDataComponent } from './common/components/graph-and-data/graph-and-data.component';
+import { LineChartComponent } from './common/components/line-chart/line-chart.component';
 
 /* Pipes */
 import { IsActivePipe } from './common/pipes/is-active.pipe';
 import { CheckedPipe } from './common/pipes/checked.pipe';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
 import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
-import { GraphAndDataComponent } from './common/components/graph-and-data/graph-and-data.component';
+
+import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pipe';
+
+
 import { ModalnoOknoComponent } from './common/components/modalno-okno/modalno-okno.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 @NgModule({
   declarations: [
@@ -41,6 +46,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DbComponent,
     ToFahrenheitPipe,
     GraphAndDataComponent,
+    GetHoursAndMinutesPipe,
+    LineChartComponent,
     ModalnoOknoComponent
   ],
   imports: [
@@ -49,6 +56,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    ChartsModule,
     BrowserAnimationsModule,
     ModalModule.forRoot()
   ],
