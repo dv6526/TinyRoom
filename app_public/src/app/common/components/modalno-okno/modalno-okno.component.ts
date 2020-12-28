@@ -14,12 +14,6 @@ export class ModalnoOknoComponent {
 
   @ViewChild('autoShownModal', { static: false }) autoShownModal: ModalDirective;
 
-
-  hideModal(): void {
-    this.autoShownModal.hide();
-
-  }
-
   @Output() buttonClickConfirm: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output() buttonClickDeny: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

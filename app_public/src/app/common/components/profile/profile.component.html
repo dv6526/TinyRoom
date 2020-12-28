@@ -26,9 +26,9 @@
         <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password"
           name="password" placeholder="password">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" (click)="modal=true" value="CHANGE PASSWORD" />
+          <input type="submit" class="btn btn-primary btn-sm" (click)="modalPassw=true" value="CHANGE PASSWORD" />
           <div class="passwordInfo">{{changePasswordMessage}}</div>
-          <app-modalno-okno *ngIf="modal" action="Change password"
+          <app-modalno-okno *ngIf="modalPassw" action="Change password"
             details="Are you sure you want to change your password?"
             (buttonClickConfirm)="onClickConfirmPassword($event)" (buttonClickDeny)="onClickDeny($event)">
           </app-modalno-okno>
@@ -43,9 +43,9 @@
       <label for="terminate" class="col-sm-2 col-form-label infotype">Delete my account</label>
       <div class="col-sm-10">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" (click)="modal=true" value="TERMINATE" />
+          <input type="submit" class="btn btn-primary btn-sm" (click)="modalTerminate=true" value="TERMINATE" />
           <div class="passwordInfo">{{terminateMessage}}</div>
-          <app-modalno-okno *ngIf="modal" action="Terminate account"
+          <app-modalno-okno *ngIf="modalTerminate" action="Terminate account"
             details="Are you sure you want to terminate your account?"
             (buttonClickConfirm)="onClickConfirmTerminate($event)" (buttonClickDeny)="onClickDeny($event)">
           </app-modalno-okno>
@@ -113,10 +113,11 @@
 
     <!--SUBMIT CHANGES-->
     <div class="row">
-      <button class="btn btn-outline-dark" (click)="modal=true">UPDATE PROFILE</button>
+      <button class="btn btn-outline-dark" (click)="modalProfile=true">UPDATE PROFILE</button>
       <div id="updateProfileInfo">{{updateProfileMessage}}</div>
-      <app-modalno-okno *ngIf="modal" action="Update profile" details="Are you sure you want to update your profile?"
-        (buttonClickConfirm)="onClickConfirmUpdate($event)" (buttonClickDeny)="onClickDeny($event)">
+      <app-modalno-okno *ngIf="modalProfile" action="Update profile"
+        details="Are you sure you want to update your profile?" (buttonClickConfirm)="onClickConfirmUpdate($event)"
+        (buttonClickDeny)="onClickDeny($event)">
       </app-modalno-okno>
     </div>
 

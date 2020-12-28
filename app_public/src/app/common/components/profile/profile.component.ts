@@ -21,7 +21,9 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   public user: User;
-  public modal: boolean;
+  public modalPassw: boolean = false;
+  public modalTerminate: boolean = false;
+  public modalProfile: boolean = false;
 
   public profileInfo: ProfileInfoDto = {
     profile_picture: "",
@@ -68,21 +70,23 @@ export class ProfileComponent implements OnInit {
 
   public onClickConfirmPassword(event: MouseEvent): void {
     this.changePassword();
-    this.modal = false;
+    this.modalPassw = false;
   }
 
   public onClickConfirmTerminate(event: MouseEvent): void {
     this.terminateAccount();
-    this.modal = false;
+    this.modalTerminate = false;
   }
 
   public onClickConfirmUpdate(event: MouseEvent): void {
     this.updateProfile();
-    this.modal = false;
+    this.modalProfile = false;
   }
 
   public onClickDeny(event: MouseEvent): void {
-    this.modal = false;
+    this.modalPassw = false;
+    this.modalTerminate = false;
+    this.modalProfile = false;
   }
 
   public terminateAccount(): void {
@@ -120,6 +124,5 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.dataService.user;
-    this.modal = false;
   }
 }
