@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const ctrlUporabniki = require('../controllers/uporabniki');
+const ctrlAvtentikacija = require('../controllers/avtentikacija');
+
 router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
+/* Avtentikacija */
+router.post('/registracija', ctrlAvtentikacija.registracija);
+router.post('/prijava', ctrlAvtentikacija.prijava);
+
 router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
 router.get('/uporabniki/:ui/profile', ctrlUporabniki.getUserInfo);
 router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);

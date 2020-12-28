@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,8 +7,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var wsserver = require("./ws_server/ws.js")
+var passport = require('passport');
 
 require('./app_api/models/db');
+require('./app_api/configuration/passport');
 
 //var indexRouter = require('./app_server/routes/index'); //usmerjevalnik, glede na zahtevo kličemo metode iz krmilnika
 var indexApi = require('./app_api/routes/index');
@@ -33,14 +37,14 @@ app.use(session({
   secret: "abcdef",
   saveUninitialized: false,
   resave: false,
-  cookie: {maxAge : 2 * 60 * 60 * 1000}
+  cookie: { maxAge: 2 * 60 * 60 * 1000 }
 }));
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_public', 'build')));
 
 app.use('/api', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
   next();
 });
@@ -51,14 +55,16 @@ app.get(/(\/private)|(\/profile)|(\/signin)|(\/logout)|(\/db)/, (req, res, next)
   res.sendFile(path.join(__dirname, 'app_public', 'build', 'index.html'));
 });
 
+app.use(passport.initialize());
+
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

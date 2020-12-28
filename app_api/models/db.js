@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 let dbURI;
-//if (process.env.NODE_ENV == "production") {
+if (process.env.NODE_ENV == "production") {
   dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
-//}
-//else {
-//  dbURI = 'mongodb://localhost/smalltalk';
-//}
+}
+else {
+  dbURI = 'mongodb://localhost/smalltalk';
+}
 
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
@@ -53,7 +53,7 @@ process.on('SIGTERM', () => {
   pravilnaZaustavitev('izhod iz aplikacije na Heroku', () => {
     process.exit(0);
   });
-}); 
+});
 
 require('./uporabniki');
 require('./privateRoom');
