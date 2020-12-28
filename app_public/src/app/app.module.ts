@@ -6,12 +6,14 @@ import { ChartsModule } from "ng2-charts";
 
 /* Modules */
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 /* Components */
 import { SigninComponent } from './common/components/signin/signin.component';
 import { PrivateComponent } from './common/components/private/private.component';
 import { ProfileComponent } from './common/components/profile/profile.component';
-import { WorldComponent} from './common/components/world/world.component';
+import { WorldComponent } from './common/components/world/world.component';
 import { NavComponent } from './common/components/nav/nav.component';
 import { FrameComponent } from './common/components/frame/frame.component';
 import { DbComponent } from './common/components/db/db.component';
@@ -23,7 +25,12 @@ import { IsActivePipe } from './common/pipes/is-active.pipe';
 import { CheckedPipe } from './common/pipes/checked.pipe';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
 import { ToFahrenheitPipe } from './common/pipes/to-fahrenheit.pipe';
+
 import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pipe';
+
+
+import { ModalnoOknoComponent } from './common/components/modalno-okno/modalno-okno.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -40,7 +47,8 @@ import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pip
     ToFahrenheitPipe,
     GraphAndDataComponent,
     GetHoursAndMinutesPipe,
-    LineChartComponent
+    LineChartComponent,
+    ModalnoOknoComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +56,9 @@ import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pip
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    ChartsModule
+    ChartsModule,
+    BrowserAnimationsModule,
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [FrameComponent]

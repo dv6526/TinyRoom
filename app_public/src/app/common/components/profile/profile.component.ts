@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../../classes/models/user';
 import { DataService } from "../../services/data.service";
-import { ProfileInfoDto} from "../../classes/DTOs/profile-info-dto";
+import { ProfileInfoDto } from "../../classes/DTOs/profile-info-dto";
 import { PasswordDto } from "../../classes/DTOs/password-dto";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
@@ -18,9 +18,12 @@ export class ProfileComponent implements OnInit {
     private dataService: DataService,
     private cookieService: CookieService,
     private router: Router
-  ) {}
+  ) { }
 
   public user: User;
+  public modalPassw: boolean = false;
+  public modalTerminate: boolean = false;
+  public modalProfile: boolean = false;
 
   public profileInfo: ProfileInfoDto = {
     profile_picture: "",
@@ -49,7 +52,8 @@ export class ProfileComponent implements OnInit {
   }
 
   public changePassword(): void {
-    if(this.checkPassword()) {
+
+    if (this.checkPassword()) {
       this.dataService.changePassword(this.user._id, this.newPassword)
         .then(response => {
           // update data
@@ -61,6 +65,28 @@ export class ProfileComponent implements OnInit {
     } else {
       this.changePasswordMessage = "Password is too short!";
     }
+
+  }
+
+  public onClickConfirmPassword(event: MouseEvent): void {
+    this.changePassword();
+    this.modalPassw = false;
+  }
+
+  public onClickConfirmTerminate(event: MouseEvent): void {
+    this.terminateAccount();
+    this.modalTerminate = false;
+  }
+
+  public onClickConfirmUpdate(event: MouseEvent): void {
+    this.updateProfile();
+    this.modalProfile = false;
+  }
+
+  public onClickDeny(event: MouseEvent): void {
+    this.modalPassw = false;
+    this.modalTerminate = false;
+    this.modalProfile = false;
   }
 
   public terminateAccount(): void {
