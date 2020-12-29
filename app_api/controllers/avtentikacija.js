@@ -1,7 +1,7 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
+//const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
-
 const registracija = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki" });
@@ -20,7 +20,7 @@ const registracija = (req, res) => {
         if (napaka) {
           res.status(500).json(napaka);
         } else {
-          res.status(200).json({ "zeton": uporabnik.generirajJwt()});
+          res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(uporabnik)});
         }
       });
     } else {
@@ -38,7 +38,7 @@ const prijava = (req, res) => {
     if (napaka)
       return res.status(500).json(napaka);
     if (uporabnik) {
-      res.status(200).json({ "zeton": uporabnik.generirajJwt() });
+      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(uporabnik)});
     } else {
       res.status(401).json(informacije);
     }

@@ -79,7 +79,7 @@ export class WorldComponent implements OnInit {
     //if (this.weather)
     //  sprite_idx = this.weather[0].icon_string;
     //console.log("spriteidx: " + sprite_idx);
-    //setUserData(u.username, skins[u.chosen_skin], u._id, sprite_idx, u.rank);
+    setUserData(this.dataService.zeton);
     //sprite_idx = skins[sprite_idx];
     newStart();
   }
