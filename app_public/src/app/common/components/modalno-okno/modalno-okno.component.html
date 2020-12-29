@@ -4,13 +4,13 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 id="dialog-auto-name" class="modal-title pull-left">{{action}}</h4>
+                <h4 id="dialog-auto-name" class="modal-title pull-left text-dark">{{action}}</h4>
                 <button type="button" class="close pull-right" aria-label="Close"
                     (click)="buttonClickDeny.emit($event)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
+            <div class="modal-body text-center text-dark">
                 <p>{{details}}</p>
                 <button type="button" class="btn btn-default" (click)="buttonClickConfirm.emit($event)">Yes</button>
                 <button type="button" class="btn btn-primary" (click)="buttonClickDeny.emit($event)">No</button>
