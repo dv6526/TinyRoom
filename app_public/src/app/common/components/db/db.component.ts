@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../../services/data.service";
 import { User } from "../../classes/models/user";
 import { CookieService } from "ngx-cookie-service";
+
 import data from "../../../../assets/models/uporabnik.js";
+import {UserDto} from "../../classes/DTOs/user-dto";
 
 @Component({
   selector: 'app-db',
@@ -39,7 +41,7 @@ export class DbComponent implements OnInit {
   public dbAddEntries(): void {
     this.deleteMessage = "";
     const upor: any = data;
-    const u: User[] = upor.uporabnik;
+    const u: UserDto[] = upor.uporabnik;
     for(let i=0;i<u.length;i++) {
       this.dataService.dbAddEntries(u[i])
         .then(response => {
