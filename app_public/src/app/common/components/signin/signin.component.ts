@@ -66,7 +66,7 @@ export class SigninComponent implements OnInit {
         setUserData(response['zeton']);
 
         // save data to dataService
-        this.dataService.user = response[0];
+        this.dataService.user = response['user'];
 
         // save cookie (stringify object data)
         this.cookieService.set('user', JSON.stringify(response[0]));
@@ -116,7 +116,7 @@ export class SigninComponent implements OnInit {
         setUserData(response['zeton']);
 
         // save data to dataService
-        this.dataService.user = response;
+        this.dataService.user = response['user'];
 
         // save cookie (stringify object data)
         this.cookieService.set('user', JSON.stringify(response));

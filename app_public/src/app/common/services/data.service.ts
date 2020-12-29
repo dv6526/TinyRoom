@@ -17,7 +17,8 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   private apiUrl = environment.apiUrl;
-  public user: User;
+  public zeton: string;
+  public user: any;
   public room: PrivateRoom;
 
   public getUserData(username: string, password: string): Promise<User[]> {
