@@ -5,7 +5,7 @@ if (process.env.NODE_ENV == "production") {
   dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
 }
 else {
-  dbURI = 'mongodb://localhost/smalltalk';
+  dbURI = 'mongodb://localhost/smalltalk';  //   dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk'; // za docker
 }
 
 mongoose.connect(dbURI, {

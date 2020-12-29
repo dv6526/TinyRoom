@@ -1,8 +1,9 @@
 FROM node:14-alpine
 
 ARG NODE_ENV=development
+ARG JWT_GESLO=123
 ENV NODE_ENV=${NODE_ENV}
-
+ENV JWT_GESLO=${JWT_GESLO}
 # Privzeta mapa z aplikacijo za vse ukaze v nadaljevanju (COPY, RUN, CMD itd.)
 WORKDIR /usr/src/app
 
@@ -16,5 +17,6 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
+EXPOSE 8070
 
 CMD [ "npm", "run", "start" ]

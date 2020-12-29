@@ -6,6 +6,7 @@ services:
         restart: always
         ports:
             - "3000:3000"
+            - "8070:8070"
         image: sp-smalltalk-node-js
         build:
             context: ./
