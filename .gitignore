@@ -66,3 +66,5 @@ typings/
 .vscode
 
 ./public/profileImages/*
+
+/app_public/build
