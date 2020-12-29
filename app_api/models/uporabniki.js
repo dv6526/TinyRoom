@@ -31,9 +31,18 @@ uporabnikiShema.methods.preveriGeslo = function (geslo) {
 uporabnikiShema.methods.generirajJwt = function () {
     const datumPoteka = new Date();
     datumPoteka.setDate(datumPoteka.getDate() + 7);
-
+    /*
+    username = setUsername;
+    sprite_idx = setSprite_idx;
+    my_id = setMy_id;
+    weather = setWeather;
+    rank = setRank;
+    */
     return jwt.sign({
         username: this.username,
+        sprite_idx: this.chosen_skin,
+        my_id: this._id,
+        rank: this.rank,
         exp: parseInt(datumPoteka.getTime() / 1000, 10)
     }, process.env.JWT_GESLO);
 };
