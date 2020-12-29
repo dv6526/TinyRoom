@@ -1088,7 +1088,7 @@ let weather = "clear sky";
 let rank = "";
 function setUserData(token) {
     console.log(token);
-    
+
     function parseJwt (token) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -1099,10 +1099,12 @@ function setUserData(token) {
         return JSON.parse(jsonPayload);
     };
 
+    var skins = { "bunny": 0, "goat": 1, "rat": 2 };
+
     var token_data = parseJwt(token);
 
     username = token_data.username;
-    sprite_idx = token_data.sprite_idx;
+    sprite_idx = skins[token_data.sprite_idx];
     my_id = token_data.my_id;
     rank = token_data.rank;
     
