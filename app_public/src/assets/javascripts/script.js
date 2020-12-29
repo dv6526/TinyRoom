@@ -1114,8 +1114,7 @@ function setUserData(token) {
 
 function setUserWeather(setWeather) {
   console.log("Weather is set: " + setWeather);
-  // Which user is our user if there is multiple users in chat.users
-  chat.users[0].weather = setWeather;
+  chat.player.weather = setWeather;
   weather = setWeather;
 }
 
