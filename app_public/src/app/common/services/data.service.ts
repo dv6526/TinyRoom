@@ -75,7 +75,7 @@ export class DataService {
   }
 
   public createNewUser(newUser: UserDto): Promise<User> {
-    const url: string = `${this.apiUrl}/uporabniki/`;
+    const url: string = `${this.apiUrl}/registracija/`;
     return this.http
       .post(url, newUser)
       .toPromise()
