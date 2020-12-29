@@ -963,8 +963,8 @@ class Chat {
     }
 
     communications() {
-        //this.socket = new WebSocket("ws://localhost:8070");
-        this.socket = new WebSocket("ws://157.245.36.23:8070");
+        this.socket = new WebSocket("ws://localhost:8070");
+        //this.socket = new WebSocket("ws://157.245.36.23:8070");
 
         var chat = this;
 
