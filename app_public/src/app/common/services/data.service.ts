@@ -21,11 +21,11 @@ export class DataService {
   public room: PrivateRoom;
 
   public getUserData(username: string, password: string): Promise<User[]> {
-    const url: string = `${this.apiUrl}/uporabniki`;
+    const url: string = `${this.apiUrl}/prijava`;
     return this.http
-      .get(url, {params: {username: username, password: password}})
+      .post(url, {username: username, password: password})
       .toPromise()
-      .then(response => response as User[])
+      .then(response => response as any)
       .catch(this.processException);
   }
 

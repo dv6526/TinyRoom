@@ -50,6 +50,9 @@ export class SigninComponent implements OnInit {
     }
     // verification
     this.dataService.getUserData(this.username, this.password).then(response => {
+
+      //console.log(response);
+
       if(response.length == 0) {
         console.log('Wrong username or password!');
         this.signInError = 'Wrong username or password!';
@@ -57,8 +60,10 @@ export class SigninComponent implements OnInit {
       } else {
         console.log("Logged in.");
 
+        // decode response, set appropriate info
+
         // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
-        setUserData(response[0].username, this.skins[response[0].chosen_skin], response[0]._id, "clear sky", response[0].rank);
+        setUserData(response['zeton']);
 
         // save data to dataService
         this.dataService.user = response[0];
@@ -103,9 +108,12 @@ export class SigninComponent implements OnInit {
     this.dataService.createNewUser(newUser)
       .then(response => {
         console.log("Registered successfully and logged in.");
+        //console.log(response);
+
+        // decode response, set appropriate info
 
         // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
-        setUserData(response.username, this.skins[response.chosen_skin], response._id, "clear sky", response.rank);
+        setUserData(response['zeton']);
 
         // save data to dataService
         this.dataService.user = response;

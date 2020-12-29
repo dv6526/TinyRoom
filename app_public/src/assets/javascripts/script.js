@@ -730,7 +730,7 @@ class Chat {
                     }
                     //getProfileInfo
                     $.ajax({
-                        url: "api/uporabniki/" + found_user + "/profile", success: function (result) {
+                        url: "http://localhost:4000/api/uporabniki/" + found_user + "/profile", success: function (result) {
                             //console.log(result);
 
                             messageDropdown({ x: click.clientX, y: click.clientY }, {
@@ -1086,12 +1086,27 @@ let sprite_idx = "";
 let my_id = "";
 let weather = "clear sky";
 let rank = "";
-function setUserData(setUsername, setSprite_idx, setMy_id, setWeather, setRank) {
-    username = setUsername;
-    sprite_idx = setSprite_idx;
-    my_id = setMy_id;
-    weather = setWeather;
-    rank = setRank;
+function setUserData(token) {
+    console.log(token);
+    
+    function parseJwt (token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    
+        return JSON.parse(jsonPayload);
+    };
+
+    var token_data = parseJwt(token);
+
+    username = token_data.username;
+    sprite_idx = token_data.sprite_idx;
+    my_id = token_data.my_id;
+    rank = token_data.rank;
+    
+    console.log('setUserData poklican', username, weather);
 }
 
 function exit() {
@@ -1149,6 +1164,7 @@ $(function () {
             //console.log($(square).width(), $(square).height());
         }
     }
+
     $(window).resize(formatPage);
 
 
