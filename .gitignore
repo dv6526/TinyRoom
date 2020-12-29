@@ -67,4 +67,6 @@ typings/
 
 ./public/profileImages/*
 
+# ANGULAR
 /app_public/build
+/app_public/package-lock.json
