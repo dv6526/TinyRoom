@@ -2,6 +2,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 //const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
+const Soba = mongoose.model('privateRoom');
 
 const registracija = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
@@ -17,6 +18,13 @@ const registracija = (req, res) => {
       uporabnik.rank = req.body.rank;
       uporabnik.nastaviGeslo(req.body.password);
 
+      Soba.create({
+        owner: req.body.username,
+        objects: []
+      }, (napaka, soba) => {
+        console.log('napaka pri kreiranju sobe', napaka);
+      })
+
       uporabnik.save(napaka => {
         if (napaka) {
           res.status(500).json(napaka);
@@ -30,7 +38,7 @@ const registracija = (req, res) => {
             bio: uporabnik.bio,
             chosen_skin: uporabnik.chosen_skin
           }
-          res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData)});
+          res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
         }
       });
     } else {
@@ -58,7 +66,7 @@ const prijava = (req, res) => {
         chosen_skin: uporabnik.chosen_skin,
         _id: uporabnik._id
       }
-      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData)});
+      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
     } else {
       res.status(401).json(informacije);
     }
