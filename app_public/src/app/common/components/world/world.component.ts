@@ -9,6 +9,7 @@ import { User } from "../../classes/models/user";
 
 declare const setUserData: any;
 declare const newStart: any;
+declare const setUserWeather: any;
 
 @Component({
   selector: 'app-world',
@@ -39,8 +40,9 @@ export class WorldComponent implements OnInit {
       .then(weather => {
         this.message = weather.length > 0 ? "" : "Something went south with gathering weather information.";
         this.weather = weather;
-        let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
-        //setUserData(this.user.username, skins[this.user.chosen_skin], this.user._id, this.weather[0].description, this.user.rank);
+
+        setUserWeather(weather[0].icon_string);
+
         this.weatherService.weather = weather;
         // save to cookies
         this.cookieService.set('weather', JSON.stringify(weather));

@@ -1084,8 +1084,9 @@ let chat;
 let username = "";
 let sprite_idx = "";
 let my_id = "";
-let weather = "clear sky";
+let weather = "";
 let rank = "";
+
 function setUserData(token) {
     console.log(token);
 
@@ -1095,7 +1096,7 @@ function setUserData(token) {
         var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-    
+
         return JSON.parse(jsonPayload);
     };
 
@@ -1107,8 +1108,15 @@ function setUserData(token) {
     sprite_idx = skins[token_data.sprite_idx];
     my_id = token_data.my_id;
     rank = token_data.rank;
-    
+
     console.log('setUserData poklican', username, weather);
+}
+
+function setUserWeather(setWeather) {
+  console.log("Weather is set: " + setWeather);
+  // Which user is our user if there is multiple users in chat.users
+  chat.users[0].weather = setWeather;
+  weather = setWeather;
 }
 
 function exit() {
