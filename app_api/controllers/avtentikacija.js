@@ -2,6 +2,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 //const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
+
 const registracija = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki" });
@@ -20,7 +21,16 @@ const registracija = (req, res) => {
         if (napaka) {
           res.status(500).json(napaka);
         } else {
-          res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(uporabnik)});
+          let userData = {
+            username: uporabnik.username,
+            rank: uporabnik.rank,
+            email: uporabnik.email,
+            profile_picture: uporabnik.profile_picture,
+            bio_title: uporabnik.bio_title,
+            bio: uporabnik.bio,
+            chosen_skin: uporabnik.chosen_skin
+          }
+          res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData)});
         }
       });
     } else {
@@ -38,7 +48,17 @@ const prijava = (req, res) => {
     if (napaka)
       return res.status(500).json(napaka);
     if (uporabnik) {
-      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(uporabnik)});
+      let userData = {
+        username: uporabnik.username,
+        rank: uporabnik.rank,
+        email: uporabnik.email,
+        profile_picture: uporabnik.profile_picture,
+        bio_title: uporabnik.bio_title,
+        bio: uporabnik.bio,
+        chosen_skin: uporabnik.chosen_skin,
+        _id: uporabnik._id
+      }
+      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData)});
     } else {
       res.status(401).json(informacije);
     }

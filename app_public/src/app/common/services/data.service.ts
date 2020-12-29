@@ -21,7 +21,7 @@ export class DataService {
   public user: any;
   public room: PrivateRoom;
 
-  public getUserData(username: string, password: string): Promise<User[]> {
+  public getUserData(username: string, password: string): Promise<any> {
     const url: string = `${this.apiUrl}/prijava`;
     return this.http
       .post(url, {username: username, password: password})
@@ -75,12 +75,12 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public createNewUser(newUser: UserDto): Promise<User> {
+  public createNewUser(newUser: UserDto): Promise<any> {
     const url: string = `${this.apiUrl}/registracija/`;
     return this.http
       .post(url, newUser)
       .toPromise()
-      .then(response => response as User)
+      .then(response => response as any)
       .catch(this.processException);
   }
 

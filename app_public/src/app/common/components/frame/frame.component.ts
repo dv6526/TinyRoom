@@ -84,9 +84,13 @@ export class FrameComponent implements OnInit {
     if(this.cookieService.get('user')) {
       this.dataService.user = JSON.parse(this.cookieService.get('user'));
 
-      let skins = {"bunny" : 0, "goat":1, "rat":2};
+      //let skins = {"bunny" : 0, "goat":1, "rat":2};
       // "script.js" call
-      setUserData(this.dataService.user.username, skins[this.dataService.user.chosen_skin], this.dataService.user._id, "clear sky", this.dataService.user.rank);
+      //setUserData(this.dataService.user.username, skins[this.dataService.user.chosen_skin], this.dataService.user._id, "clear sky", this.dataService.user.rank);
+    }
+    if(this.cookieService.get('token')) {
+      this.dataService.zeton = this.cookieService.get('token');
+      setUserData(this.dataService.zeton);
     }
   }
 }

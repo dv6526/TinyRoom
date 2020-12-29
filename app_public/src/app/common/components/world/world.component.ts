@@ -45,7 +45,7 @@ export class WorldComponent implements OnInit {
         // save to cookies
         this.cookieService.set('weather', JSON.stringify(weather));
         let date = new Date();
-        this.cookieService.set('weatherAquireDate', date.getDate() + "." + date.getMonth() + "." + date.getFullYear());
+        this.cookieService.set('weatherAcquireDate', date.getDate() + "." + date.getMonth() + "." + date.getFullYear());
       });
   }
 
@@ -85,10 +85,13 @@ export class WorldComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.weatherService.weather == null) {
-      let date = new Date();
+    let date = new Date();
+    // if weather is not actual
+    if(this.cookieService.get('weatherAcquireDate') != (date.getDate() + "." + date.getMonth() + "." + date.getFullYear())) {
+      this.getGeoLocation();
+    } else if (this.weatherService.weather == null) {
       // if weather is not cookied or if weather is from yesterday
-      if (this.cookieService.get('weather') == "" || this.cookieService.get('weatherAquireDate') != (date.getDate() + "." + date.getMonth() + "." + date.getFullYear())) {
+      if (this.cookieService.get('weather') == "") {
         this.getGeoLocation();
       } else {
         this.weather = JSON.parse(this.cookieService.get("weather"));
