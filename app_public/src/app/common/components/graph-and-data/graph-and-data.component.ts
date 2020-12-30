@@ -41,12 +41,13 @@ export class GraphAndDataComponent implements OnInit {
   }
 
   getMessages(): void {
-    this.error = "Please wait: Acquiring data.";
-    this.messages = null;
+    //this.error = "Please wait: Acquiring data.";
+    //this.messages = null;
     // get current page
     this.dataService.getMessages(this.date, this.currentPage, this.perPage)
       .then(response => {
         this.messages = response;
+        this.error = "";
         console.log("Messages at your service!");
       }).catch(error => {
         //this.error = error.message;
@@ -75,6 +76,7 @@ export class GraphAndDataComponent implements OnInit {
         this.allMessages = response;
         this.numOfPages = Math.ceil(this.allMessages.length/this.perPage)-1;
         this.processMessageData();
+        this.error = "";
         console.log("Graph data at your service!");
       }).catch(error => {
         this.error = "Could not get graph data!";
