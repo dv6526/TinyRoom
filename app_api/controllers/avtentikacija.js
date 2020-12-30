@@ -22,8 +22,11 @@ const registracija = (req, res) => {
         owner: req.body.username,
         objects: []
       }, (napaka, soba) => {
-        console.log('napaka pri kreiranju sobe', napaka);
-      })
+        if(napaka) {
+          console.log('napaka pri kreiranju sobe', napaka);
+        }
+        console.log('Soba je kreirana', soba);
+      });
 
       uporabnik.save(napaka => {
         if (napaka) {
