@@ -43,6 +43,15 @@ export class ProfileComponent implements OnInit {
 
   public terminateMessage: string;
 
+  public checkPassThenModal(): void {
+    if(this.checkPassword())
+      this.modalPassw = true;
+    else {
+      this.modalPassw = false;
+      this.changePasswordMessage = "Password is too short!";
+    }
+  }
+
   public checkPassword(): boolean {
     const regPass = /^.{3,}$/;
     if (!regPass.test(this.newPassword.password)) {
@@ -55,6 +64,7 @@ export class ProfileComponent implements OnInit {
   public changePassword(): void {
 
     if (this.checkPassword()) {
+      this.changePasswordMessage = "Please wait: Changing your password.";
       this.dataService.changePassword(this.user._id, this.newPassword)
         .then(response => {
           // update data
@@ -63,7 +73,10 @@ export class ProfileComponent implements OnInit {
           console.log("token is " + this.dataService.zeton);
           this.changePasswordMessage = "Password is changed."
         })
-        .catch(error => this.changePasswordMessage = error.message);
+        .catch(error => {
+          this.changePasswordMessage = "Could not change the password!";
+          //this.changePasswordMessage = error.message
+        });
     } else {
       this.changePasswordMessage = "Password is too short!";
     }
@@ -92,6 +105,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public terminateAccount(): void {
+    this.terminateMessage = "Please wait: Terminating your account.";
     this.dataService.terminateAccount(this.user._id)
       .then(response => {
         console.log("Account has been terminated!");
@@ -99,7 +113,10 @@ export class ProfileComponent implements OnInit {
         this.cookieService.deleteAll();
         this.router.navigate(['']);
       })
-      .catch(error => this.terminateMessage = error.message);
+      .catch(error => {
+        this.terminateMessage = "Could not terminate the account!";
+        // this.terminateMessage = error.message
+      });
   }
 
   public selectFile(files: FileList): void {
@@ -107,6 +124,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public updateProfile(): void {
+    this.updateProfileMessage = "Please wait: Updating your profile.";
     this.dataService.updateProfile(this.user._id, this.profileInfo, this.profilePicture)
       .then(response => {
         // update data
@@ -115,7 +133,13 @@ export class ProfileComponent implements OnInit {
         this.updateProfileMessage = "Profile info is UPDATED.";
         console.log("Profile info is updated!");
       })
-      .catch(error => this.updateProfileMessage = error.message);
+      .catch(error => {
+        this.updateProfileMessage = "Could not update the profile!";
+        // if(error.status == 0)
+        //   this.updateProfileMessage = "No internet connection";
+        // else
+        //   this.updateProfileMessage = error.message
+      });
   }
 
   private getComponentName(): string {

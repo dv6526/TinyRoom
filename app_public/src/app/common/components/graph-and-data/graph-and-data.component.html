@@ -7,7 +7,7 @@
 
         <!-- DATE INPUT -->
         <form (ngSubmit)="getData()">
-          <div class="col-12 input-group flex-nowrap">
+          <div class="col-12 input-group flex-nowrap mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text bg-dark text-white" id="addon-wrapping">Pick a date:</span>
             </div>
@@ -17,12 +17,12 @@
             </div>
           </div>
         </form>
-        <div class="text-center" *ngIf="date==''">
+        <div class="text-center mb-3" *ngIf="error!=''">
           {{error}}
         </div>
 
         <!-- DATA -->
-        <div class="m-3" *ngIf="messages">
+        <div *ngIf="messages">
           <div *ngFor="let message of messages | oldestFirst" class="message-bubble player">
             {{message.date | getHoursAndMinutes}}
             {{message.name}}:
@@ -34,7 +34,7 @@
         </div>
 
         <!-- PAGINATION -->
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation mt-3">
           <ul class="pagination justify-content-center">
             <li class="page-item">
               <button (click)="previousPage()" type="button" class="btn btn-outline-secondary text-white border border-white border-left" [disabled]="currentPage==0">Previous</button>

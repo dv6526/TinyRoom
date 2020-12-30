@@ -32,6 +32,7 @@ export class PrivateComponent implements OnInit {
       f.position.y -= 0.5;
     }
     if(this.dataService.user) {
+      this.message = "Please wait: Updating the furniture.";
       this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).then( response => {
         this.message = "Furniture has been updated!";
       }).catch(error => {

@@ -26,7 +26,7 @@
         <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password"
           name="password" placeholder="password">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" (click)="modalPassw=true" value="CHANGE PASSWORD" />
+          <input type="submit" class="btn btn-primary btn-sm" (click)="checkPassThenModal()" value="CHANGE PASSWORD" />
           <div class="passwordInfo">{{changePasswordMessage}}</div>
           <app-modalno-okno *ngIf="modalPassw" action="Change password"
             details="Are you sure you want to change your password?"

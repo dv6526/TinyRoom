@@ -11,7 +11,7 @@ import { ChartDataSets } from "chart.js";
 export class GraphAndDataComponent implements OnInit {
 
   public date: string = "";
-  public error: string = "Choose a date to get data!";
+  public error: string = "";
   public messages: Message[];
   public allMessages: Message[];
   public currentPage: number;
@@ -41,7 +41,7 @@ export class GraphAndDataComponent implements OnInit {
   }
 
   getMessages(): void {
-    console.log(this.date);
+    this.error = "Please wait: Acquiring data.";
     this.messages = null;
     // get current page
     this.dataService.getMessages(this.date, this.currentPage, this.perPage)
@@ -50,7 +50,7 @@ export class GraphAndDataComponent implements OnInit {
         console.log("Messages at your service!");
       }).catch(error => {
         //this.error = error.message;
-        this.error = "Could not get all messages of the picked date!";
+        this.error = "Could not get data!";
         console.log("Something went wrong when acquiring messages: " + error)
     });
   }
@@ -69,6 +69,7 @@ export class GraphAndDataComponent implements OnInit {
   }
 
   getAllMessages(): void {
+    this.error = "Please wait: Acquiring data.";
     this.dataService.getMessages(this.date, 0, 0)
       .then(response => {
         this.allMessages = response;
@@ -76,7 +77,7 @@ export class GraphAndDataComponent implements OnInit {
         this.processMessageData();
         console.log("Graph data at your service!");
       }).catch(error => {
-        this.error = "Could not get all messages to calculate graph!";
+        this.error = "Could not get graph data!";
         //this.error = error.message;
         console.log("Something went wrong when acquiring messages: " + error)
     });
