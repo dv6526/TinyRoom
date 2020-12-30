@@ -46,31 +46,17 @@ export class SigninComponent implements OnInit {
       return;
     }
     // verification
-    this.dataService.getUserData(this.username, this.password).then(response => {
-      if(response.length == 0) {
-        console.log('Wrong username or password!');
-        this.signInError = 'Wrong username or password!';
-        return;
-      } else {
+    this.dataService.loginUser(this.username, this.password).then(response => {
+     
         console.log("Logged in.");
         this.IDsuccess(response);
-        // // decode response, set appropriate info
-        //
-        // // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
-        // setUserData(response['zeton']);
-        //
-        // // save data to dataService
-        // this.dataService.user = JSON.parse(response['user']);
-        // this.dataService.zeton = response['zeton'];
-        //
-        // // save cookie (stringify object data)
-        // this.cookieService.set('user', JSON.stringify(response['user']));
-        // this.cookieService.set('token', response['zeton']);
-        //
-        // // Show world
-        // this.router.navigate(['']).then().catch();
         return;
+      
+    }).catch(error => {
+      if(error.status == 401) {
+        this.signInError = 'Wrong username or password!';
       }
+      console.log("napaka: " + error.status);
     });
   }
 

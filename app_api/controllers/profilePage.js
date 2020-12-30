@@ -35,13 +35,13 @@ const changePassword = (req, res) => {
             res.status(500).json(napaka);
         }
         console.log(profile);
-        profile.password = req.body.password;
+        profile.nastaviGeslo(req.body.password);
         console.log(profile.password);
         profile.save((napaka, profile) => {
            if(napaka) {
                res.status(404).json(napaka);
            } else {
-               res.status(200).json(profile);
+            res.status(200).json({ "zeton": profile.generirajJwt() });
            }
         });
     });

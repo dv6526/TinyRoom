@@ -17,12 +17,12 @@ passport.use(
             return pkKoncano(napaka);
           if (!uporabnik) {
             return pkKoncano(null, false, {
-              "sporočilo": "Napačno uporabniško ime"
+              "sporočilo": "napacni podatki"
             });
           }
           if (!uporabnik.preveriGeslo(password)) {
             return pkKoncano(null, false, {
-              "sporočilo": "Napačno geslo"
+              "sporočilo": "napacni podatki"
             });
           }
           return pkKoncano(null, uporabnik);

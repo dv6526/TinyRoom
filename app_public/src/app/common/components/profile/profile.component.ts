@@ -57,8 +57,9 @@ export class ProfileComponent implements OnInit {
       this.dataService.changePassword(this.user._id, this.newPassword)
         .then(response => {
           // update data
-          this.user = response;
-          this.dataService.user = this.user;
+          this.dataService.zeton = response['zeton'];
+          this.cookieService.set('token', response['zeton']);
+          console.log("token is " + this.dataService.zeton);
           this.changePasswordMessage = "Password is changed."
         })
         .catch(error => this.changePasswordMessage = error);
@@ -106,6 +107,7 @@ export class ProfileComponent implements OnInit {
     this.profileInfo.chosen_skin = this.user.chosen_skin;
     this.profileInfo.bio_title = this.user.bio_title;
     this.profileInfo.bio = this.user.bio;
+    
 
     this.dataService.updateProfile(this.user._id, this.profileInfo)
       .then(response => {
