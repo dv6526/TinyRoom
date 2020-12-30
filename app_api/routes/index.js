@@ -3,7 +3,7 @@ const router = express.Router();
 const ctrlUporabniki = require('../controllers/uporabniki');
 const ctrlAvtentikacija = require('../controllers/avtentikacija');
 
-//router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
+router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
 /* Avtentikacija */
 router.post('/registracija', ctrlAvtentikacija.registracija);
 router.post('/prijava', ctrlAvtentikacija.prijava);
