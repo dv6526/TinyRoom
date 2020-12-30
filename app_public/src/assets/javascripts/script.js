@@ -1087,29 +1087,12 @@ let my_id = "";
 let weather = "";
 let rank = "";
 
-function setUserData(token) {
-    console.log(token);
-
-    function parseJwt (token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    };
-
-    var skins = { "bunny": 0, "goat": 1, "rat": 2 };
-
-    var token_data = parseJwt(token);
-
-    username = token_data.username;
-    sprite_idx = skins[token_data.sprite_idx];
-    my_id = token_data.my_id;
-    rank = token_data.rank;
-
-    console.log('setUserData poklican', username, weather);
+function setUserData(user) {
+  var skins = { "bunny": 0, "goat": 1, "rat": 2 };
+  username = user.username;
+  sprite_idx = skins[user.chosen_skin];
+  my_id = user._id;
+  rank = user.rank;
 }
 
 function setUserWeather(setWeather) {

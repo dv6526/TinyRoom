@@ -76,13 +76,8 @@ export class WorldComponent implements OnInit {
   public startTheWorld() {
     // "script.js" call
     let u: User = this.dataService.user
-    //let skins: any = { "bunny": 0, "goat": 1, "rat": 2 };
-    //let sprite_idx: string = "";
-    //if (this.weather)
-    //  sprite_idx = this.weather[0].icon_string;
-    //console.log("spriteidx: " + sprite_idx);
-    setUserData(this.dataService.zeton);
-    //sprite_idx = skins[sprite_idx];
+    //setUserData(this.dataService.zeton);
+    setUserData(this.dataService.user);
     newStart();
   }
 

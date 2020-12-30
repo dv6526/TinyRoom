@@ -47,11 +47,11 @@ export class SigninComponent implements OnInit {
     }
     // verification
     this.dataService.loginUser(this.username, this.password).then(response => {
-     
+
         console.log("Logged in.");
         this.IDsuccess(response);
         return;
-      
+
     }).catch(error => {
       if(error.status == 401) {
         this.signInError = 'Wrong username or password!';
@@ -102,11 +102,13 @@ export class SigninComponent implements OnInit {
     // decode response, set appropriate info
 
     // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
-    setUserData(response['zeton']);
+    //setUserData(response['zeton']);
 
     // save data to dataService
     this.dataService.user = JSON.parse(response['user']);
     this.dataService.zeton = response['zeton'];
+
+    setUserData(this.dataService.user);
 
     // save cookie (stringify object data)
     this.cookieService.set('user', response['user']);
