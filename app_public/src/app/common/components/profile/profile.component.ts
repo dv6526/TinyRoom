@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   public modalTerminate: boolean = false;
   public modalProfile: boolean = false;
 
+  public profilePicture: File;
   public profileInfo: ProfileInfoDto = {
     profile_picture: "",
     chosen_skin: "",
@@ -100,14 +101,13 @@ export class ProfileComponent implements OnInit {
       .catch(error => this.terminateMessage = error);
   }
 
+  public selectFile(files: FileList): void {
+    this.profilePicture = files.item(0);
+  }
+
   public updateProfile(): void {
     // DTO
-    this.profileInfo.profile_picture = this.user.profile_picture;
-    this.profileInfo.chosen_skin = this.user.chosen_skin;
-    this.profileInfo.bio_title = this.user.bio_title;
-    this.profileInfo.bio = this.user.bio;
-
-    this.dataService.updateProfile(this.user._id, this.profileInfo)
+    this.dataService.updateProfile(this.user._id, this.profileInfo, this.profilePicture)
       .then(response => {
         // update data
         this.user = response;
@@ -124,5 +124,9 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.dataService.user;
+    this.profileInfo.profile_picture = "";
+    this.profileInfo.chosen_skin = this.user.chosen_skin;
+    this.profileInfo.bio_title = this.user.bio_title;
+    this.profileInfo.bio = this.user.bio;
   }
 }

@@ -48,10 +48,21 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public updateProfile(userId:string, newInfo: ProfileInfoDto): Promise<User> {
+  public updateProfile(userId:string, newInfo: ProfileInfoDto, profilePicture: File): Promise<User> {
+    const formData: FormData = new FormData();
+    formData.append('bio_title', newInfo.bio_title);
+    formData.append('bio', newInfo.bio);
+    formData.append('chosen_skin', newInfo.chosen_skin);
+    formData.append('profile_picture', newInfo.profile_picture);
+    if(profilePicture) {
+      formData.append('pfp', profilePicture, profilePicture.name);
+      formData.append('profile_picture', profilePicture.name);
+      console.log(profilePicture.name);
+    }
+
     const url: string = `${this.apiUrl}/profile/${userId}/info`;
     return this.http
-      .put(url, newInfo)
+      .put(url, formData)
       .toPromise()
       .then(response => response as User)
       .catch(this.processException);
