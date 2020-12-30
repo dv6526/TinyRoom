@@ -55,6 +55,8 @@ export class SigninComponent implements OnInit {
     }).catch(error => {
       if(error.status == 401) {
         this.signInError = 'Wrong username or password!';
+      } else {
+        this.signInError = error.message;
       }
       console.log("napaka: " + error.status);
     });
@@ -94,6 +96,7 @@ export class SigninComponent implements OnInit {
         return;
       }).catch(error => {
         this.registerError = "Username or Email is already in use!";
+        console.log("Error at registration: " + error);
       });
 
   }

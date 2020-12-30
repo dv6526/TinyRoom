@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
           console.log("token is " + this.dataService.zeton);
           this.changePasswordMessage = "Password is changed."
         })
-        .catch(error => this.changePasswordMessage = error);
+        .catch(error => this.changePasswordMessage = error.message);
     } else {
       this.changePasswordMessage = "Password is too short!";
     }
@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
         this.cookieService.deleteAll();
         this.router.navigate(['']);
       })
-      .catch(error => this.terminateMessage = error);
+      .catch(error => this.terminateMessage = error.message);
   }
 
   public selectFile(files: FileList): void {
@@ -115,7 +115,7 @@ export class ProfileComponent implements OnInit {
         this.updateProfileMessage = "Profile info is UPDATED.";
         console.log("Profile info is updated!");
       })
-      .catch(error => this.updateProfileMessage = error);
+      .catch(error => this.updateProfileMessage = error.message);
   }
 
   private getComponentName(): string {

@@ -49,7 +49,9 @@ export class GraphAndDataComponent implements OnInit {
         this.messages = response;
         console.log("Messages at your service!");
       }).catch(error => {
-      console.log("Something went wrong when acquiring messages: " + error)
+        //this.error = error.message;
+        this.error = "Could not get all messages of the picked date!";
+        console.log("Something went wrong when acquiring messages: " + error)
     });
   }
 
@@ -74,7 +76,9 @@ export class GraphAndDataComponent implements OnInit {
         this.processMessageData();
         console.log("Graph data at your service!");
       }).catch(error => {
-      console.log("Something went wrong when acquiring messages: " + error)
+        this.error = "Could not get all messages to calculate graph!";
+        //this.error = error.message;
+        console.log("Something went wrong when acquiring messages: " + error)
     });
   }
 
@@ -86,7 +90,7 @@ export class GraphAndDataComponent implements OnInit {
       this.getAllMessages();
       this.getMessages();
     } else {
-      //this.message = "Choose a date to get data!";
+      this.error = "Choose a date to get data!";
       console.log("Izberi datum!");
     }
   }

@@ -34,6 +34,9 @@ export class PrivateComponent implements OnInit {
     if(this.dataService.user) {
       this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).then( response => {
         this.message = "Furniture has been updated!";
+      }).catch(error => {
+        this.message = "Couldn not update furniture!"
+        console.log("Could not update furniture: " + error.message)
       });
     } else {
       console.log("User is not aquired yet!");
