@@ -31,6 +31,7 @@ import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pip
 
 import { ModalnoOknoComponent } from './common/components/modalno-okno/modalno-okno.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OldestFirstPipe } from './common/pipes/oldest-first.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GraphAndDataComponent,
     GetHoursAndMinutesPipe,
     LineChartComponent,
-    ModalnoOknoComponent
+    ModalnoOknoComponent,
+    OldestFirstPipe
   ],
   imports: [
     BrowserModule,

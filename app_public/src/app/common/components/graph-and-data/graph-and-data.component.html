@@ -23,7 +23,7 @@
 
         <!-- DATA -->
         <div class="m-3" *ngIf="messages">
-          <div *ngFor="let message of messages" class="message-bubble player">
+          <div *ngFor="let message of messages | oldestFirst" class="message-bubble player">
             {{message.date | getHoursAndMinutes}}
             {{message.name}}:
             {{message.body}}
