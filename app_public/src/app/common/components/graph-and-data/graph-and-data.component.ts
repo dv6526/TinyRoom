@@ -70,7 +70,7 @@ export class GraphAndDataComponent implements OnInit {
     this.dataService.getMessages(this.date, 0, 0)
       .then(response => {
         this.allMessages = response;
-        this.numOfPages = Math.floor(this.allMessages.length/this.perPage);
+        this.numOfPages = Math.ceil(this.allMessages.length/this.perPage)-1;
         this.processMessageData();
         console.log("Graph data at your service!");
       }).catch(error => {

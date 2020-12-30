@@ -108,6 +108,15 @@ export class DataService {
     return this.createNewUser(newUser);
   }
 
+  public dbAddMessageEntries(newMessage: Message): any {
+    const url: string = `${this.apiUrl}/chatlogs/`;
+    return this.http
+      .post(url, newMessage)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processException);
+  }
+
   public getMessages(date: string, currentPage: number, perPage: number): Promise<Message[]> {
     const url: string = `${this.apiUrl}/messages`;
     return this.http

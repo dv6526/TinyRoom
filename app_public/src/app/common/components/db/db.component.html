@@ -1,7 +1,7 @@
 <div class="container-xl">
   <div class="page-content pisava">
     <div class="row mt-5">
-      <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
+      <div class="col-lg-4 col-md-12-map text-center" style="color: white;">
         <h2>Delete all entries in database</h2>
         <form (ngSubmit)="dbDeleteAll()">
           <button class="btn btn-outline-dark">Delete</button>
@@ -9,12 +9,21 @@
         <div class="mt-2">{{deleteMessage}}</div>
       </div>
 
-      <div class="col-lg-6 col-md-12-map text-center" style="color: white;">
-        <h2>Add predefined entries in database</h2>
+      <div class="col-lg-4 col-md-12-map text-center" style="color: white;">
+        <h2>Add predefined USER entries in database</h2>
         <form (ngSubmit)="dbAddEntries()">
-          <button class="btn btn-outline-dark">Add</button>
+          <button class="btn btn-outline-dark">Add USERS</button>
         </form>
         <div class="mt-2">{{addMessage}}</div>
+      </div>
+
+      <div class="col-lg-4 col-md-12-map text-center" style="color: white;">
+        <h2>Add predefined MESSAGE entries in database</h2>
+        <form (ngSubmit)="dbAddMessages()">
+          <button class="btn btn-outline-dark">Add MESSAGES</button>
+        </form>
+        <div class="mt-2">{{progress}}</div>
+        <div class="mt-2">{{addMessagesMessage}}</div>
       </div>
     </div>
   </div>

@@ -33,7 +33,6 @@ const getChatLogs = (req, res) => {
 }
 
 const sendMessage = (req, res) => {
-    console.log("tle sem šel notr");
     Messages.create(req.body, (error, message) => {
         if (error) {
             console.log('napaka pri dodajanju sporocila', error);
@@ -62,8 +61,10 @@ const getMessages = (req, res) => {
     // TODO: PAGINATION
     // filter
     let startDate = new Date(req.query.date);
+    startDate.setHours(startDate.getHours()-1);      // lokalizacija ne štima
     let endDate = new Date(req.query.date);
     endDate.setDate(endDate.getDate()+1);
+    endDate.setHours(endDate.getHours()-1);
     let page = parseInt(req.query.page);
     const perPage = parseInt(req.query.perPage);
     const pagesToSkip = Math.max(0, page * perPage);
