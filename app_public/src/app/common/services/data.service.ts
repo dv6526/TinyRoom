@@ -21,7 +21,7 @@ export class DataService {
   public user: any;
   public room: PrivateRoom;
 
-  public getUserData(username: string, password: string): Promise<any> {
+  public loginUser(username: string, password: string): Promise<any> {
     const url: string = `${this.apiUrl}/prijava`;
     return this.http
       .post(url, {username: username, password: password})
@@ -119,6 +119,6 @@ export class DataService {
 
   private processException(napaka: any): Promise<any> {
     console.error('Prišlo je do napake', napaka);
-    return Promise.reject(napaka.message || napaka);
+    return Promise.reject(napaka);
   }
 }
