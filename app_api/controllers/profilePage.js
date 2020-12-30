@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 // TODO kličem pravi model?
 const Profile = mongoose.model('Uporabnik');
 const Soba = mongoose.model('privateRoom');
+const fs = require('fs');
 
 const terminateProfile = (req, res) => {
     if(req.params.idUporabnika) {
@@ -69,6 +70,15 @@ const changeProfileInfo = (req, res) => {
             koncnica = koncnica[koncnica.length-1];
             // shrani samo ce je jpg, png ali gif
             if(koncnica == "jpg" || koncnica == "png" || koncnica == "gif") {
+                // izbrisi staro profilno sliko, če obstaja
+                if(profile.profile_picture != '') {
+                    try {
+                        fs.unlinkSync('./public/profileImages/' + profile.username + "." + profile.profile_picture);
+                        console.log('Stara profilna slika uspešno izbrisana!');
+                    } catch (err) {
+                        console.log('Problem z brisanjem stare profilne slike: ' + err);
+                    }
+                }
                 // file save
                 let profilePic = req.files.pfp;
                 profilePic.mv('./public/profileImages/' + profile.username + "." + koncnica).then((value, error) => {
