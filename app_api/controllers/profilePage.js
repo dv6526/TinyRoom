@@ -89,16 +89,17 @@ const changeProfileInfo = (req, res) => {
                 });
             } else {
                 console.log("Vrsta datoteke ni podprta.");
-                profile.save((napaka, profile) => {
-                    if(napaka) {
-                        console.log("Nekaj je šlo narobe pri shranjevanju posodobitev uporabnika brez priložene profilne slike!");
-                        res.status(404).json(napaka);
-                    } else {
-                        console.log("Uporabnikovi podatki so bili uspešno posodobljeni, brez profilne slike!");
-                        res.status(200).json(profile);
-                    }
-                });
             }
+        } else {
+            profile.save((napaka, profile) => {
+                if(napaka) {
+                    console.log("Nekaj je šlo narobe pri shranjevanju posodobitev uporabnika brez priložene profilne slike!");
+                    res.status(404).json(napaka);
+                } else {
+                    console.log("Uporabnikovi podatki so bili uspešno posodobljeni, brez profilne slike!");
+                    res.status(200).json(profile);
+                }
+            });
         }
     });
 }
