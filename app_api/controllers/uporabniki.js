@@ -92,7 +92,7 @@ const getUserInfo = (req, res) => {
     console.log("getUserInfo: " + req.params.ui);
     Uporabnik.findOne({ "username": req.params.ui }).exec((napaka, uporabnik) => {
         if (!uporabnik) {
-            return res.status(404).json({ "sporocilo": "uporabnik ne obstaja" });
+            return res.status(404).json({ "sporočilo": "Uporabnik ne obstaja." });
         } else if (napaka) {
             return res.status(500).json(napaka);
         } else {

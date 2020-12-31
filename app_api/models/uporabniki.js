@@ -46,6 +46,26 @@ const jwt = require('jsonwebtoken');
 *     - username
 *     - email
 *     - password
+*   ProfileInfo:
+*    type: object
+*    description: podatki o profilu uporabnika
+*    properties:
+*     bio_title:
+*      type: string
+*      description: Bio title
+*      example: This is my bio title.
+*     bio:
+*      type: string
+*      description: biografija uporabnika.
+*      example: This is my bio.
+*     profile_picture:
+*      type: string
+*      description: ime profilne slike uporabnika
+*      example: profile_picture.jpg
+*     chosen skin:
+*      type: string
+*      description: sprite_idx profilne slike
+*      example: bunny
 *   AvtentikacijaOdgovor:
 *    type: object
 *    description: Rezultat uspešne avtentikacije uporabnika
@@ -70,10 +90,22 @@ const jwt = require('jsonwebtoken');
 *         bio:
 *          type: string
 *         chosen_skin:
-*          type: integer 
+*          type: string 
+*         _id:
+*           type: string
 *     required:
 *      - zeton
 *      - user
+*   ZetonOdgovor:
+*    type: object
+*    description: Rezultat uspešne sprembe gesla uporabnika
+*    properties:
+*     zeton:
+*      type: string
+*      description: JWT žeton
+*      example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGZhMjBlZDlhZGM0MzIyNmY0NjhkZjMiLCJlbGVrdHJvbnNraU5hc2xvdiI6ImRlamFuQGxhdmJpYy5uZXQiLCJpbWUiOiJEZWphbiBMYXZiacSNIiwiZGF0dW1Qb3Rla2EiOjE1Nzc5NTU2NjMsImlhdCI6MTU3NzM1MDg2M30.PgSpqjK8qD2dHUsXKwmqzhcBOJXUUwtIOHP3Xt6tbBA
+*     required:
+*      - zeton
 *   Napaka:
 *    type: object
 *    description: Podrobnosti napake
@@ -94,6 +126,10 @@ const jwt = require('jsonwebtoken');
  *     summary: zahtevani so vsi podatki
  *     value:
  *      sporočilo: Zahtevani so vsi podatki.
+ *    NiZetona:
+ *     summary: ni JWT žetona
+ *     value:
+ *      sporočilo: "UnauthorizedError: No authorization token was found."
  */
 
 const uporabnikiShema = new mongoose.Schema({

@@ -28,7 +28,7 @@ const registracija = (req, res) => {
         console.log('Soba je kreirana', soba);
       });
 
-      uporabnik.save(napaka => {
+      uporabnik.save((napaka, uporabnik) => {
         if (napaka) {
           res.status(500).json(napaka);
         } else {
@@ -39,13 +39,14 @@ const registracija = (req, res) => {
             profile_picture: uporabnik.profile_picture,
             bio_title: uporabnik.bio_title,
             bio: uporabnik.bio,
-            chosen_skin: uporabnik.chosen_skin
+            chosen_skin: uporabnik.chosen_skin,
+            _id: uporabnik._id
           }
           res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
         }
       });
     } else {
-      return res.status(400).json(napaka);
+      return res.status(409).json({ "sporočilo": "Uporabnik že obstaja." });
     }
   });
 
