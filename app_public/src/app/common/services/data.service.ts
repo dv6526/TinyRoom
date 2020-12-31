@@ -126,6 +126,10 @@ export class DataService {
       .catch(this.processException);
   }
 
+  public setAdmin(newAdmin: string): Promise<any> {
+    return null
+  }
+
   private processException(napaka: any): Promise<any> {
     console.error('Prišlo je do napake', napaka);
     return Promise.reject(napaka);

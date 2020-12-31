@@ -17,6 +17,7 @@ export class GraphAndDataComponent implements OnInit {
   public currentPage: number;
   public numOfPages: number;
   public perPage: number;
+  public newAdmin: string;
 
   public messageData: ChartDataSets[] = [
     { data: [], label: 'Number of messages per hour on a picked date' }     // our UNprocessed data goes here
@@ -35,6 +36,7 @@ export class GraphAndDataComponent implements OnInit {
     this.currentPage = 0;
     this.numOfPages = 0;
     this.perPage = 10;
+    this.newAdmin = "";
     // TODO: mogoce bi lahko dodal, koliko se jih na stran prikaze (perPage)
     this.getAllMessages();  // also gets numberOfPages
     this.getMessages();
@@ -108,6 +110,10 @@ export class GraphAndDataComponent implements OnInit {
     this.currentPage -= 1;
     this.getMessages();
     console.log("Previous page");
+  }
+
+  public setAdmin(): void {
+    this.dataService.setAdmin(this.newAdmin).then().catch();
   }
 
   private getComponentName(): string {

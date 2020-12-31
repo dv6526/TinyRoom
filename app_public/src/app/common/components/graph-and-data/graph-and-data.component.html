@@ -56,5 +56,26 @@
       </div>
 
     </div>
+
+    <!-- SET ADMIN -->
+    <div class="row mt-5">
+      <div class="col-xl-6 col-lg-12 justify-content-center">
+        <!-- DATE INPUT -->
+        <form (ngSubmit)="setAdmin()">
+          <div class="col-12 input-group flex-nowrap mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-dark text-white" id="addon-wrapping3">Choose an user:</span>
+            </div>
+            <input [(ngModel)]="newAdmin" type="text" name="setAdmin" class="form-control text-white" placeholder="Username" aria-label="SetAdmin" aria-describedby="addon-wrapping">
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin==''">Set</button>
+            </div>
+          </div>
+        </form>
+        <div class="text-center mb-3" *ngIf="error!=''">
+          {{error}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
