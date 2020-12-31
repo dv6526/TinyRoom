@@ -114,8 +114,8 @@ const changeProfileInfo = (req, res) => {
     });
 }
 
+// RolesAllowed('admin')
 const changeRank = (req, res) => {
-    // check if user with username exists in data base
     Profile.findOne({ "username": req.params.ui }).exec((error, profile) => {
         if(error) {
             console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri iskanju uporabnika!");
@@ -136,6 +136,7 @@ const changeRank = (req, res) => {
             });
         }
     });
-    }
+}
+
 
 module.exports = {terminateProfile, changePassword, changeProfileInfo, changeRank};

@@ -46,7 +46,7 @@ export class GraphAndDataComponent implements OnInit {
     //this.error = "Please wait: Acquiring data.";
     //this.messages = null;
     // get current page
-    this.dataService.getMessages(this.date, this.currentPage, this.perPage)
+    this.dataService.getMessages(this.dataService.user._id, this.date, this.currentPage, this.perPage)
       .then(response => {
         this.messages = response;
         this.error = "";
@@ -73,7 +73,7 @@ export class GraphAndDataComponent implements OnInit {
 
   getAllMessages(): void {
     this.error = "Please wait: Acquiring data.";
-    this.dataService.getMessages(this.date, 0, 0)
+    this.dataService.getMessages(this.dataService.user._id, this.date, 0, 0)
       .then(response => {
         this.allMessages = response;
         this.numOfPages = Math.ceil(this.allMessages.length/this.perPage)-1;
@@ -114,7 +114,7 @@ export class GraphAndDataComponent implements OnInit {
 
   public setAdmin(): void {
     this.newAdminMessage = "Please wait: Trying to set '" + this.newAdmin + "' as admin.";
-    this.dataService.setAdmin(this.newAdmin)
+    this.dataService.setAdmin(this.dataService.user._id, this.newAdmin)
       .then(response => {
         this.newAdminMessage = "'" + this.newAdmin + "' successfully set as admin.";
         this.newAdmin = "";

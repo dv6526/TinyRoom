@@ -152,16 +152,22 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public getMessages(date: string, currentPage: number, perPage: number): Promise<Message[]> {
+  public getMessages(userId: string, date: string, currentPage: number, perPage: number): Promise<Message[]> {
+    const token = this.cookieService.get('token');
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
     const url: string = `${this.apiUrl}/messages`;
     return this.http
-      .get(url, { params: { date: date, page: currentPage.toString(), perPage: perPage.toString() } })
+      .get(url, { headers: httpLastnosti.headers, params: { id: userId, date: date, page: currentPage.toString(), perPage: perPage.toString() }})
       .toPromise()
       .then(response => response as Message[])
       .catch(this.processException);
   }
 
-  public setAdmin(newAdmin: string): Promise<User> {
+  public setAdmin(userId: string, newAdmin: string): Promise<User> {
     const token = this.cookieService.get('token');
     const httpLastnosti = {
       headers: new HttpHeaders({
@@ -170,14 +176,13 @@ export class DataService {
     };
     const url: string = `${this.apiUrl}/uporabniki/${newAdmin}/rank`;
     return this.http
-      .put(url, null, httpLastnosti)
+      .put(url, null,{headers: httpLastnosti.headers, params: {id: userId}})
       .toPromise()
       .then(response => response as User)
       .catch(this.processException);
   }
 
   public dbSetAdmin(newAdmin: string): Promise<User> {
-    const token = this.cookieService.get('token');
     const url: string = `${this.apiUrl}/db/${newAdmin}/rank`;
     return this.http
       .put(url, null)
