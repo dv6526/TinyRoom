@@ -79,6 +79,14 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *              $ref: "#/components/schemas/Napaka"
  *            example:
  *              sporočilo: Zahtevani so vsi podatki.
+ *      "409":
+ *        description: Napaka zahteve, uporabnik že obstaja.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: "#/components/schemas/Napaka"
+ *            example:
+ *              sporočilo: Uporabnik že obstaja.
  *        
  */
 
@@ -110,7 +118,7 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *               schema:
  *                 $ref: "#/components/schemas/Napaka"
  *               example:
- *                 sporočilo: Zahtevani so vsi podatki..
+ *                 sporočilo: Zahtevani so vsi podatki.
  *         "401":
  *           description: Napaka pri prijavi uporabnika.
  *           content:
@@ -123,5 +131,141 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *           description: Napaka na strežniku pri preverjanju uporabnika.
  */
 
+/**
+ * @swagger
+ *  /uporabniki/{ui}/profile:
+ *   get:
+ *    summary: Pridobivanje profila uporabnika
+ *    description: Pridobivanje profila uporabnika s podanim uporabniškem imenom.
+ *    tags: [Uporabniki]
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: path
+ *       name: ui
+ *       description: uporabniško ime
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: student
+ *    responses:
+ *     "200":
+ *      description: Uspešna zahteva s podrobnostmi uporabniškega profila v rezultatu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         type: array
+ *         items:
+ *          $ref: "#/components/schemas/ProfileInfo"
+ *     "404":
+ *      description: Napaka zahteve, uporabnik ne obstaja.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         sporočilo: Uporabnik ne obstaja.
+ *     "500":
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
+ */
+
+/**
+ * @swagger
+ *  /uporabniki/{idUporabnika}/password:
+ *   put:
+ *    summary: Posodabljanje gesla izbranega uporabnika
+ *    description: Posodobitev **gesla uporabnika**.
+ *    tags: [Uporabniki]
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: path
+ *       name: idUporabnika
+ *       description: ID uporabnika
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 5ded18eb51386c3799833191
+ *    responses:
+ *     "200":
+ *      description: Uspešno spremenjeno geslo uporabnika in JWT žeton, ki se vrne v odgovoru.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/ZetonOdgovor"
+ *     "401":
+ *      description: Napaka pri dostopu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        examples:
+ *         ni zetona:
+ *          $ref: "#/components/examples/NiZetona"
+ *     "404":
+ *      description: Napaka zahteve, zahtevanega uporabnika ni mogoče najti.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         ne najdem uporabnika:
+ *          sporočilo: Ne najdem uporabnika!
+ *     "500":
+ *      description: Napaka pri iskanju lokacije.
+ */
+
+/**
+ * @swagger
+ *  /uporabniki/{idUporabnika}/info:
+ *   put:
+ *    summary: Posodabljanje profila izbranega uporabnika
+ *    description: Posodobitev **profila uporabnika**.
+ *    tags: [Uporabniki]
+ *    requestBody:
+ *      description: Podatki za registracijo
+ *      required: false
+ *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: "#/components/schemas/ProfileInfo"
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: path
+ *       name: idUporabnika
+ *       description: ID uporabnika
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 5ded18eb51386c3799833191
+ *    responses:
+ *     "200":
+ *      description: Uspešno spremenjeno geslo uporabnika in JWT žeton, ki se vrne v odgovoru.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/ZetonOdgovor"
+ *     "401":
+ *      description: Napaka pri dostopu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         ni zetona:
+ *          $ref: "#/components/examples/NiZetona"
+ *     "404":
+ *      description: Napaka zahteve, zahtevanega uporabnika ni mogoče najti.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         ne najdem uporabnika:
+ *          sporočilo: Ne najdem uporabnika!
+ *     "500":
+ *      description: Napaka pri iskanju lokacije.
+ */
 
 module.exports = router;
