@@ -101,9 +101,15 @@ export class DataService {
   }
 
   public updatePrivateRoom(username: string, furniture: any): Promise<User> {
+    const token = this.cookieService.get('token');
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
     const url: string = `${this.apiUrl}/privateRoom/${username}`;
     return this.http
-      .post(url, furniture)
+      .post(url, furniture, httpLastnosti)
       .toPromise()
       .then(response => response as User)
       .catch(this.processException);

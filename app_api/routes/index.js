@@ -22,9 +22,9 @@ const ctrlChatLogs = require('../controllers/chatLogs');
 router.post('/registracija', ctrlAvtentikacija.registracija);
 router.post('/prijava', ctrlAvtentikacija.prijava);
 
-router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
+//router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
 router.get('/uporabniki/:ui/profile', ctrlUporabniki.getUserInfo);
-router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
+//router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
 
 router.put('/uporabniki/:idUporabnika/password', avtentikacija, ctrlProfilePage.changePassword);
 router.put('/uporabniki/:idUporabnika/info', avtentikacija, ctrlProfilePage.changeProfileInfo);
@@ -33,9 +33,10 @@ router.delete('/uporabniki/:idUporabnika', avtentikacija, ctrlProfilePage.termin
 
 
 router.get('/privateRoom/:username', ctrlprivateRoom.vrniSoboByUsername);
-router.post('/privateRoom/:username', ctrlprivateRoom.sobaUpdate);
 
-router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
+router.post('/privateRoom/:username', avtentikacija, ctrlprivateRoom.sobaUpdate);
+
+//router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
 //router.get('/object', ctrlObject.vrniLokacijo);
 
 router.delete('/db', avtentikacija, ctrlDb.deleteAll);
