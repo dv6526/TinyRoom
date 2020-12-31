@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ChatLogs = mongoose.model('chatLogs');
 const Messages = mongoose.model('messages');
+const Profile = mongoose.model('Uporabnik');
 
 const sendChatLog = (req, res) => {
     ChatLogs.findOne({}).exec((napaka, log) => {
@@ -57,32 +58,53 @@ const getMessages = (req, res) => {
     */
     //const zacetniDatum = new Date("2020-12-28");      // req.query.startDate => 2020-12-27T14:30:55.271Z
     //const koncniDatum = new Date("2020-12-29");
-
-    // TODO: PAGINATION
-    // filter
-    let startDate = new Date(req.query.date);
-    startDate.setHours(startDate.getHours()-1);      // lokalizacija ne štima
-    let endDate = new Date(req.query.date);
-    endDate.setDate(endDate.getDate()+1);
-    endDate.setHours(endDate.getHours()-1);
-    let page = parseInt(req.query.page);
-    const perPage = parseInt(req.query.perPage);
-    const pagesToSkip = Math.max(0, page * perPage);
-    const query = {
-        date: {
-            $gte: startDate,
-            $lt:  endDate
-        }
-    }
-    Messages.find(query).limit(perPage).skip(pagesToSkip).exec((error, queriedMessages) => {
+    Profile.findById(req.query.id).exec((error, profile) => {
         if(error) {
-            return res.status(500).json(error);
-        } else if(!queriedMessages) {
-            return res.status(404).json({ "sporocilo": "Ne najdem sporocil z navedenim datumom!" });
+            console.log("ALLOW ADMIN (chatlogs): Nekaj je šlo narobe pri iskanju uporabnika!");
+            res.status(500).json(error);
+        } else if (!profile) {
+            console.log("ALLOW ADMIN (chatlogs): Uporabnik ne obstaja!");
+            res.status(404).json(error);
         } else {
-            res.status(200).json(queriedMessages);
+            if(profile.rank == "admin") {
+                console.log("ALLOW ADMIN (chatlogs): Uspešno avtenticiranje");
+
+                // filter
+                let startDate = new Date(req.query.date);
+                startDate.setHours(startDate.getHours()-1);      // lokalizacija ne štima
+                let endDate = new Date(req.query.date);
+                endDate.setDate(endDate.getDate()+1);
+                endDate.setHours(endDate.getHours()-1);
+                let page = parseInt(req.query.page);
+                const perPage = parseInt(req.query.perPage);
+                const pagesToSkip = Math.max(0, page * perPage);
+                const query = {
+                    date: {
+                        $gte: startDate,
+                        $lt:  endDate
+                    }
+                }
+                Messages.find(query).limit(perPage).skip(pagesToSkip).exec((error, queriedMessages) => {
+                    if(error) {
+                        console.log("Prišlo je do napake pri pridobivanju sporočil!");
+                        return res.status(500).json(error);
+                    } else if(!queriedMessages) {
+                        console.log("Ne najdem sporocil z navedenim datumom!");
+                        return res.status(404).json({ "sporocilo": "Ne najdem sporocil z navedenim datumom!" });
+                    } else {
+                        console.log("Sporočila so bila najdena in poslana!");
+                        res.status(200).json(queriedMessages);
+                    }
+                });
+
+            } else {
+                console.log("ALLOW ADMIN (chatlogs): Zahteva ni prišla s s trani administratorja. Zavrnjeno!");
+                res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
+            }
         }
     });
+    // TODO: PAGINATION
+
 
 
 }

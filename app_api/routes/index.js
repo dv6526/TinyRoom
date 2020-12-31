@@ -45,9 +45,9 @@ router.put('/db/:ui/rank', ctrlProfilePage.changeRank);
 
 // Chat manipulation
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
-router.get('/chatLogs', ctrlChatLogs.getChatLogs);
-router.get('/messages', ctrlChatLogs.getMessages);
+router.get('/messages', avtentikacija, ctrlChatLogs.getMessages);
 
+//router.get('/chatLogs', ctrlChatLogs.getChatLogs);
 //router.post('/message', ctrlChatLogs.sendMessage);
 
 /**
