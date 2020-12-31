@@ -15,14 +15,14 @@ const registracija = (req, res) => {
       const uporabnik = new Uporabnik();
       uporabnik.username = req.body.username;
       uporabnik.email = req.body.email;
-      uporabnik.rank = req.body.rank;
+      uporabnik.rank = 'user';
       uporabnik.nastaviGeslo(req.body.password);
 
       Soba.create({
         owner: req.body.username,
         objects: []
       }, (napaka, soba) => {
-        if(napaka) {
+        if (napaka) {
           console.log('napaka pri kreiranju sobe', napaka);
         }
         console.log('Soba je kreirana', soba);

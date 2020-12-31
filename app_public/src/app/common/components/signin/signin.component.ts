@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import { DataService } from "../../services/data.service";
 import { Router } from "@angular/router";
-import {User} from "../../classes/models/user";
-import {UserDto} from "../../classes/DTOs/user-dto";
+import { User } from "../../classes/models/user";
+import { UserDto } from "../../classes/DTOs/user-dto";
 
 declare const setUserData: any;
 
@@ -35,12 +35,12 @@ export class SigninComponent implements OnInit {
     // validation
     const regName = /^[a-zA-Z0-9]+$/;    ///^[a-zA-Z0-9]{1,10}$/;
     const regPass = /^.{3,}$/;
-    if(!regName.test(this.username)) {
+    if (!regName.test(this.username)) {
       console.log("Username does not fit the specification");
       this.signInError = 'Username does not fit the specification';
       return;
     }
-    if(!regPass.test(this.password)) {
+    if (!regPass.test(this.password)) {
       console.log("Password does not fit the specification");
       this.signInError = 'Password does not fit the specification';
       return;
@@ -48,12 +48,12 @@ export class SigninComponent implements OnInit {
     // verification
     this.dataService.loginUser(this.username, this.password).then(response => {
 
-        console.log("Logged in.");
-        this.IDsuccess(response);
-        return;
+      console.log("Logged in.");
+      this.IDsuccess(response);
+      return;
 
     }).catch(error => {
-      if(error.status == 401) {
+      if (error.status == 401) {
         this.signInError = 'Wrong username or password!';
       } else {
         this.signInError = error.message;
@@ -68,15 +68,15 @@ export class SigninComponent implements OnInit {
     const regPass = /^.{3,}$/;
 
     // Validation
-    if(!regEmail.test(this.registerEmail)) {
+    if (!regEmail.test(this.registerEmail)) {
       this.registerError = 'Email does not fit the specification';
       return;
     }
-    if(!this.registerUsername || !regName.test(this.registerUsername)) {
+    if (!this.registerUsername || !regName.test(this.registerUsername)) {
       this.registerError = 'Username does not fit the specification';
       return;
     }
-    if(!this.registerPassword || !regPass.test(this.registerPassword)) {
+    if (!this.registerPassword || !regPass.test(this.registerPassword)) {
       this.registerError = 'Password does not fit the specification';
       return;
     }
@@ -84,7 +84,7 @@ export class SigninComponent implements OnInit {
     // TODO: watch out! admin is harcoded @Warning
     // Prepare User data transfer object
     let newUser: UserDto = {
-      username : this.registerUsername,
+      username: this.registerUsername,
       rank: "admin",
       email: this.registerEmail,
       password: this.registerPassword
@@ -101,7 +101,7 @@ export class SigninComponent implements OnInit {
 
   }
 
-  private IDsuccess(response:any) {
+  private IDsuccess(response: any) {
     // decode response, set appropriate info
 
     // "script.js" call (added in angular.json through assets) => set User data -> preparation for entering the World
