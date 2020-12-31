@@ -116,42 +116,24 @@ const changeProfileInfo = (req, res) => {
 
 // RolesAllowed('admin')
 const changeRank = (req, res) => {
-    // IF ADMIN
-    Profile.findById(req.body.id).exec((error, profile) => {
+    Profile.findOne({ "username": req.params.ui }).exec((error, profile) => {
         if(error) {
-            console.log("ALLOW ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
+            console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri iskanju uporabnika!");
             res.status(500).json(error);
         } else if (!profile) {
-            console.log("ALLOW ADMIN: Uporabnik ne obstaja!");
+            console.log("SPREMINJANJE RANKA: uporabnik ne obstaja!");
             res.status(404).json(error);
         } else {
-            if(profile.rank == "admin") {
-                console.log("ALLOW ADMIN: Uspešno avtenticiranje");
-
-                Profile.findOne({ "username": req.params.ui }).exec((error, profile) => {
-                    if(error) {
-                        console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri iskanju uporabnika!");
-                        res.status(500).json(error);
-                    } else if (!profile) {
-                        console.log("SPREMINJANJE RANKA: uporabnik ne obstaja!");
-                        res.status(404).json(error);
-                    } else {
-                        profile.rank = 'admin';
-                        profile.save((error, profile) => {
-                            if(error) {
-                                console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri shranjevanju uporabnika!");
-                                res.status(500).json(error);
-                            } else {
-                                console.log("SPREMINJANJE RANKA: uporabniku je bil uspešno spremenjen rank.");
-                                res.status(200).json(profile);
-                            }
-                        });
-                    }
-                });
-            } else {
-                console.log("ALLOW ADMIN: Zahteva ni prišla s s trani administratorja. Zavrnjeno!");
-                res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
-            }
+            profile.rank = 'admin';
+            profile.save((error, profile) => {
+                if(error) {
+                    console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri shranjevanju uporabnika!");
+                    res.status(500).json(error);
+                } else {
+                    console.log("SPREMINJANJE RANKA: uporabniku je bil uspešno spremenjen rank.");
+                    res.status(200).json(profile);
+                }
+            });
         }
     });
 }

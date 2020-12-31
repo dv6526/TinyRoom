@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const Uporabnik = mongoose.model('Uporabnik');
 const Soba = mongoose.model('privateRoom');
 
+var createError = require('http-errors');
+
 const registracija = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki." });
@@ -76,7 +78,31 @@ const prijava = (req, res) => {
   })(req, res);
 };
 
+function isAdmin(req, res, next) {
+  Uporabnik.findById(req.query.id).exec((error, profile) => {
+    if(error) {
+      console.log("IS ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
+      //res.status(500).json(error);
+      next(createError(500));
+    } else if (!profile) {
+      console.log("IS ADMIN: Uporabnik ne obstaja!");
+      //res.status(404).json(error);
+      next(createError(404));
+    } else {
+      if(profile.rank == "admin") {
+        console.log("IS ADMIN: Uspešno avtenticiranje");
+        next()
+      } else {
+        console.log("IS ADMIN: Zahteva ni prišla s s trani administratorja. Zavrnjeno!");
+        //res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
+        next(createError(401));
+      }
+    }
+  });
+}
+
 module.exports = {
   registracija,
-  prijava
+  prijava,
+  isAdmin
 };

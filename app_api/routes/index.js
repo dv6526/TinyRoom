@@ -22,7 +22,7 @@ router.post('/prijava', ctrlAvtentikacija.prijava);
 router.get('/uporabniki/:ui/profile', ctrlUporabniki.getUserInfo);
 router.put('/uporabniki/:idUporabnika/password', avtentikacija, ctrlProfilePage.changePassword);
 router.put('/uporabniki/:idUporabnika/info', avtentikacija, ctrlProfilePage.changeProfileInfo);
-router.put('/uporabniki/:ui/rank', avtentikacija, ctrlProfilePage.changeRank);
+router.put('/uporabniki/:ui/rank', avtentikacija, ctrlAvtentikacija.isAdmin,ctrlProfilePage.changeRank);
 router.delete('/uporabniki/:idUporabnika', avtentikacija, ctrlProfilePage.terminateProfile);
 
 //router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
@@ -45,7 +45,7 @@ router.put('/db/:ui/rank', ctrlProfilePage.changeRank);
 
 // Chat manipulation
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
-router.get('/messages', avtentikacija, ctrlChatLogs.getMessages);
+router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.getMessages);
 
 //router.get('/chatLogs', ctrlChatLogs.getChatLogs);
 //router.post('/message', ctrlChatLogs.sendMessage);

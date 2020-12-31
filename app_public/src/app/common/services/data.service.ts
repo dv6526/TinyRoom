@@ -167,7 +167,7 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public setAdmin(adminId: string, newAdmin: string): Promise<User> {
+  public setAdmin(userId: string, newAdmin: string): Promise<User> {
     const token = this.cookieService.get('token');
     const httpLastnosti = {
       headers: new HttpHeaders({
@@ -176,7 +176,7 @@ export class DataService {
     };
     const url: string = `${this.apiUrl}/uporabniki/${newAdmin}/rank`;
     return this.http
-      .put(url, {'id':adminId}, httpLastnosti)
+      .put(url, null,{headers: httpLastnosti.headers, params: {id: userId}})
       .toPromise()
       .then(response => response as User)
       .catch(this.processException);
