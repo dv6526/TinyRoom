@@ -93,7 +93,6 @@ export class FrameComponent implements OnInit {
     }
     if(this.cookieService.get('token')) {
       this.dataService.zeton = this.cookieService.get('token');
-      setUserData(this.dataService.zeton);
     }
   }
 }
