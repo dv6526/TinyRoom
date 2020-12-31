@@ -114,7 +114,7 @@ export class GraphAndDataComponent implements OnInit {
 
   public setAdmin(): void {
     this.newAdminMessage = "Please wait: Trying to set '" + this.newAdmin + "' as admin.";
-    this.dataService.setAdmin(this.newAdmin)
+    this.dataService.setAdmin(this.dataService.user._id, this.newAdmin)
       .then(response => {
         this.newAdminMessage = "'" + this.newAdmin + "' successfully set as admin.";
         this.newAdmin = "";
