@@ -22,7 +22,7 @@ router.post('/prijava', ctrlAvtentikacija.prijava);
 router.get('/uporabniki/:ui/profile', ctrlUporabniki.getUserInfo);
 router.put('/uporabniki/:idUporabnika/password', avtentikacija, ctrlProfilePage.changePassword);
 router.put('/uporabniki/:idUporabnika/info', avtentikacija, ctrlProfilePage.changeProfileInfo);
-router.put('/uporabniki/:ui/rank', avtentikacija, ctrlAvtentikacija.isAdmin,ctrlProfilePage.changeRank);
+router.put('/uporabniki/:ui/rank', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlProfilePage.changeRank);
 router.delete('/uporabniki/:idUporabnika', avtentikacija, ctrlProfilePage.terminateProfile);
 
 //router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
@@ -150,7 +150,7 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *       example: student
  *    responses:
  *     "200":
- *      description: Uspešna zahteva s podrobnostmi uporabniškega profila v rezultatu.
+ *      description: Uspešno administriran uporabnik.
  *      content:
  *       application/json:
  *        schema:
@@ -209,10 +209,9 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *        schema:
  *         $ref: "#/components/schemas/Napaka"
  *        example:
- *         ne najdem uporabnika:
  *          sporočilo: Ne najdem uporabnika!
  *     "500":
- *      description: Napaka pri iskanju lokacije.
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
  */
 
 /**
@@ -256,16 +255,70 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *         ni zetona:
  *          $ref: "#/components/examples/NiZetona"
  *     "404":
- *      description: Napaka zahteve, zahtevanega uporabnika ni mogoče najti.
+ *      description: Napaka zahteve, zahtevanega uporabnika, ki mu želimo spremeniti rank, ni mogoče najti.
  *      content:
  *       application/json:
  *        schema:
  *         $ref: "#/components/schemas/Napaka"
  *        example:
- *         ne najdem uporabnika:
  *          sporočilo: Ne najdem uporabnika!
  *     "500":
- *      description: Napaka pri iskanju lokacije.
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
  */
+
+/**
+* @swagger
+*  /uporabniki/{ui}/rank:
+*   put:
+*    summary: Spreminjanje ranka izbranega uporabnika
+*    description: Spremenitev **ranka uporabnika**.
+*    tags: [Uporabniki]
+*    security:
+*     - jwt: []
+*    parameters:
+*     - in: path
+*       name: ui
+*       description: uporabniško ime uporabnika, ki mu želimo spremeniti rank
+*       schema:
+*        type: string
+*       required: true
+*       example: student
+*     - in: query
+*       name: id
+*       description: ID uporabnika, ki zahteva spremembo ranka
+*       schema:
+*        type: string
+*       required: true
+*       example: 5ded18eb51386c3799833191
+*    responses:
+*     "200":
+*      description: Uspešno spremenjen rank uporabnika
+*      content:
+*       application/json:
+*        schema:
+*         $ref: "#/components/schemas/Sporocilo"
+*        examples:
+*         uspesno administriran:
+*          $ref: "#/components/examples/UspesnoAdministriran"
+*     "401":
+*      description: Napaka pri dostopu.
+*      content:
+*       application/json:
+*        schema:
+*         $ref: "#/components/schemas/Napaka"
+*        examples:
+*         ni zetona:
+*          $ref: "#/components/examples/NiZetona"
+*     "404":
+*      description: Uporabnik, ki mu želimo spremeniti rank ne obstaja.
+*      content:
+*       application/json:
+*        schema:
+*         $ref: "#/components/schemas/Napaka"
+*        example:
+*         sporočilo: Uporabnik ne obstaja.
+*     "500":
+*      description: Napaka na strežniku pri dostopu do podatkovne baze.
+*/
 
 module.exports = router;

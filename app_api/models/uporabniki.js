@@ -116,6 +116,16 @@ const jwt = require('jsonwebtoken');
 *      type: string
 *    example:
 *     sporočilo: Parametri so obvezni.
+*   Sporocilo:
+*    type: object
+*    description: Podrobnosti sporočila
+*    required:
+*     - sporočilo
+*    properties:
+*     sporočilo:
+*      type: string
+*    example:
+*     sporočilo: Uspešna akcija.
 */
 
 /**
@@ -130,6 +140,10 @@ const jwt = require('jsonwebtoken');
  *     summary: ni JWT žetona
  *     value:
  *      sporočilo: "UnauthorizedError: No authorization token was found."
+ *    UspesnoAdministriran:
+ *     summary: Uporabniku smo uspešno spremenili rank.
+ *     value:
+ *      sporočilo: "sporočilo: Uspešno administriran uporabnik."
  */
 
 const uporabnikiShema = new mongoose.Schema({

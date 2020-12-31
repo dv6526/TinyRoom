@@ -81,7 +81,7 @@ const prijava = (req, res) => {
 
 function isAdmin(req, res, next) {
   Uporabnik.findById(req.query.id).exec((error, profile) => {
-    if(error) {
+    if (error) {
       console.log("IS ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
       //res.status(500).json(error);
       next(createError(500));
@@ -90,11 +90,11 @@ function isAdmin(req, res, next) {
       //res.status(404).json(error);
       next(createError(404));
     } else {
-      if(profile.rank == "admin") {
+      if (profile.rank == "admin") {
         console.log("IS ADMIN: Uspešno avtenticiranje");
         next()
       } else {
-        console.log("IS ADMIN: Zahteva ni prišla s s trani administratorja. Zavrnjeno!");
+        console.log("IS ADMIN: Zahteva ni prišla s strani administratorja. Zavrnjeno!");
         //res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
         next(createError(401));
       }
