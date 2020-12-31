@@ -40,9 +40,10 @@ uporabnikiShema.methods.generirajJwt = function () {
     */
     return jwt.sign({
         username: this.username,
-        sprite_idx: this.chosen_skin,
+        email: this.email,
         my_id: this._id,
-        rank: this.rank,
+        // sprite_idx: this.chosen_skin,
+        // rank: this.rank,
         exp: parseInt(datumPoteka.getTime() / 1000, 10)
     }, process.env.JWT_GESLO);
 };
