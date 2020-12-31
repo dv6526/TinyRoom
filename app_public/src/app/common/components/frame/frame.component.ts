@@ -21,6 +21,7 @@ export class FrameComponent implements OnInit {
   ) { }
 
   public activeTab: number = 0;
+  public rank: string;
   public username: string;
 
   changeActive(event: any): void {
@@ -31,6 +32,7 @@ export class FrameComponent implements OnInit {
         this.router.navigate(['signin']);
     } else {
       this.username = this.dataService.user.username;
+      this.rank = this.dataService.user.rank;
     }
     let active: string = "";
     try {
@@ -64,6 +66,7 @@ export class FrameComponent implements OnInit {
       case 'SigninComponent': {
         this.activeTab = -1;
         this.username = "";
+        this.rank = "";
         console.log("signin");
         break;
       }

@@ -4,6 +4,7 @@ import { Navigation } from '../../classes/other/navigation';
 import { DataService } from "../../services/data.service";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
+import {User} from "../../classes/models/user";
 // V angular.json -> scripts sem dodal naš script.js. S tem deklariraš funkcijo iz tiste skripte in jo lahko kasneje kličeš
 declare const exit: any;
 
@@ -22,6 +23,7 @@ export class NavComponent implements OnInit {
 
   @Input() public activeTab: number = 0;
   @Input() public username: string;
+  @Input() public rank: string;
 
   navigation: Navigation[] = [
     { href: "",

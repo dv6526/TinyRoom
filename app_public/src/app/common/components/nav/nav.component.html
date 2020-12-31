@@ -11,7 +11,7 @@
     </div>
 
     <div class="d-flex flex-column pl-3 kaligrafija pisava povezave-strani" *ngFor="let nav of navigation; index as i">
-      <a routerLink="{{nav.href}}" (click)="deleteCookies(nav.value); onExit(nav.value);" class="{{i | isActive:activeTab}}">{{nav.value}}</a>
+      <a routerLink="{{nav.href}}" (click)="deleteCookies(nav.value); onExit(nav.value);" class="{{i | isActive:activeTab}}" *ngIf="nav.value != 'STATISTICS' || rank=='admin'">{{nav.value}}</a>
     </div>
   </div>
 </div>
