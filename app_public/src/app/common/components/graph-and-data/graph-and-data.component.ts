@@ -18,6 +18,7 @@ export class GraphAndDataComponent implements OnInit {
   public numOfPages: number;
   public perPage: number;
   public newAdmin: string;
+  public newAdminMessage: string;
 
   public messageData: ChartDataSets[] = [
     { data: [], label: 'Number of messages per hour on a picked date' }     // our UNprocessed data goes here
@@ -28,10 +29,8 @@ export class GraphAndDataComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.date);
     // set current input date
     this.date = (new Date()).toISOString().split('T')[0];
-    console.log(this.date);
     // get messages of this current date
     this.currentPage = 0;
     this.numOfPages = 0;
@@ -40,6 +39,7 @@ export class GraphAndDataComponent implements OnInit {
     // TODO: mogoce bi lahko dodal, koliko se jih na stran prikaze (perPage)
     this.getAllMessages();  // also gets numberOfPages
     this.getMessages();
+    this.checkUsername();
   }
 
   getMessages(): void {
@@ -113,7 +113,24 @@ export class GraphAndDataComponent implements OnInit {
   }
 
   public setAdmin(): void {
-    this.dataService.setAdmin(this.newAdmin).then().catch();
+    this.newAdminMessage = "Please wait: Trying to set '" + this.newAdmin + "' as admin.";
+    this.dataService.setAdmin(this.newAdmin)
+      .then(response => {
+        this.newAdminMessage = this.newAdmin + " successfully set as admin.";
+        this.newAdmin = "";
+      })
+      .catch(err => {
+        this.newAdminMessage = "Could not set " + this.newAdmin + " as admin!";
+        console.log("Error when setting " + this.newAdmin + " as admin! " + err);
+      });
+  }
+
+  public checkUsername(): void {
+    console.log("wtf");
+    if(this.newAdmin == "")
+      this.newAdminMessage = "You have to enter an username!";
+    else
+      this.newAdminMessage = "";
   }
 
   private getComponentName(): string {
