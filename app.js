@@ -8,6 +8,36 @@ var logger = require('morgan');
 var session = require('express-session');
 var wsserver = require("./ws_server/ws.js")
 var passport = require('passport');
+var swaggerJsdoc = require('swagger-jsdoc');
+var swaggerUi = require('swagger-ui-express');
+var swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "TinyRoom",
+      version: "1.0.0",
+      description: "TinyRoom REST API"
+    },
+    license: {
+      name: "GNU LGPLv3",
+      url: "https://choosealicense.com/licenses/lgpl-3.0"
+    },
+    contact: {
+      name: "Tinyroom",
+      email: "tiny@room.net"
+    },
+    servers: [
+      { url: "http://localhost:3000/api" },
+      { url: "http://157.245.36.23/api" }
+    ]
+  },
+  apis: [
+    "./app_api/models/uporabniki.js",
+    "./app_api/routes/index.js"
+  ]
+};
+const swaggerDocument = swaggerJsdoc(swaggerOptions);
+
 
 require('./app_api/models/db');
 require('./app_api/configuration/passport');
@@ -53,6 +83,11 @@ app.use('/api', (req, res, next) => {
 app.use('/api', indexApi);
 app.get(/(\/private)|(\/profile)|(\/signin)|(\/logout)|(\/db)/, (req, res, next) => {
   res.sendFile(path.join(__dirname, 'app_public', 'build', 'index.html'));
+});
+
+indexApi.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+indexApi.get("/swagger.json", (req, res) => {
+  res.status(200).json(swaggerDocument);
 });
 
 app.use(passport.initialize());
