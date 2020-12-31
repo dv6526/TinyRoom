@@ -89,7 +89,7 @@ const changeProfileInfo = (req, res) => {
                         profile.save((napaka, profile) => {
                             if(napaka) {
                                 console.log("Nekaj je šlo narobe pri shranjevanju posodobitev uporabnika s priloženo profilno sliko!");
-                                res.status(404).json(napaka);
+                                res.status(500).json(napaka);
                             } else {
                                 console.log("Uporabnikovi podatki so bili uspešno posodobljeni, vključno s profilno sliko!");
                                 res.status(200).json(profile);
@@ -104,7 +104,7 @@ const changeProfileInfo = (req, res) => {
             profile.save((napaka, profile) => {
                 if(napaka) {
                     console.log("Nekaj je šlo narobe pri shranjevanju posodobitev uporabnika brez priložene profilne slike!");
-                    res.status(404).json(napaka);
+                    res.status(500).json(napaka);
                 } else {
                     console.log("Uporabnikovi podatki so bili uspešno posodobljeni, brez profilne slike!");
                     res.status(200).json(profile);
@@ -114,4 +114,28 @@ const changeProfileInfo = (req, res) => {
     });
 }
 
-module.exports = {terminateProfile, changePassword, changeProfileInfo};
+const changeRank = (req, res) => {
+    // check if user with username exists in data base
+    Profile.findOne({ "username": req.params.ui }).exec((error, profile) => {
+        if(error) {
+            console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri iskanju uporabnika!");
+            res.status(500).json(error);
+        } else if (!profile) {
+            console.log("SPREMINJANJE RANKA: uporabnik ne obstaja!");
+            res.status(404).json(error);
+        } else {
+            profile.rank = 'admin';
+            profile.save((error, profile) => {
+                if(error) {
+                    console.log("SPREMINJANJE RANKA: Nekaj je šlo narobe pri shranjevanju uporabnika!");
+                    res.status(500).json(error);
+                } else {
+                    console.log("SPREMINJANJE RANKA: uporabniku je bil uspešno spremenjen rank.");
+                    res.status(200).json(profile);
+                }
+            });
+        }
+    });
+    }
+
+module.exports = {terminateProfile, changePassword, changeProfileInfo, changeRank};

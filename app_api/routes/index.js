@@ -16,35 +16,39 @@ const ctrlObject = require('../controllers/object');
 const ctrlDb = require('../controllers/db');
 const ctrlChatLogs = require('../controllers/chatLogs');
 
-
-//router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
-
+// User manipulation
 router.post('/registracija', ctrlAvtentikacija.registracija);
 router.post('/prijava', ctrlAvtentikacija.prijava);
-
-//router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
 router.get('/uporabniki/:ui/profile', ctrlUporabniki.getUserInfo);
-//router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
-
 router.put('/uporabniki/:idUporabnika/password', avtentikacija, ctrlProfilePage.changePassword);
 router.put('/uporabniki/:idUporabnika/info', avtentikacija, ctrlProfilePage.changeProfileInfo);
+router.put('/uporabniki/:ui/rank', avtentikacija, ctrlProfilePage.changeRank);
 router.delete('/uporabniki/:idUporabnika', avtentikacija, ctrlProfilePage.terminateProfile);
+
+//router.get('/uporabniki', ctrlUporabniki.vrniUporabnikaByUiPass);
+//router.get('/uporabniki/:idUporabnika', ctrlUporabniki.vrniUporabnikaById);
+//router.get('/uporabniki/getId/:ui', ctrlUporabniki.vrniUporabnikaByUi);
 //router.post('/uporabniki', ctrlUporabniki.uporabnikKreiraj);
 
 
+// Private room manipulation
 router.get('/privateRoom/:username', ctrlprivateRoom.vrniSoboByUsername);
-
 router.post('/privateRoom/:username', avtentikacija, ctrlprivateRoom.sobaUpdate);
 
 //router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
 //router.get('/object', ctrlObject.vrniLokacijo);
 
+
+// Data base manipulation
 router.delete('/db', avtentikacija, ctrlDb.deleteAll);
 
+
+// Chat manipulation
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
 router.get('/chatLogs', ctrlChatLogs.getChatLogs);
-//
-router.post('/message', ctrlChatLogs.sendMessage);
 router.get('/messages', ctrlChatLogs.getMessages);
+
+//router.post('/message', ctrlChatLogs.sendMessage);
+
 
 module.exports = router;

@@ -68,7 +68,7 @@
             </div>
             <input [(ngModel)]="newAdmin" type="text" name="setAdmin" class="form-control text-white" placeholder="username" aria-label="SetAdmin" aria-describedby="addon-wrapping" (change)="checkUsername()">
             <div class="input-group-append">
-              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin==''">an admin.</button>
+              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin==''" (mouseover)="checkUsername()">an admin.</button>
             </div>
           </div>
         </form>

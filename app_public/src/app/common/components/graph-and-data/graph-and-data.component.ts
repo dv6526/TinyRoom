@@ -116,12 +116,12 @@ export class GraphAndDataComponent implements OnInit {
     this.newAdminMessage = "Please wait: Trying to set '" + this.newAdmin + "' as admin.";
     this.dataService.setAdmin(this.newAdmin)
       .then(response => {
-        this.newAdminMessage = this.newAdmin + " successfully set as admin.";
+        this.newAdminMessage = "'" + this.newAdmin + "' successfully set as admin.";
         this.newAdmin = "";
       })
       .catch(err => {
-        this.newAdminMessage = "Could not set " + this.newAdmin + " as admin!";
-        console.log("Error when setting " + this.newAdmin + " as admin! " + err);
+        this.newAdminMessage = "Could not set '" + this.newAdmin + "' as admin!";
+        console.log("Error when setting '" + this.newAdmin + "' as admin! " + err);
       });
   }
 

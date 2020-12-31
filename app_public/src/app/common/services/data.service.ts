@@ -161,8 +161,19 @@ export class DataService {
       .catch(this.processException);
   }
 
-  public setAdmin(newAdmin: string): Promise<any> {
-    return null
+  public setAdmin(newAdmin: string): Promise<User> {
+    const token = this.cookieService.get('token');
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
+    const url: string = `${this.apiUrl}/uporabniki/${newAdmin}/rank`;
+    return this.http
+      .put(url, null, httpLastnosti)
+      .toPromise()
+      .then(response => response as User)
+      .catch(this.processException);
   }
 
   private processException(napaka: any): Promise<any> {
