@@ -7,21 +7,24 @@ const fs = require('fs');
 const terminateProfile = (req, res) => {
     if (req.params.idUporabnika) {
         Profile.findByIdAndRemove(req.params.idUporabnika).exec((napaka, profil) => {
+            console.log(profil);
             if (napaka) {
                 return res.status(500).json(napaka);
-            } else {
+            } else if (profil) {
                 Soba.remove({ owner: profil.username }).exec((napaka, soba) => {
                     if (napaka) {
                         return res.status(500).json(napaka);
                     }
                     console.log("Soba uporabnika je bila uspešno izbrisana");
+                    return res.status(204).json({ "sporočilo": "Uporabnik uspešno izbrisan." });
                 });
+            } else {
+                return res.status(404).json({ "sporočilo": "Uporabnik ne obstaja." });
             }
-            return res.status(200).json({ "sporočilo": "Ne najdem uporabnika!" });
         });
     } else {
         return res.status(404).json({
-            "sporočilo": "Ne najdem uporabnika, idUporabnika je obvezen parameter."
+            "sporočilo": "Ni vseh zahtevanih parametrov."
         });
     }
 }

@@ -51,6 +51,18 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
 //router.post('/message', ctrlChatLogs.sendMessage);
 
 /**
+ * Varnostna shema dostopa
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *   jwt:
+ *    type: http
+ *    scheme: bearer
+ *    in: header
+ *    bearerFormat: JWT
+ */
+
+/**
  * @swagger
  * /registracija:
  *  post:
@@ -320,5 +332,45 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
 *     "500":
 *      description: Napaka na strežniku pri dostopu do podatkovne baze.
 */
+
+/**
+ * @swagger
+ *  /uporabniki/{idUporabnika}:
+ *   delete:
+ *    summary: Brisanje uporabnika
+ *    description: Brisanje **izbranega uporabnika**.
+ *    tags: [Uporabniki]
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: path
+ *       name: idUporabnika
+ *       description: ID uporabnika
+ *       schema:
+ *        type: string
+ *       required: true
+ *    responses:
+ *     "204":
+ *      description: Uspešno izbrisan uporabnik.
+ *     "401":
+ *      description: Napaka pri dostopu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        examples:
+ *         ni zetona:
+ *          $ref: "#/components/examples/NiZetona"
+ *     "404":
+ *      description: Napaka zahteve, zahtevanega uporabnika ni mogoče najti.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         sporočilo: Uporabnik ne obstaja.
+ *     "500":
+ *      description: Napaka pri brisanju uporabnika.
+ */
 
 module.exports = router;
