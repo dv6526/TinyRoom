@@ -28,7 +28,7 @@
             {{message.name}}:
             {{message.body}}
           </div>
-          <div class="text-center" *ngIf="messages.length < 1">
+          <div class="text-center mb-3" *ngIf="messages.length < 1">
             There were no messages sent on this particular date.
           </div>
         </div>
@@ -55,6 +55,27 @@
         <app-line-chart [lineChartData]="messageData">Loading...</app-line-chart>
       </div>
 
+    </div>
+
+    <!-- SET ADMIN -->
+    <div class="row mt-5">
+      <div class="col-xl-6 col-lg-12 justify-content-center">
+        <!-- DATE INPUT -->
+        <form (ngSubmit)="setAdmin()">
+          <div class="col-12 input-group flex-nowrap mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-dark text-white" id="addon-wrapping3">Set</span>
+            </div>
+            <input [(ngModel)]="newAdmin" type="text" name="setAdmin" class="form-control text-white" placeholder="username" aria-label="SetAdmin" aria-describedby="addon-wrapping" (change)="checkUsername()">
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin==''">an admin.</button>
+            </div>
+          </div>
+        </form>
+        <div class="text-center mb-3" *ngIf="newAdminMessage!=''">
+          {{newAdminMessage}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
