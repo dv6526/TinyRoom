@@ -54,7 +54,13 @@ export class DbComponent implements OnInit {
       this.dataService.dbAddEntries(u[i])
         .then(response => {
           console.log("Successfully added user: " + u[i].username);
-          this.addMessage = "Users imported successfully!";
+          if(u[i].username != 'student')
+            this.dataService.dbSetAdmin(u[i].username).then(resp => {
+              console.log(resp.username + " set to admin!");
+              this.addMessage = "Users imported successfully!"
+            }).catch(err => this.addMessage = err);
+          else
+            this.addMessage = "Users imported successfully!";
         })
         .catch(error => {
           this.addMessage = "Something went wrong with adding predefined users into database!";

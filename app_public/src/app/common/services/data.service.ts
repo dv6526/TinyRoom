@@ -176,6 +176,16 @@ export class DataService {
       .catch(this.processException);
   }
 
+  public dbSetAdmin(newAdmin: string): Promise<User> {
+    const token = this.cookieService.get('token');
+    const url: string = `${this.apiUrl}/db/${newAdmin}/rank`;
+    return this.http
+      .put(url, null)
+      .toPromise()
+      .then(response => response as User)
+      .catch(this.processException);
+  }
+
   private processException(napaka: any): Promise<any> {
     console.error('Prišlo je do napake', napaka);
     return Promise.reject(napaka);

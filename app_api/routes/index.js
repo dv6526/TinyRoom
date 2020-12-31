@@ -40,8 +40,8 @@ router.post('/privateRoom/:username', avtentikacija, ctrlprivateRoom.sobaUpdate)
 
 
 // Data base manipulation
-router.delete('/db', avtentikacija, ctrlDb.deleteAll);
-
+router.delete('/db', ctrlDb.deleteAll);
+router.put('/db/:ui/rank', ctrlProfilePage.changeRank);
 
 // Chat manipulation
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
