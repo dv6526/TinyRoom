@@ -6,7 +6,7 @@ const Soba = mongoose.model('privateRoom');
 
 const registracija = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
-    return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki" });
+    return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki." });
   }
 
   Uporabnik.findOne({ "username": req.body.username }).exec((napaka, uporabnik) => {
@@ -53,7 +53,7 @@ const registracija = (req, res) => {
 
 const prijava = (req, res) => {
   if (!req.body.username || !req.body.password) {
-    return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki" });
+    return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki." });
   }
   passport.authenticate('local', (napaka, uporabnik, informacije) => {
     if (napaka)

@@ -16,6 +16,7 @@ const jwt = require('jsonwebtoken');
 *      example: student
 *     password:
 *      type: string
+*      description: geslo
 *      format: password
 *      example: geslo
 *    required:
@@ -73,7 +74,27 @@ const jwt = require('jsonwebtoken');
 *     required:
 *      - zeton
 *      - user
+*   Napaka:
+*    type: object
+*    description: Podrobnosti napake
+*    required:
+*     - sporočilo
+*    properties:
+*     sporočilo:
+*      type: string
+*    example:
+*     sporočilo: Parametri so obvezni.
 */
+
+/**
+ * @swagger
+ *  components:
+ *   examples:
+ *    VsiPodatki:
+ *     summary: zahtevani so vsi podatki
+ *     value:
+ *      sporočilo: Zahtevani so vsi podatki.
+ */
 
 const uporabnikiShema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
