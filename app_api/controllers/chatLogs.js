@@ -15,7 +15,7 @@ const sendChatLog = (req, res) => {
                 }
             });
         } catch (error) {
-            chatLogs.create({});
+            ChatLogs.create({});
             console.log("Ponovna inicializacija chat logov!");
             console.log(error);
             res.status(400).json({"message": "Napaka pri shranjevanju sporocila!"});

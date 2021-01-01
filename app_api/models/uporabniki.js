@@ -212,8 +212,21 @@ const uporabnikiShema = new mongoose.Schema({
     bio: { type: String, "default": 'This is default bio' },
     chosen_skin: { type: String, "default": "bunny" },
     zgoscenaVrednost: { type: String, required: true },
-    nakljucnaVrednost: { type: String, required: true }
+    nakljucnaVrednost: { type: String, required: true },
+    ws_token: {type: String}
 });
+
+uporabnikiShema.methods.generirajWSToken = function() {
+    let token = crypto.randomBytes(6).toString('hex');
+    this.ws_token = token;
+    // debug outprint
+    console.log('Generiral se je nov WS Token', this.ws_token, 'for', this.username);
+    return this.ws_token;
+}
+
+uporabnikiShema.methods.preveriWSToken = function(token) {
+    return this.ws_token = token;
+}
 
 uporabnikiShema.methods.nastaviGeslo = function (geslo) {
     this.nakljucnaVrednost = crypto.randomBytes(16).toString('hex');

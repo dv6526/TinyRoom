@@ -38,7 +38,7 @@ function start_ws() {
                     // the user is trying to identify himself
                     user.identify(command_data.username, command_data.token, command_data.weather, function (success) {
                         if (success) {
-                            console.log(user.username, "has identified himself");
+                            console.log(user.username, "has identified himself as", user.rank);
 
                             // Notify everyone of new player!
                             var join_info = JSON.stringify(
@@ -61,7 +61,8 @@ function start_ws() {
                             //socket.send('You are logged in');
                         }
                         else {
-                            socket.send('Unable to log you in!');
+                            socket.send('ER ' + JSON.stringify({"error": "You could not be identified by the world server!"}));
+                            socket.close();
                         }
                     });
 
@@ -90,7 +91,7 @@ function start_ws() {
 
                         var msg = command_data.message;
                         if(msg.length > 0 && !user.g_muted) {
-                            console.log(user.getUsername(), msg, user.getRoom());
+                            console.log(user.getUsername(), "sent message", msg, "to room", user.getRoom());
 
                             try {sendChatLog(user.getUsername(), msg, user.getRoom());}
                             catch(napaka) {console.log("sendChatLog napaka");}
@@ -112,6 +113,7 @@ function start_ws() {
 
                     else if (command == "AL") {
                         user.friends.push(command_data.username);
+                        findByUsername(command_data.username).socket.send("ER " + JSON.stringify({"error": user.getUsername() + " has allowed you to enter their room."}));
                     }
 
                     else if (command == "JO") {
@@ -144,31 +146,46 @@ function start_ws() {
                     }
 
                     else if (command == "GM") {
-                        findByUsername(command_data.username).g_muted = true;
-                        sockets.forEach(s => {
-                            // dont send to itself
-                            if (s !== user) {
-                                s.socket.send("GM " + JSON.stringify(
-                                    {"username": command_data.username}
-                                ));
-                            }
-                        });
+                        if (user.rank = 'admin') {
+                            findByUsername(command_data.username).g_muted = true;
+                            sockets.forEach(s => {
+                                // dont send to itself
+                                if (s !== user) {
+                                    s.socket.send("GM " + JSON.stringify(
+                                        {"username": command_data.username}
+                                    ));
+                                }
+                            });
+                        }
+                        else {
+                            user.socket.send("ER " + JSON.stringify({"error": "You do not have permission for this command."}))
+                        }
                     }
 
                     else if (command == "GU") {
-                        findByUsername(command_data.username).g_muted = false;
-                        sockets.forEach(s => {
-                            // dont send to itself
-                            if (s !== user) {
-                                s.socket.send("GU " + JSON.stringify(
-                                    {"username": command_data.username}
-                                ));
-                            }
-                        });
+                        if (user.rank = 'admin') {
+                            findByUsername(command_data.username).g_muted = false;
+                            sockets.forEach(s => {
+                                // dont send to itself
+                                if (s !== user) {
+                                    s.socket.send("GU " + JSON.stringify(
+                                        {"username": command_data.username}
+                                    ));
+                                }
+                            });
+                        }
+                        else {
+                            user.socket.send("ER " + JSON.stringify({"error": "You do not have permission for this command."}))
+                        }
                     }
 
                     else if (command == "WA") {
-                        findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
+                        if (user.rank = 'admin') {
+                            findByUsername(command_data.username).socket.send("WA " + JSON.stringify({"username": user.getUsername()}));
+                        }
+                        else {
+                            user.socket.send("ER " + JSON.stringify({"error": "You do not have permission for this command."}))
+                        }
                     }
 
                     else if (command == "PM") {
@@ -179,9 +196,14 @@ function start_ws() {
                     }
 
                     else if (command == "KI") {
-                        var kicked_user = findByUsername(command_data.username);
-                        kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
-                        kicked_user.socket.close();
+                        if (user.rank = 'admin') {
+                            var kicked_user = findByUsername(command_data.username);
+                            kicked_user.socket.send("KI " + JSON.stringify({"username": user.getUsername()}));
+                            kicked_user.socket.close();
+                        }
+                        else {
+                            user.socket.send("ER " + JSON.stringify({"error": "You do not have permission for this command."}))
+                        }
                     }
                 }
                 catch(napaka) {
@@ -263,6 +285,7 @@ class UserSocket {
         this.g_muted = false;
         this.room = undefined;
         this.socket = socket;
+        this.rank = undefined;
 
         // default position
         this.wanted_position = {x: 600, y: 600};
@@ -333,17 +356,29 @@ class UserSocket {
         // if it does, assign username
         this.username = username;
         this.weather = weather;
-        var chosenSkin;
         var user = this;
         //api call
         axios.get(apiParametri.streznik + "/api/uporabniki/" + username + "/profile").then((odgovor) => {
-            if(odgovor.length == 0) {
+            if (odgovor.length == 0) {
                 callback(false);
             } else {
+
+                axios.get(apiParametri.streznik + "/api/preveriWSToken/" + username + "/" + token).then((odgovor) => {
+                    
+                    if (odgovor.data.success) {
+                        callback(true);
+                    }
+
+                    else {
+                        callback(false);
+                    }
+
+                })
+
                 var skins = {"bunny" : 0, "goat":1, "rat":2};
                 //console.log(odgovor.data.chosen_skin);
                 user.sprite_idx = skins[odgovor.data.chosen_skin];
-                callback(true);
+                user.rank = odgovor.data.rank;
             }
         })
 
