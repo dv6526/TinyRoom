@@ -16,9 +16,13 @@ const vrniSoboByUsername = (req, res) => {
 
 const sobaUpdate = (req, res) => {
     //če obstaja uporabnik kreiraj njegovo sobo
+    if (!Array.isArray(req.body) || !req.params.username) {
+        return res.status(400).json({ "sporočilo": "Zahtevani so vsi podatki." });
+    }
+
     const username = req.params.username;
     var furniture = req.body;
-
+    console.log(furniture);
     const possible_types = ['fotelj', 'stol', 'stolcek', 'light'];
     // update only furniture with the correct type
     furniture = furniture.filter(f => possible_types.includes(f.type));
@@ -28,23 +32,22 @@ const sobaUpdate = (req, res) => {
         f.position.y = Math.max(f.position.y, -0.5); f.position.y = Math.min(f.position.y, 0.5);
     });
 
-    if (username) {
-        Soba.updateOne({
-            owner: username
+
+    Soba.updateOne({
+        owner: username
+    },
+        {
+            objects: furniture
         },
-            {
-                objects: furniture
-            },
-            (napaka, soba) => {
-                if (napaka) {
-                    res.status(400).json(napaka);
-                } else {
-                    res.status(201).json(soba);
-                }
-            });
-    } else {
-        res.status(404).json({ "sporočilo": "Uporabnik ne obstaja." });
-    }
+        (napaka, soba) => {
+            if (napaka) {
+                res.status(500).json(napaka);
+            } else if (!soba) {
+                res.status(404).json({ "sporočilo": "Uporabnik ne obstaja." });
+            } else {
+                res.status(201).json();
+            }
+        });
 }
 
 module.exports = { vrniSoboByUsername, sobaUpdate };

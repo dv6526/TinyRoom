@@ -31,12 +31,12 @@ export class PrivateComponent implements OnInit {
       f.position.x -= 0.5;
       f.position.y -= 0.5;
     }
-    if(this.dataService.user) {
+    if (this.dataService.user) {
       this.message = "Please wait: Updating the furniture.";
-      this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).then( response => {
+      this.dataService.updatePrivateRoom(this.dataService.user.username, furniture).then(response => {
         this.message = "Furniture has been updated!";
       }).catch(error => {
-        this.message = "Couldn not update furniture!"
+        this.message = "Could not update furniture!"
         console.log("Could not update furniture: " + error.message)
       });
     } else {
@@ -52,7 +52,7 @@ export class PrivateComponent implements OnInit {
       const individualFurniture = furniture[i];
 
       individualFurniture.draggable = true;
-      individualFurniture.ondragstart = function(event) {
+      individualFurniture.ondragstart = function (event) {
         event.dataTransfer.setData('furniture', event.target.dataset.furniture);
       }
     }

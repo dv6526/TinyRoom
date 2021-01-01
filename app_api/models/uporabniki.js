@@ -129,6 +129,22 @@ const jwt = require('jsonwebtoken');
 *            type: integer
 *           y:
 *            type: integer
+*   FurnitureDTO:
+*    type: object
+*    description: podatki o objektu, ki se nahaja v privatni sobi
+*    properties:
+*     position: 
+*      type: object
+*      properties:
+*         type:
+*          type: string
+*         position:
+*          type: object
+*          properties:
+*           x:
+*            type: integer
+*           y:
+*            type: integer
 *   ZetonOdgovor:
 *    type: object
 *    description: Rezultat uspešne sprembe gesla uporabnika

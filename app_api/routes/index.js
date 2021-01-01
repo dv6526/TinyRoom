@@ -169,6 +169,15 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *         type: array
  *         items:
  *          $ref: "#/components/schemas/ProfileInfo"
+ *     "401":
+ *      description: Napaka pri dostopu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        examples:
+ *         ni zetona:
+ *          $ref: "#/components/examples/NiZetona"
  *     "404":
  *      description: Napaka zahteve, uporabnik ne obstaja.
  *      content:
@@ -263,7 +272,7 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *       application/json:
  *        schema:
  *         $ref: "#/components/schemas/Napaka"
- *        example:
+ *        examples:
  *         ni zetona:
  *          $ref: "#/components/examples/NiZetona"
  *     "404":
@@ -409,6 +418,65 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *           $ref: "#/components/examples/SobaNeObstaja"
  *     "500":
  *      description: Napaka na strežniku pri dostopu do podatkovne baze.
+ */
+
+/**
+ * @swagger
+ * /privateRoom/{ui}:
+ *  post:
+ *    summary: Posodabljanje in dodajanje predmetov privatne sobe
+ *    description: Posodabljanje in dodajanje predmetov privatne sobe 
+ *    tags: [Privatna soba]
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: path
+ *       name: ui
+ *       description: uporabniško ime
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: student
+ *    requestBody:
+ *      description: Podatki o predmetih sobe
+ *      required: true
+ *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *           type: array
+ *           items:
+ *            $ref: "#/components/schemas/FurnitureDTO"
+ *    responses:
+ *      "201":
+ *        description: Uspešno dodani in posodobljeni objekti privatne sobe.
+ *      "400":
+ *        description: Napaka zahteve, niso poslani vsi zahtevani podatki.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: "#/components/schemas/Napaka"
+ *            example:
+ *              sporočilo: Zahtevani so vsi podatki.
+ *      "401":
+ *       description: Napaka pri dostopu.
+ *       content:
+ *        application/json:
+ *         schema:
+ *          $ref: "#/components/schemas/Napaka"
+ *         examples:
+ *          ni zetona:
+ *           $ref: "#/components/examples/NiZetona"
+ *      "404":
+ *        description: Uporabnik, ki mu želimo posodobiti privatno sobo, ne obstaja.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: "#/components/schemas/Napaka"
+ *            example:
+ *              sporočilo: Uporabnik ne obstaja.
+ *      "500":
+ *         description: Napaka na strežniku pri preverjanju uporabnika.
+ *        
  */
 
 
