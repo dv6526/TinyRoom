@@ -44,6 +44,7 @@ router.get('/preveriWSToken/:username/:token', ctrlAvtentikacija.preveriWSToken)
 router.delete('/db', ctrlDb.deleteAll);
 router.put('/db/:ui/rank', ctrlProfilePage.changeRank);
 
+
 // Chat manipulation
 router.post('/chatLogs', ctrlChatLogs.sendChatLog);
 router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.getMessages);
@@ -151,8 +152,6 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *    summary: Pridobivanje profila uporabnika
  *    description: Pridobivanje profila uporabnika s podanim uporabniškem imenom.
  *    tags: [Uporabniki]
- *    security:
- *     - jwt: []
  *    parameters:
  *     - in: path
  *       name: ui
@@ -163,12 +162,10 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *       example: student
  *    responses:
  *     "200":
- *      description: Uspešno administriran uporabnik.
+ *      description: Uspešno pridobljen profil uporabnik.
  *      content:
  *       application/json:
  *        schema:
- *         type: array
- *         items:
  *          $ref: "#/components/schemas/ProfileInfo"
  *     "401":
  *      description: Napaka pri dostopu.
@@ -295,8 +292,6 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
 *    summary: Spreminjanje ranka izbranega uporabnika
 *    description: Spremenitev **ranka uporabnika**.
 *    tags: [Uporabniki]
-*    security:
-*     - jwt: []
 *    parameters:
 *     - in: path
 *       name: ui
@@ -480,6 +475,53 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *        
  */
 
+/**
+* @swagger
+*  /db:
+*   delete:
+*    summary: Brisanje podatkovne baze
+*    description: Brisanje **podatkovne baze**.
+*    tags: [Podatkovna baza]
+*    responses:
+*     "204":
+*      description: Uspešno izbrisan uporabnik.
+*     "500":
+*      description: Napaka pri brisanju podatkovne baze.
+*/
+
+/**
+ * @swagger
+ * /chatLogs:
+ *  post:
+ *    summary: Poslano sporočilo se shrani
+ *    description: Zraven sporočila se pošljejo še informacije kdo je sporočilo poslal in v kateri sobi.
+ *    tags: [Sporočila]
+ *    requestBody:
+ *      description: Dodatne informacije poleg sporočila.
+ *      required: true
+ *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: "#/components/schemas/Message"
+ *    responses:
+ *      "201":
+ *        description: Sporočilo uspešno shranjeno.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: "#/components/schemas/Message"
+ *      "400":
+ *        description: Zahtevani so vsi podatki.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: "#/components/schemas/Napaka"
+ *            example:
+ *              sporočilo: Zahtevani so podatki o imenu pošiljatelja, sporočilo ter soba.
+ *      "500":
+ *        description: Napaka na strežniku pri shranjevanju sporočila.
+ *        
+ */
 
 
 

@@ -4,11 +4,15 @@ const Messages = mongoose.model('messages');
 const Profile = mongoose.model('Uporabnik');
 
 const sendChatLog = (req, res) => {
+    if (!req.body.name || !req.body.body || !req.body.room) {
+        return res.status(400).json({ "sporočilo": "Zahtevani so podatki o imenu pošiljatelja, sporočilo ter soba." });
+
+    }
     ChatLogs.findOne({}).exec((napaka, log) => {
         try {
             log.messages.push(req.body);
             log.save((error, savedLog) => {
-                if(error) {
+                if (error) {
                     return res.status(400).json(error);
                 } else {
                     sendMessage(req, res);
@@ -18,17 +22,17 @@ const sendChatLog = (req, res) => {
             ChatLogs.create({});
             console.log("Ponovna inicializacija chat logov!");
             console.log(error);
-            res.status(400).json({"message": "Napaka pri shranjevanju sporocila!"});
+            return res.status(500).json({ "sporočilo": "Napaka pri shranjevanju sporočila." });
         }
     });
 }
 
 const getChatLogs = (req, res) => {
     ChatLogs.find({}).exec((error, chatlogs) => {
-        if(error) {
+        if (error) {
             return res.status(400).json(error);
         } else {
-            res.status(201).json(chatlogs);
+            return res.status(201).json(chatlogs);
         }
     });
 }
@@ -37,9 +41,9 @@ const sendMessage = (req, res) => {
     Messages.create(req.body, (error, message) => {
         if (error) {
             console.log('napaka pri dodajanju sporocila', error);
-            return res.status(400).json(error);
+            return res.status(500).json({ "sporočilo": "Napaka pri dodajanju sporočila." });
         } else {
-            res.status(201).json(req.body);
+            return res.status(201).json(req.body);
         }
     });
 }
@@ -61,24 +65,24 @@ const getMessages = (req, res) => {
 
     // filter
     let startDate = new Date(req.query.date);
-    startDate.setHours(startDate.getHours()-1);      // lokalizacija ne štima
+    startDate.setHours(startDate.getHours() - 1);      // lokalizacija ne štima
     let endDate = new Date(req.query.date);
-    endDate.setDate(endDate.getDate()+1);
-    endDate.setHours(endDate.getHours()-1);
+    endDate.setDate(endDate.getDate() + 1);
+    endDate.setHours(endDate.getHours() - 1);
     let page = parseInt(req.query.page);
     const perPage = parseInt(req.query.perPage);
     const pagesToSkip = Math.max(0, page * perPage);
     const query = {
         date: {
             $gte: startDate,
-            $lt:  endDate
+            $lt: endDate
         }
     }
     Messages.find(query).limit(perPage).skip(pagesToSkip).exec((error, queriedMessages) => {
-        if(error) {
+        if (error) {
             console.log("Prišlo je do napake pri pridobivanju sporočil!");
             return res.status(500).json(error);
-        } else if(!queriedMessages) {
+        } else if (!queriedMessages) {
             console.log("Ne najdem sporocil z navedenim datumom!");
             return res.status(404).json({ "sporocilo": "Ne najdem sporocil z navedenim datumom!" });
         } else {
@@ -89,4 +93,4 @@ const getMessages = (req, res) => {
 
 }
 
-module.exports = {sendChatLog, getChatLogs, sendMessage, getMessages};
+module.exports = { sendChatLog, getChatLogs, sendMessage, getMessages };
