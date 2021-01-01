@@ -35,6 +35,7 @@ router.delete('/uporabniki/:idUporabnika', avtentikacija, ctrlProfilePage.termin
 router.get('/privateRoom/:username', ctrlprivateRoom.vrniSoboByUsername);
 router.post('/privateRoom/:username', avtentikacija, ctrlprivateRoom.sobaUpdate);
 
+router.get('/preveriWSToken/:username/:token', ctrlAvtentikacija.preveriWSToken);
 //router.get('/object/:idObjekta', ctrlObject.vrniObjectById);
 //router.get('/object', ctrlObject.vrniLokacijo);
 

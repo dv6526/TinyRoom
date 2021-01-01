@@ -147,5 +147,8 @@
       }
     }
   },
-  "defaultProject": "tinyroom"
+  "defaultProject": "tinyroom",
+  "cli": {
+    "analytics": "cf404f9d-fac4-4a11-a76b-3cb3cd336daa"
+  }
 }

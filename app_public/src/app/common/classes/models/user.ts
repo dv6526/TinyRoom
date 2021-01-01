@@ -6,6 +6,7 @@ export class User {
   bio_title: string;
   bio: string;
   chosen_skin: string;
+  ws_token: string;
   _id: string;
 }
 
