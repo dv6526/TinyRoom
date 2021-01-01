@@ -129,6 +129,18 @@ const jwt = require('jsonwebtoken');
 *            type: integer
 *           y:
 *            type: integer
+*   Message:
+*    type: object
+*    description: podatki o sporočilu
+*    properties:
+*      name:
+*       type: string
+*      date:
+*       type: string
+*      body:
+*       type: string
+*      room:
+*       type: string
 *   FurnitureDTO:
 *    type: object
 *    description: podatki o objektu, ki se nahaja v privatni sobi
@@ -167,7 +179,7 @@ const jwt = require('jsonwebtoken');
 *     sporočilo: Parametri so obvezni.
 *   Sporocilo:
 *    type: object
-*    description: Podrobnosti sporočila
+*    description: Podrobnosti o uspešni zahtevi.
 *    required:
 *     - sporočilo
 *    properties:
@@ -201,6 +213,14 @@ const jwt = require('jsonwebtoken');
  *     summary: Soba ne obstaja.
  *     value:
  *      sporočilo: "sporočilo: Soba ne obstaja."
+ *    NapakaDodajanje:
+ *     summary: Napaka pri dodajanju sporočila.
+ *     value:
+ *      sporočilo: "sporočilo: Napaka pri dodajanju sporočila."
+ *    NapakaShranjevanje:
+ *     summary: Napaka pri shranjevanju sporočila.
+ *     value:
+ *      sporočilo: "sporočilo: Napaka pri shranjevanju sporočila."
  */
 
 const uporabnikiShema = new mongoose.Schema({

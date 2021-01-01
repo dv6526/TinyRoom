@@ -9,7 +9,7 @@ const deleteAll = (req, res) => {
         if (!uporabnik) {
             console.log("Ni uporabnikov?");
         } else if (napaka) {
-             res.status(500).json(napaka);
+            res.status(500).json(napaka);
         }
 
     });
@@ -36,7 +36,7 @@ const deleteAll = (req, res) => {
     });
     chatLogs.create({});
     console.log("Izbrisano je bilo vse.");
-    res.status(200).json({"sporocilo": "Izbrisani je bilo vse."});
+    res.status(204).json({ "sporočilo": "Podatkovna baza izbrisana." });
 }
 
-module.exports = {deleteAll};
+module.exports = { deleteAll };
