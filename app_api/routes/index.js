@@ -63,6 +63,8 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *    bearerFormat: JWT
  */
 
+
+
 /**
  * @swagger
  * /registracija:
@@ -521,6 +523,75 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *        description: Napaka na strežniku pri shranjevanju sporočila.
  *        
  */
+
+/**
+ * @swagger
+ *  /messages:
+ *   get:
+ *    summary: Pridobivanje poslanih sporočil
+ *    description: Pridobivanje vseh poslanih sporočil.
+ *    tags: [Sporočila]
+ *    security:
+ *     - jwt: []
+ *    parameters:
+ *     - in: query
+ *       name: date
+ *       description: datum
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 2020-12-30
+ *     - in: query
+ *       name: page
+ *       description: datum
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 1
+ *     - in: query
+ *       name: perPage
+ *       description: število zadetkov na stran
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 20
+ *     - in: query
+ *       name: id
+ *       description: ID uporabnika, ki želi dostopati do poslanih sporočil
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: 5fef5a5d1fd0226c4082f73d
+ *    responses:
+ *     "200":
+ *      description: Uspešno pridobljena sporočila.
+ *      content:
+ *       application/json:
+ *        schema:       
+ *         type: array
+ *         items:       
+ *            $ref: "#/components/schemas/Message"
+ *     "401":
+ *      description: Napaka pri dostopu.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        examples:
+ *         ni zetona:
+ *          $ref: "#/components/examples/NiZetona"
+ *     "404":
+ *      description: Ne najdem sporočil z navedenim datumom.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         sporočilo: Ne najdem sporočil z navedenim datumom.
+ *     "500":
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
+ */
+
 
 
 

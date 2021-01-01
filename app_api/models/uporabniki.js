@@ -13,12 +13,12 @@ const jwt = require('jsonwebtoken');
 *     username:
 *      type: string
 *      description: uporabniško ime
-*      example: student
+*      example: profesor
 *     password:
 *      type: string
 *      description: geslo
 *      format: password
-*      example: geslo
+*      example: profesor
 *    required:
 *     - username
 *     - password

@@ -88,7 +88,7 @@ function isAdmin(req, res, next) {
     } else if (!profile) {
       console.log("IS ADMIN: Uporabnik ne obstaja!");
       //res.status(404).json(error);
-      next(createError(404));
+      next(createError(401));
     } else {
       if (profile.rank == "admin") {
         console.log("IS ADMIN: Uspešno avtenticiranje");
