@@ -373,4 +373,45 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *      description: Napaka pri brisanju uporabnika.
  */
 
+
+/**
+ * @swagger
+ *  /privateRoom/{ui}:
+ *   get:
+ *    summary: Podatki o privatni sobi uporabnika
+ *    description: Pridobivanje podatkov o privatni sobi uporabnika.
+ *    tags: [Privatna soba]
+ *    parameters:
+ *     - in: path
+ *       name: ui
+ *       description: uporabniško ime
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: student
+ *    responses:
+ *     "200":
+ *      description: Rezltat je podatek o privatni sobi zahtevanega uporabnika.
+ *      content: 
+ *       application/json:
+ *        schema:
+ *          $ref: "#/components/schemas/PrivateRoom"
+ *     "404":
+ *      description: Napaka zahteve, uporabnik ne obstaja.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        examples:
+ *         uporabnik ne obstaja: 
+ *           $ref: "#/components/examples/UporabnikNeObstaja"
+ *         ne najdem sobe:
+ *           $ref: "#/components/examples/SobaNeObstaja"
+ *     "500":
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
+ */
+
+
+
+
 module.exports = router;

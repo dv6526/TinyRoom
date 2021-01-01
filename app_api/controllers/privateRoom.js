@@ -4,7 +4,7 @@ const Soba = mongoose.model('privateRoom');
 const vrniSoboByUsername = (req, res) => {
     Soba.findOne({ "owner": req.params.username }).exec((napaka, soba) => {
         if (!soba) {
-            res.status(404).json({ "sporočilo": "Ne najdem sobe z idjem!" });
+            res.status(404).json({ "sporočilo": "Soba ne obstaja." });
         } else if (napaka) {
             res.status(500).json(napaka);
         } else {

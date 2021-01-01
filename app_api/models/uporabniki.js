@@ -96,6 +96,39 @@ const jwt = require('jsonwebtoken');
 *     required:
 *      - zeton
 *      - user
+*   PrivateRoom:
+*    type: object
+*    description: podatki o privatni sobi
+*    properties:
+*     user: 
+*      type: object
+*      properties:
+*         _id:
+*          type: string
+*         owner:
+*          type: string
+*         objects:
+*          type: array
+*          items:
+*           $ref: "#/components/schemas/Object"
+*   Object:
+*    type: object
+*    description: podatki o objektu, ki se nahaja v privatni sobi
+*    properties:
+*     position: 
+*      type: object
+*      properties:
+*         _id:
+*          type: string
+*         type:
+*          type: string
+*         position:
+*          type: object
+*          properties:
+*           x:
+*            type: integer
+*           y:
+*            type: integer
 *   ZetonOdgovor:
 *    type: object
 *    description: Rezultat uspešne sprembe gesla uporabnika
@@ -144,6 +177,14 @@ const jwt = require('jsonwebtoken');
  *     summary: Uporabniku smo uspešno spremenili rank.
  *     value:
  *      sporočilo: "sporočilo: Uspešno administriran uporabnik."
+ *    UporabnikNeObstaja:
+ *     summary: Uporabnik ne obstaja.
+ *     value:
+ *      sporočilo: "sporočilo: Uporabnik ne obstaja."
+ *    SobaNeObstaja:
+ *     summary: Soba ne obstaja.
+ *     value:
+ *      sporočilo: "sporočilo: Soba ne obstaja."
  */
 
 const uporabnikiShema = new mongoose.Schema({
