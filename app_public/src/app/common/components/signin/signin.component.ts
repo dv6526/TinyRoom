@@ -5,6 +5,7 @@ import { DataService } from "../../services/data.service";
 import { Router } from "@angular/router";
 import { User } from "../../classes/models/user";
 import { UserDto } from "../../classes/DTOs/user-dto";
+import {ConnectionService} from "../../services/connection.service";
 
 declare const setUserData: any;
 
@@ -18,7 +19,8 @@ export class SigninComponent implements OnInit {
   constructor(
     private cookieService: CookieService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private connService: ConnectionService
   ) { }
 
   public signInError: string;
@@ -30,6 +32,10 @@ export class SigninComponent implements OnInit {
   public registerEmail: string;
   public registerUsername: string;
   public registerPassword: string;
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   public login(): void {
     // validation

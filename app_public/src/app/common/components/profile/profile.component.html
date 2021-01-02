@@ -26,8 +26,9 @@
         <input [(ngModel)]="newPassword.password" type="password" class="form-control input-sm" id="password"
           name="password" placeholder="password">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" (click)="checkPassThenModal()" value="CHANGE PASSWORD" />
-          <div class="passwordInfo">{{changePasswordMessage}}</div>
+          <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+          <input type="submit" class="btn btn-primary btn-sm" (click)="checkPassThenModal()" value="CHANGE PASSWORD" [disabled]="!isConnected()"/>
+          <div class="passwordInfo" >{{changePasswordMessage}}</div>
           <app-modalno-okno *ngIf="modalPassw" action="Change password"
             details="Are you sure you want to change your password?"
             (buttonClickConfirm)="onClickConfirmPassword($event)" (buttonClickDeny)="onClickDeny($event)">
@@ -43,7 +44,8 @@
       <label for="terminate" class="col-sm-2 col-form-label infotype">Delete my account</label>
       <div class="col-sm-10">
         <div class="row align">
-          <input type="submit" class="btn btn-primary btn-sm" (click)="modalTerminate=true" value="TERMINATE" id="terminate"/>
+          <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+          <input type="submit" class="btn btn-primary btn-sm" (click)="modalTerminate=true" value="TERMINATE" id="terminate" [disabled]="!isConnected()"/>
           <div class="passwordInfo">{{terminateMessage}}</div>
           <app-modalno-okno *ngIf="modalTerminate" action="Terminate account"
             details="Are you sure you want to terminate your account?"
@@ -100,7 +102,8 @@
 
     <!--SUBMIT CHANGES-->
     <div class="row">
-      <button class="btn btn-outline-dark" (click)="modalProfile=true">UPDATE PROFILE</button>
+      <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+      <button class="btn btn-outline-dark" (click)="modalProfile=true" [disabled]="!isConnected()">UPDATE PROFILE</button>
       <div id="updateProfileInfo">{{updateProfileMessage}}</div>
       <app-modalno-okno *ngIf="modalProfile" action="Update profile" details="Are you sure you want to update your profile?" (buttonClickConfirm)="onClickConfirmUpdate($event)" (buttonClickDeny)="onClickDeny($event)"></app-modalno-okno>
     </div>

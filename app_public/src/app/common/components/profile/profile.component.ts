@@ -6,6 +6,7 @@ import { ProfileInfoDto } from "../../classes/DTOs/profile-info-dto";
 import { PasswordDto } from "../../classes/DTOs/password-dto";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
+import {ConnectionService} from "../../services/connection.service";
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private connService: ConnectionService
   ) { }
 
   public user: User;
@@ -42,6 +44,10 @@ export class ProfileComponent implements OnInit {
   public updateProfileMessage: string;
 
   public terminateMessage: string;
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   public checkPassThenModal(): void {
     if(this.checkPassword())

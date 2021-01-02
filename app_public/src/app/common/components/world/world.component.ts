@@ -6,6 +6,7 @@ import { WeatherService } from "../../services/weather.service";
 import { GeoLocationService } from "../../services/geo-location.service";
 import { CookieService } from "ngx-cookie-service";
 import { User } from "../../classes/models/user";
+import {ConnectionService} from "../../services/connection.service";
 
 declare const setUserData: any;
 declare const newStart: any;
@@ -22,13 +23,18 @@ export class WorldComponent implements OnInit {
     private weatherService: WeatherService,
     private geoLocationService: GeoLocationService,
     private dataService: DataService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private connService: ConnectionService
   ) { }
 
   public weather: Weather[];
   public user: User;
 
   public message: string;
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   // Weather
   private getWeatherData = (position: any): void => {

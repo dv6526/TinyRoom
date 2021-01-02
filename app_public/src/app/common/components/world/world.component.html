@@ -12,9 +12,8 @@
       <div class="col-md-6 col-12 pt-2">
         <div class="svetla robovi square-content" id="chat">
           <div id="messagebox" class="mb-2">
-            <textarea id="message" class="robovi temna pisava" name="message" cols="30" rows="3" [placeholder]=""
-                                  placeholder="Enter your message here!" ></textarea>
-            <input type="button" class="robovi pisava text-center" id="messagesend" value="Send">
+            <textarea id="message" class="robovi temna pisava" name="message" cols="30" rows="3" [placeholder]="isConnected() ? 'Enter your message here': 'There is no connection'"></textarea>
+            <input type="button" class="robovi pisava text-center" id="messagesend" value="Send" [disabled]="!isConnected()">
           </div>
           <div id="chatlogs" class="robovi temna">
 

@@ -13,7 +13,8 @@
             </div>
             <input [(ngModel)]="date" type="date" name="date" class="form-control text-white" placeholder="Click me to choose a date:" aria-label="Date" aria-describedby="addon-wrapping">
             <div class="input-group-append">
-              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon2" [disabled]="date==''">Get data</button>
+              <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon2" [disabled]="date==''" [disabled]="!isConnected()">Get data</button>
             </div>
           </div>
         </form>
@@ -37,13 +38,15 @@
         <nav aria-label="Page navigation mt-3">
           <ul class="pagination justify-content-center">
             <li class="page-item">
-              <button (click)="previousPage()" type="button" class="btn btn-outline-secondary text-white border border-white border-left" [disabled]="currentPage==0">Previous</button>
+              <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+              <button (click)="previousPage()" type="button" class="btn btn-outline-secondary text-white border border-white border-left" [disabled]="currentPage==0" [disabled]="!isConnected()">Previous</button>
             </li>
             <li class="page-item disabled">
               <span class="page-link bg-dark">{{currentPage+1}}/{{numOfPages+1}}</span>
             </li>
             <li class="page-item">
-              <button (click)="nextPage()" type="button" class="btn btn-outline-secondary text-white border border-white border-right" [disabled]="currentPage==numOfPages">Next</button>
+              <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+              <button (click)="nextPage()" type="button" class="btn btn-outline-secondary text-white border border-white border-right" [disabled]="currentPage==numOfPages" [disabled]="!isConnected()">Next</button>
             </li>
           </ul>
         </nav>
@@ -68,7 +71,8 @@
             </div>
             <input [(ngModel)]="newAdmin" type="text" name="setAdmin" class="form-control text-white" placeholder="username" aria-label="SetAdmin" aria-describedby="addon-wrapping" (change)="checkUsername()">
             <div class="input-group-append">
-              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin==''" (mouseover)="checkUsername()">an admin.</button>
+              <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+              <button type="submit" class="btn btn-outline-secondary text-white border border-white" id="button-addon3" [disabled]="newAdmin=='' || !isConnected()" (mouseover)="checkUsername()">an admin.</button>
             </div>
           </div>
         </form>
