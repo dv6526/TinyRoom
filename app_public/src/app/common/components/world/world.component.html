@@ -30,7 +30,7 @@
             <div id="{{day.id }}" class="pb-3 pt-3 text-center mr-2 ml-2" *ngFor="let day of weather">
               <div class="pb-2">{{day.day}}</div>
               <div><img src="https://openweathermap.org/img/wn/{{day.icon}}@2x.png" alt="Weather icon"
-                        style="font-size:50px"></div>
+                        style="font-size:50px" height="100px" width="100px"></div>
               <div>{{day.icon_string}}</div>
               <div>{{day.temperature | toFahrenheit}}</div>
             </div>
