@@ -3,22 +3,26 @@
 
 <div class="wrapper">
   <!-- PAGE NAVIGATION STARTS HERE -->
-  <app-nav [activeTab]="activeTab" [username]="username" [rank]="rank"></app-nav>
+  <nav>
+    <app-nav [activeTab]="activeTab" [username]="username" [rank]="rank"></app-nav>
+  </nav>
 
-  <div class="main-container">
-    <div class="top-bar">
-      <div class="hamburger">
-        <i class="fa fa-bars fa-3x"></i>
+  <main>
+    <div class="main-container">
+      <div class="top-bar">
+        <div class="hamburger">
+          <i class="fa fa-bars fa-3x"></i>
+        </div>
       </div>
+    <!-- PAGE NAVIGATION ENDS HERE -->
+
+      <!-- PAGE CONTENT STARTS HERE -->
+
+      <!-- Prvotno nam zahteva world component. Tam preverimo, če obstaja veljaven piškotek. Če ne ga preusmerimo na SignIn -->
+      <router-outlet (activate)="changeActive($event)" ></router-outlet>
+      <!--<app-signin *ngIf="!name"></app-signin>-->
+
+      <!-- PAGE CONTENT ENDS HERE -->
     </div>
-  <!-- PAGE NAVIGATION ENDS HERE -->
-
-    <!-- PAGE CONTENT STARTS HERE -->
-
-    <!-- Prvotno nam zahteva world component. Tam preverimo, če obstaja veljaven piškotek. Če ne ga preusmerimo na SignIn -->
-    <router-outlet (activate)="changeActive($event)" ></router-outlet>
-    <!--<app-signin *ngIf="!name"></app-signin>-->
-
-    <!-- PAGE CONTENT ENDS HERE -->
-  </div>
+  </main>
 </div>
