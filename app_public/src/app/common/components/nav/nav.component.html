@@ -7,7 +7,7 @@
       TINYROOM
     </div>
     <div class="pisava kaligrafija pl-3" *ngIf="username">
-      {{username | shorten}}
+      <i class="fas fa-exclamation-triangle ni-povezave" *ngIf="!isConnected()">jkj</i> {{username | shorten}}
     </div>
 
     <div class="d-flex flex-column pl-3 kaligrafija pisava povezave-strani" *ngFor="let nav of navigation; index as i">
