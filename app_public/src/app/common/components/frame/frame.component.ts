@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../../services/data.service";
 import { CookieService } from "ngx-cookie-service";
 import {ActivatedRoute, Router, RouterEvent} from "@angular/router";
+import { ConnectionService } from "../../services/connection.service";
 
 declare const setUserData: any;
 
@@ -17,7 +18,8 @@ export class FrameComponent implements OnInit {
   constructor(
     private dataService:DataService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private connService: ConnectionService
   ) { }
 
   public activeTab: number = 0;
@@ -80,6 +82,10 @@ export class FrameComponent implements OnInit {
         break;
       }
     }
+  }
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
   }
 
   ngOnInit(): void {
