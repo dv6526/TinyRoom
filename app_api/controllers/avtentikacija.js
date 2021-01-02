@@ -19,6 +19,7 @@ const registracija = (req, res) => {
       uporabnik.email = req.body.email;
       uporabnik.rank = 'user';
       uporabnik.nastaviGeslo(req.body.password);
+      uporabnik.generirajWSToken();
 
       Soba.create({
         owner: req.body.username,
@@ -42,6 +43,7 @@ const registracija = (req, res) => {
             bio_title: uporabnik.bio_title,
             bio: uporabnik.bio,
             chosen_skin: uporabnik.chosen_skin,
+            ws_token: uporabnik.ws_token,
             _id: uporabnik._id
           }
           res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
@@ -62,39 +64,64 @@ const prijava = (req, res) => {
     if (napaka)
       return res.status(500).json(napaka);
     if (uporabnik) {
-      let userData = {
-        username: uporabnik.username,
-        rank: uporabnik.rank,
-        email: uporabnik.email,
-        profile_picture: uporabnik.profile_picture,
-        bio_title: uporabnik.bio_title,
-        bio: uporabnik.bio,
-        chosen_skin: uporabnik.chosen_skin,
-        _id: uporabnik._id
-      }
-      res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
+
+      uporabnik.generirajWSToken();
+      uporabnik.save((napaka, uporabnik) => {
+        let userData = {
+          username: uporabnik.username,
+          rank: uporabnik.rank,
+          email: uporabnik.email,
+          profile_picture: uporabnik.profile_picture,
+          bio_title: uporabnik.bio_title,
+          bio: uporabnik.bio,
+          chosen_skin: uporabnik.chosen_skin,
+          ws_token: uporabnik.ws_token,
+          _id: uporabnik._id
+        }
+        res.status(200).json({ "zeton": uporabnik.generirajJwt(), "user": JSON.stringify(userData) });
+      })
+
     } else {
       res.status(401).json(informacije);
     }
   })(req, res);
 };
 
+const preveriWSToken = (req, res) => {
+  let username = req.params.username;
+  let token_to_check = req.params.token;
+
+  Uporabnik.findOne({ "username": username}).exec((napaka, uporabnik) => {
+
+    if (!uporabnik) {
+      res.status(404).json({"error": "user does not exist"});
+    }
+    
+    else {
+      res.status(200).json({
+        "success": token_to_check == uporabnik.ws_token
+      })
+    }
+
+  })
+}
+
 function isAdmin(req, res, next) {
   Uporabnik.findById(req.query.id).exec((error, profile) => {
-    if(error) {
+    if (error) {
       console.log("IS ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
       //res.status(500).json(error);
       next(createError(500));
     } else if (!profile) {
       console.log("IS ADMIN: Uporabnik ne obstaja!");
       //res.status(404).json(error);
-      next(createError(404));
+      next(createError(401));
     } else {
-      if(profile.rank == "admin") {
+      if (profile.rank == "admin") {
         console.log("IS ADMIN: Uspešno avtenticiranje");
         next()
       } else {
-        console.log("IS ADMIN: Zahteva ni prišla s s trani administratorja. Zavrnjeno!");
+        console.log("IS ADMIN: Zahteva ni prišla s strani administratorja. Zavrnjeno!");
         //res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
         next(createError(401));
       }
@@ -105,5 +132,6 @@ function isAdmin(req, res, next) {
 module.exports = {
   registracija,
   prijava,
-  isAdmin
+  isAdmin,
+  preveriWSToken
 };

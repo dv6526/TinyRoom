@@ -13,12 +13,12 @@ const jwt = require('jsonwebtoken');
 *     username:
 *      type: string
 *      description: uporabniško ime
-*      example: student
+*      example: profesor
 *     password:
 *      type: string
 *      description: geslo
 *      format: password
-*      example: geslo
+*      example: profesor
 *    required:
 *     - username
 *     - password
@@ -96,6 +96,67 @@ const jwt = require('jsonwebtoken');
 *     required:
 *      - zeton
 *      - user
+*   PrivateRoom:
+*    type: object
+*    description: podatki o privatni sobi
+*    properties:
+*     user: 
+*      type: object
+*      properties:
+*         _id:
+*          type: string
+*         owner:
+*          type: string
+*         objects:
+*          type: array
+*          items:
+*           $ref: "#/components/schemas/Object"
+*   Object:
+*    type: object
+*    description: podatki o objektu, ki se nahaja v privatni sobi
+*    properties:
+*     position: 
+*      type: object
+*      properties:
+*         _id:
+*          type: string
+*         type:
+*          type: string
+*         position:
+*          type: object
+*          properties:
+*           x:
+*            type: integer
+*           y:
+*            type: integer
+*   Message:
+*    type: object
+*    description: podatki o sporočilu
+*    properties:
+*      name:
+*       type: string
+*      date:
+*       type: string
+*      body:
+*       type: string
+*      room:
+*       type: string
+*   FurnitureDTO:
+*    type: object
+*    description: podatki o objektu, ki se nahaja v privatni sobi
+*    properties:
+*     position: 
+*      type: object
+*      properties:
+*         type:
+*          type: string
+*         position:
+*          type: object
+*          properties:
+*           x:
+*            type: integer
+*           y:
+*            type: integer
 *   ZetonOdgovor:
 *    type: object
 *    description: Rezultat uspešne sprembe gesla uporabnika
@@ -116,6 +177,16 @@ const jwt = require('jsonwebtoken');
 *      type: string
 *    example:
 *     sporočilo: Parametri so obvezni.
+*   Sporocilo:
+*    type: object
+*    description: Podrobnosti o uspešni zahtevi.
+*    required:
+*     - sporočilo
+*    properties:
+*     sporočilo:
+*      type: string
+*    example:
+*     sporočilo: Uspešna akcija.
 */
 
 /**
@@ -130,6 +201,26 @@ const jwt = require('jsonwebtoken');
  *     summary: ni JWT žetona
  *     value:
  *      sporočilo: "UnauthorizedError: No authorization token was found."
+ *    UspesnoAdministriran:
+ *     summary: Uporabniku smo uspešno spremenili rank.
+ *     value:
+ *      sporočilo: "sporočilo: Uspešno administriran uporabnik."
+ *    UporabnikNeObstaja:
+ *     summary: Uporabnik ne obstaja.
+ *     value:
+ *      sporočilo: "sporočilo: Uporabnik ne obstaja."
+ *    SobaNeObstaja:
+ *     summary: Soba ne obstaja.
+ *     value:
+ *      sporočilo: "sporočilo: Soba ne obstaja."
+ *    NapakaDodajanje:
+ *     summary: Napaka pri dodajanju sporočila.
+ *     value:
+ *      sporočilo: "sporočilo: Napaka pri dodajanju sporočila."
+ *    NapakaShranjevanje:
+ *     summary: Napaka pri shranjevanju sporočila.
+ *     value:
+ *      sporočilo: "sporočilo: Napaka pri shranjevanju sporočila."
  */
 
 const uporabnikiShema = new mongoose.Schema({
@@ -141,8 +232,21 @@ const uporabnikiShema = new mongoose.Schema({
     bio: { type: String, "default": 'This is default bio' },
     chosen_skin: { type: String, "default": "bunny" },
     zgoscenaVrednost: { type: String, required: true },
-    nakljucnaVrednost: { type: String, required: true }
+    nakljucnaVrednost: { type: String, required: true },
+    ws_token: {type: String}
 });
+
+uporabnikiShema.methods.generirajWSToken = function() {
+    let token = crypto.randomBytes(6).toString('hex');
+    this.ws_token = token;
+    // debug outprint
+    console.log('Generiral se je nov WS Token', this.ws_token, 'for', this.username);
+    return this.ws_token;
+}
+
+uporabnikiShema.methods.preveriWSToken = function(token) {
+    return this.ws_token = token;
+}
 
 uporabnikiShema.methods.nastaviGeslo = function (geslo) {
     this.nakljucnaVrednost = crypto.randomBytes(16).toString('hex');

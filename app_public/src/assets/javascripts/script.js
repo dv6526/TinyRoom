@@ -730,7 +730,8 @@ class Chat {
                     }
                     //getProfileInfo
                     $.ajax({
-                        url: "http://localhost:4000/api/uporabniki/" + found_user + "/profile", success: function (result) {
+                        //url: "http://localhost:4000/api/uporabniki/" + found_user + "/profile", success: function (result) {
+                        url: "/api/uporabniki/" + found_user + "/profile", success: function (result) {
                             //console.log(result);
 
                             messageDropdown({ x: click.clientX, y: click.clientY }, {
@@ -920,6 +921,7 @@ class Chat {
         var room = this;
         $.ajax({
             type: "GET",
+            //url: 'http://localhost:4000/api/privateRoom/' + username_to_join,
             url: '/api/privateRoom/' + username_to_join,
             contentType: 'application/json',
             success: function (result, status, xhr) {
@@ -973,7 +975,7 @@ class Chat {
             // prepare json
             var identification = {
                 "username": chat.player.getName(),
-                "token": 999999,
+                "token": ws_token,
                 "weather": weather
             }
 
@@ -983,10 +985,11 @@ class Chat {
 
         this.socket.onmessage = function (event) {
             const msg = event.data;
+
+            //console.log("msg", msg);
+
             var command = msg.substr(0, 2);
             var command_data = JSON.parse(msg.substr(3));
-
-            console.log(msg);
 
             switch (command) {
                 case 'LI':
@@ -1069,6 +1072,9 @@ class Chat {
                 case 'KI':
                     topAlert(command_data["username"] + " has kicked you. You can rejoin by refreshing this page.", 30);
                     break;
+                case 'ER':
+                    topAlert(command_data["error"], 10);
+                    break;
                 default:
                     break;
             }
@@ -1086,6 +1092,7 @@ let sprite_idx = "";
 let my_id = "";
 let weather = "";
 let rank = "";
+let ws_token = "";
 
 function setUserData(user) {
   var skins = { "bunny": 0, "goat": 1, "rat": 2 };
@@ -1093,6 +1100,7 @@ function setUserData(user) {
   sprite_idx = skins[user.chosen_skin];
   my_id = user._id;
   rank = user.rank;
+  ws_token = user.ws_token;
 }
 
 function setUserWeather(setWeather) {

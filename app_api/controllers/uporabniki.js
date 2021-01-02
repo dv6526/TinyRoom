@@ -101,7 +101,8 @@ const getUserInfo = (req, res) => {
                 "bio_title": uporabnik.bio_title,
                 "bio": uporabnik.bio,
                 "profile_picture": uporabnik.profile_picture,
-                "chosen_skin": uporabnik.chosen_skin
+                "chosen_skin": uporabnik.chosen_skin,
+                "rank": uporabnik.rank
                 //"username" : uporabnik[0].username
             });
         }
