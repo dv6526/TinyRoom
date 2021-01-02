@@ -13,7 +13,9 @@
         <div class="svetla robovi square-content" id="chat">
           <div id="messagebox" class="mb-2">
             <textarea id="message" class="robovi temna pisava" name="message" cols="30" rows="3" [placeholder]="isConnected() ? 'Enter your message here': 'There is no connection'"></textarea>
-            <input type="button" class="robovi pisava text-center" id="messagesend" value="Send" [disabled]="!isConnected()">
+            <label for="message">
+              <input type="button" class="robovi pisava text-center" id="messagesend" value="Send" [disabled]="!isConnected()">
+            </label>
           </div>
           <div id="chatlogs" class="robovi temna">
 
@@ -27,7 +29,7 @@
           <div class="row justify-content-md-around justify-content-center flex-wrap">
             <div id="{{day.id }}" class="pb-3 pt-3 text-center mr-2 ml-2" *ngFor="let day of weather">
               <div class="pb-2">{{day.day}}</div>
-              <div><img src="http://openweathermap.org/img/wn/{{day.icon}}@2x.png" alt="Weather icon"
+              <div><img src="https://openweathermap.org/img/wn/{{day.icon}}@2x.png" alt="Weather icon"
                         style="font-size:50px"></div>
               <div>{{day.icon_string}}</div>
               <div>{{day.temperature | toFahrenheit}}</div>
