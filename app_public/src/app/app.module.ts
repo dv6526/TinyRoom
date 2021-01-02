@@ -63,7 +63,7 @@ import { environment } from '../environments/environment';
     ChartsModule,
     BrowserAnimationsModule,
     ModalModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: "registerImmediately"})
   ],
   providers: [],
   bootstrap: [FrameComponent]
