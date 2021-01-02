@@ -32,6 +32,8 @@ import { GetHoursAndMinutesPipe } from './common/pipes/get-hours-and-minutes.pip
 import { ModalnoOknoComponent } from './common/components/modalno-okno/modalno-okno.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OldestFirstPipe } from './common/pipes/oldest-first.pipe';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { OldestFirstPipe } from './common/pipes/oldest-first.pipe';
     AppRoutingModule,
     ChartsModule,
     BrowserAnimationsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [FrameComponent]

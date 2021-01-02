@@ -178,7 +178,7 @@ function novoSporocilo(sporocilo_info) {
     else {
         sporocilo.classList.add("private");
         if (sporocilo_info.recipient) {
-            sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + " => "+ (sporocilo_info.recipient) + ": " + (sporocilo_info.body));
+            sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + " => " + (sporocilo_info.recipient) + ": " + (sporocilo_info.body));
         }
         else {
             sporocilo.textContent = ((sporocilo_info.date) + " " + (sporocilo_info.sender) + ": " + (sporocilo_info.body));
@@ -605,7 +605,7 @@ class Chat {
                 'clear_color': '#387eb4'
             },
             "room": {
-              'file': '/assets/editor/room.png',
+                'file': '/assets/editor/room.png',
                 'width': 400,
                 'center': {
                     'x': 0.5,
@@ -677,11 +677,11 @@ class Chat {
     }
 
     sendPosition() {
-      if(this.socket.readyState == 1) { // ker nam chrome meče napako
-        this.socket.send("PO " + JSON.stringify(this.player.getWantedPos()));
-      } else {
-        console.log("Socket is closed or closing. Couldn't send data!");
-      }
+        if (this.socket.readyState == 1) { // ker nam chrome meče napako
+            this.socket.send("PO " + JSON.stringify(this.player.getWantedPos()));
+        } else {
+            console.log("Socket is closed or closing. Couldn't send data!");
+        }
     }
 
     setPrivateMSG(recipient) {
@@ -730,7 +730,8 @@ class Chat {
                     }
                     //getProfileInfo
                     $.ajax({
-                        url: "api/uporabniki/" + found_user + "/profile", success: function (result) {
+                        //url: "http://localhost:4000/api/uporabniki/" + found_user + "/profile", success: function (result) {
+                        url: "/api/uporabniki/" + found_user + "/profile", success: function (result) {
                             //console.log(result);
 
                             messageDropdown({ x: click.clientX, y: click.clientY }, {
@@ -768,21 +769,21 @@ class Chat {
 
             if (chat.private_message && message.value.length > 0) {
                 var date = new Date();
-                    novoSporocilo({
-                        sender: chat.player.getName(),
-                        body: message.value,
-                        date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
-                        player: true,
-                        private_message: true,
-                        recipient: chat.private_message_recepient
-                    })
+                novoSporocilo({
+                    sender: chat.player.getName(),
+                    body: message.value,
+                    date: addZero(date.getHours()) + ':' + addZero(date.getMinutes()),
+                    player: true,
+                    private_message: true,
+                    recipient: chat.private_message_recepient
+                })
 
-                    console.log("private message sent");
+                console.log("private message sent");
 
-                    message.value = "";
-                    to_send["recipient"] = chat.private_message_recepient;
+                message.value = "";
+                to_send["recipient"] = chat.private_message_recepient;
 
-                    chat.socket.send("PM " + JSON.stringify(to_send));
+                chat.socket.send("PM " + JSON.stringify(to_send));
             }
 
             else {
@@ -846,18 +847,17 @@ class Chat {
     }
 
     drawWeather(type, x, y) {
-        var dict = { "clear sky": 0,
-                    "few clouds": 3,
-                    "scattered clouds": 3,
-                    "broken clouds": 3,
-                    "mist": 3,
-                    "shower rain": 1,
-                    "rain": 1,
-                    "thunderstorm": 4,
-                    "snow": 2 };
+        var dict = {
+            "Clear": 0,
+            "Clouds": 3,
+            "Rain": 1,
+            "Drizzle": 1,
+            "Thunderstorm": 4,
+            "Snow": 2
+        };
         var widx = dict[type];
 
-        this.context.drawImage(this.assets.weather, widx*19, 0, 19, 19, x-30, y-95, 60, 60);
+        this.context.drawImage(this.assets.weather, widx * 19, 0, 19, 19, x - 30, y - 95, 60, 60);
     }
 
     drawLoop() {
@@ -921,6 +921,7 @@ class Chat {
         var room = this;
         $.ajax({
             type: "GET",
+            //url: 'http://localhost:4000/api/privateRoom/' + username_to_join,
             url: '/api/privateRoom/' + username_to_join,
             contentType: 'application/json',
             success: function (result, status, xhr) {
@@ -964,8 +965,8 @@ class Chat {
     }
 
     communications() {
-        //this.socket = new WebSocket("ws://localhost:8070");
-        this.socket = new WebSocket("ws://157.245.36.23:8070");
+        this.socket = new WebSocket("ws://localhost:8070");
+        //this.socket = new WebSocket("ws://157.245.36.23:8070");
 
         var chat = this;
 
@@ -974,7 +975,7 @@ class Chat {
             // prepare json
             var identification = {
                 "username": chat.player.getName(),
-                "token": 999999,
+                "token": ws_token,
                 "weather": weather
             }
 
@@ -984,10 +985,11 @@ class Chat {
 
         this.socket.onmessage = function (event) {
             const msg = event.data;
+
+            //console.log("msg", msg);
+
             var command = msg.substr(0, 2);
             var command_data = JSON.parse(msg.substr(3));
-
-            console.log(msg);
 
             switch (command) {
                 case 'LI':
@@ -1070,6 +1072,9 @@ class Chat {
                 case 'KI':
                     topAlert(command_data["username"] + " has kicked you. You can rejoin by refreshing this page.", 30);
                     break;
+                case 'ER':
+                    topAlert(command_data["error"], 10);
+                    break;
                 default:
                     break;
             }
@@ -1085,81 +1090,91 @@ let chat;
 let username = "";
 let sprite_idx = "";
 let my_id = "";
-let weather = "clear sky";
+let weather = "";
 let rank = "";
-function setUserData(setUsername, setSprite_idx, setMy_id, setWeather, setRank) {
-  username = setUsername;
-  sprite_idx = setSprite_idx;
-  my_id = setMy_id;
+let ws_token = "";
+
+function setUserData(user) {
+  var skins = { "bunny": 0, "goat": 1, "rat": 2 };
+  username = user.username;
+  sprite_idx = skins[user.chosen_skin];
+  my_id = user._id;
+  rank = user.rank;
+  ws_token = user.ws_token;
+}
+
+function setUserWeather(setWeather) {
+  console.log("Weather is set: " + setWeather);
+  chat.player.weather = setWeather;
   weather = setWeather;
-  rank = setRank;
 }
 
 function exit() {
-  console.log("exit se zgodi");
-  if(chat && chat.socket.readyState == 1) {
-    chat.socket.close();
-    console.log("Ugašam skripto!");
-    return undefined;
-  }
+    console.log("exit se zgodi");
+    if (chat && chat.socket.readyState == 1) {
+        chat.socket.close();
+        console.log("Ugašam skripto!");
+        return undefined;
+    }
 }
 
 function newStart() {
-  function formatPage() {
-    let squares = $('.square-content');
-    for (let i = 0; i < squares.length; i++) {
-      const square = squares[i];
-      $(square).height($(square).width());
-      if (square.classList.contains('map')) {
-        chat.resize($(square).width());
-      }
+    function formatPage() {
+        let squares = $('.square-content');
+        for (let i = 0; i < squares.length; i++) {
+            const square = squares[i];
+            $(square).height($(square).width());
+            if (square.classList.contains('map')) {
+                chat.resize($(square).width());
+            }
+        }
     }
-  }
-  //chat.canvas = document.getElementById("tinyroom");
-  //chat.socket = new WebSocket("ws://157.245.36.23:8070");
-  chat = new Chat('tinyroom');
-  formatPage();
-  console.log("Zaganjam svet!");
+    //chat.canvas = document.getElementById("tinyroom");
+    //chat.socket = new WebSocket("ws://157.245.36.23:8070");
+    chat = new Chat('tinyroom');
+    formatPage();
+    console.log("Zaganjam svet!");
 }
 
 $(function () {
-  // Event Listeners, Function Declarations ==============
-  $(".hamburger .fa").click(function () {
-    $(".wrapper").addClass("active")
-  })
+    // Event Listeners, Function Declarations ==============
+    $(".hamburger .fa").click(function () {
+        $(".wrapper").addClass("active")
+    })
 
-  $(".wrapper .sidebar .close").click(function () {
-    $(".wrapper").removeClass("active")
-  })
+    $(".wrapper .sidebar .close").click(function () {
+        $(".wrapper").removeClass("active")
+    })
 
-  function fillCanvas(canvas) {
-    let context = canvas[0].getContext('2d');
-    context.fillStyle = '#FF0000';
-    context.fillRect(0, 0, canvas.width(), canvas.height());
-  }
-
-  function formatPage() {
-    let squares = $('.square-content');
-    //console.log(squares);
-    for (let i = 0; i < squares.length; i++) {
-      const square = squares[i];
-      $(square).height($(square).width());
-      if (square.classList.contains('map')) {
-        chat.resize($(square).width());
-      }
-      //console.log($(square).width(), $(square).height());
+    function fillCanvas(canvas) {
+        let context = canvas[0].getContext('2d');
+        context.fillStyle = '#FF0000';
+        context.fillRect(0, 0, canvas.width(), canvas.height());
     }
-  }
-  $(window).resize(formatPage);
+
+    function formatPage() {
+        let squares = $('.square-content');
+        //console.log(squares);
+        for (let i = 0; i < squares.length; i++) {
+            const square = squares[i];
+            $(square).height($(square).width());
+            if (square.classList.contains('map')) {
+                chat.resize($(square).width());
+            }
+            //console.log($(square).width(), $(square).height());
+        }
+    }
+
+    $(window).resize(formatPage);
 
 
-  // formatiranje s pomocjo javascripta
+    // formatiranje s pomocjo javascripta
 
-  //chat = new Chat('tinyroom');
-  //formatPage();
+    //chat = new Chat('tinyroom');
+    //formatPage();
 
 
-  // End of Code =========================================
+    // End of Code =========================================
 
 
 
