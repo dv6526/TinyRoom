@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataService } from "../../services/data.service";
 import { RoomEditor } from "../../classes/game/room-editor";
+import {ConnectionService} from "../../services/connection.service";
 
 @Component({
   selector: 'app-private',
@@ -11,12 +12,17 @@ import { RoomEditor } from "../../classes/game/room-editor";
 export class PrivateComponent implements OnInit {
 
   constructor(
-    public dataService: DataService
+    public dataService: DataService,
+    private connService: ConnectionService
   ) { }
 
   public message: string = "";
 
   private room: RoomEditor;
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   updateFurniture() {
     let furniture = JSON.parse(JSON.stringify(this.room.furniture));

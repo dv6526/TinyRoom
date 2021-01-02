@@ -18,7 +18,8 @@
           </div>
           <input type="hidden" name="longitude" id="getlon" />
           <input type="hidden" name="latitude" id="getlat" />
-          <button class="btn btn-outline-dark">Login</button>
+          <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+          <button [disabled]="!isConnected()" class="btn btn-outline-dark">Login</button>
         </form>
         <div id="loginInfo" class="mt-2">{{signInError}}</div>
       </div>
@@ -46,7 +47,8 @@
             <input type="hidden" name="longitude" id="getlon1" />
             <input type="hidden" name="latitude" id="getlat1" />
           </div>
-          <button class="btn btn-outline-dark">Register</button>
+          <div *ngIf="!isConnected()" class="m-3 h-100" style="color: white">There is no connection</div>
+          <button [disabled]="!isConnected()" class="btn btn-outline-dark">Register</button>
         </form>
         <!--</br>-->
         <div id="registerInfo" class="mt-2">{{registerError}}</div>

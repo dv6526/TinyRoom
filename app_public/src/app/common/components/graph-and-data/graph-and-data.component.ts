@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../../services/data.service";
 import { Message } from "../../classes/models/message";
 import { ChartDataSets } from "chart.js";
+import {ConnectionService} from "../../services/connection.service";
 
 @Component({
   selector: 'app-graph-and-data',
@@ -25,8 +26,13 @@ export class GraphAndDataComponent implements OnInit {
   ];
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private connService: ConnectionService
   ) { }
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   ngOnInit(): void {
     // set current input date
