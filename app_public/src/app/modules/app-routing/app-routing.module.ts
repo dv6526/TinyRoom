@@ -36,6 +36,10 @@ const paths: Routes = [
   {
     path: 'graphAndData',
     component: GraphAndDataComponent
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 

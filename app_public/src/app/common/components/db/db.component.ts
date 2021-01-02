@@ -70,22 +70,37 @@ export class DbComponent implements OnInit {
   }
 
   public dbAddMessages(): void {
+
     this.deleteMessage = "";
     this.addMessage = "";
     const spor: any = dataMessages;
     const u: Message[] = spor.sporocilo;
+    this.dbAddMessages2(0, u);
+    // for(let i=0;i<u.length;i++) {
+    //   this.dataService.dbAddMessageEntries(u[i])
+    //     .then(response => {
+    //       console.log("Successfully imported message: " + u[i].body);
+    //       this.progress = "Message " + (i+1) + " imported successfully!";
+    //     })
+    //     .catch(error => {
+    //       this.addMessagesMessage = "Something went wrong with adding predefined messages into database!";
+    //       console.log("Something went wrong with adding predefined messages into database: " + error);
+    //     });
+    // }
+    // this.addMessagesMessage = "Messages imported successfully!";
+  }
 
-    for(let i=0;i<u.length;i++) {
-      this.dataService.dbAddMessageEntries(u[i])
-        .then(response => {
-          console.log("Successfully imported message: " + u[i].body);
-          this.progress = "Message " + (i+1) + " imported successfully!";
-        })
-        .catch(error => {
-          this.addMessagesMessage = "Something went wrong with adding predefined messages into database!";
-          console.log("Something went wrong with adding predefined messages into database: " + error);
-        });
-    }
+  public dbAddMessages2(i: number, u: Message[]): void {
+    this.dataService.dbAddMessageEntries(u[i])
+      .then(response => {
+        console.log("Successfully imported message: " + u[i].body);
+        this.progress = "Message " + (i+1) + " imported successfully!";
+        this.dbAddMessages2(i+1, u);
+      })
+      .catch(error => {
+        this.addMessagesMessage = "Something went wrong with adding predefined messages into database!";
+        console.log("Something went wrong with adding predefined messages into database: " + error);
+      });
     this.addMessagesMessage = "Messages imported successfully!";
   }
 
