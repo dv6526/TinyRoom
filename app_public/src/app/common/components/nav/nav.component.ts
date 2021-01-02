@@ -5,6 +5,7 @@ import { DataService } from "../../services/data.service";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
 import {User} from "../../classes/models/user";
+import {ConnectionService} from "../../services/connection.service";
 // V angular.json -> scripts sem dodal naš script.js. S tem deklariraš funkcijo iz tiste skripte in jo lahko kasneje kličeš
 declare const exit: any;
 
@@ -18,7 +19,8 @@ export class NavComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private connService: ConnectionService
   ) { }
 
   @Input() public activeTab: number = 0;
@@ -37,6 +39,11 @@ export class NavComponent implements OnInit {
     { href: "signin",
       value: "LOG OUT"}
   ];
+
+
+  public isConnected(): boolean {
+    return this.connService.isConnected;
+  }
 
   deleteCookies(link: string) {
     if(link == 'LOG OUT') {
