@@ -1,6 +1,6 @@
 /* FUNKCIONALNI TESTI */
 
-(async function EduGeoCache() {
+(async function TinyRoom() {
 
     // Knjižnice
     const { exec } = require("child_process");
@@ -10,7 +10,8 @@
     const expect = require("chai").expect;
     
     // Parametri
-    let aplikacijaUrl = "http://157.245.36.23/";
+    let aplikacijaUrl = "http://localhost:3000/";
+    // let aplikacijaUrl = "http://http://157.245.36.23/";
     let seleniumStreznikUrl = "http://localhost:4445/wd/hub";
     let brskalnik;
   
@@ -48,7 +49,9 @@
         .build();
       });
 
-      // REGISTRACIJA, PRIJAVA, ODJAVA
+// TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
+
+// REGISTRACIJA, PRIJAVA, ODJAVA
       describe("Testiranje funkcionalnosti na začetni strani", function() {
         this.timeout(30 * 1000);
         before(async function() {await brskalnik.get(aplikacijaUrl);});
@@ -125,7 +128,12 @@
   
       });
 
-      // STRAN CHAT
+// STRAN CHAT
+    // - pošiljanje in prejemanje sporočil,
+    // - iskanje (search - desni klik kamorkoli na mapo) !kako bomo preverjali, če deluje?!,
+    // - dropdown funkcija (desni klik na uporabnika)
+        // - klik na vsako izmed funkcij in preverjanje pričakovanega odziva
+    // - weather prikazovanje ob potrditvi lokacije
       describe("Chat", async function() {
         this.timeout(30 * 1000);
         before(function() { brskalnik.get(aplikacijaUrl);});
@@ -159,7 +167,22 @@
 
       });
 
-      // STRAN PROFILE
+// STRAN MY ROOM
+        // - dodajanje elementa
+        // - shranjevanje
+        // - preverjanje, če so elementi tam kot so
+        // - brisanje elementa z desnim klikom
+
+// STRAN PROFILE
+        // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
+        // - spreminjanje gesla in preverjanje ponovnega vpisa
+        // - terminate se že pri login preverja
+        // - preverjanje celotnega update profile gumba
+            // - zamenjava slike
+            // - zamenjava skina
+            // - zamenjava BIO naslova
+            // - zamenjava BIO opisa
+            // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
       describe("Profile", async function() {
         this.timeout(30 * 1000);
         before(function() { brskalnik.get(aplikacijaUrl);});
@@ -202,7 +225,17 @@
 
       });
 
+// STRAN STATISTICS
+        // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
+            // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
+        // - izpis na grafu
+        // - spremeni uporabnika v administratorja
+            // - uporabi neveljavno ime in preveri message pod vnosnim poljem
+            // - uporabi veljavno ime in preveri message pod vnosnim poljem
 
+
+
+// To je bilo že pri tjaši - nisem brisal ampak mora bit že pr sign in narjeno
     // IZBRIS UPORABNIKA
       describe("Izbris uporabnika", async function() {
         this.timeout(30 * 1000);
@@ -236,6 +269,7 @@
   
       });
 
+// TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
       after(async () => {
         brskalnik.quit();
       });
