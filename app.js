@@ -77,6 +77,15 @@ app.set('view engine', 'hbs');
 
 require('./app_server/views/helpers/hbsh.js');
 
+// Odprava varnostnih pomanjkljivosti
+app.disable('x-powered-by');
+app.use((req, res, next) => {
+  res.header('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
