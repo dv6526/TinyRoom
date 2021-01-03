@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
 const Soba = mongoose.model('privateRoom');
-
+const atob = require('atob');
 var createError = require('http-errors');
 
 const registracija = (req, res) => {
@@ -106,27 +106,45 @@ const preveriWSToken = (req, res) => {
   })
 }
 
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};
+
 function isAdmin(req, res, next) {
-  Uporabnik.findById(req.query.id).exec((error, profile) => {
-    if (error) {
-      console.log("IS ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
-      //res.status(500).json(error);
-      next(createError(500));
-    } else if (!profile) {
-      console.log("IS ADMIN: Uporabnik ne obstaja!");
-      //res.status(404).json(error);
-      next(createError(401));
-    } else {
-      if (profile.rank == "admin") {
-        console.log("IS ADMIN: Uspešno avtenticiranje");
-        next()
-      } else {
-        console.log("IS ADMIN: Zahteva ni prišla s strani administratorja. Zavrnjeno!");
-        //res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
-        next(createError(401));
-      }
-    }
-  });
+  let rank = parseJwt(req.header('Authorization'))['rank'];
+  if(rank == 'admin') {
+    console.log("IS ADMIN: Uspešno avtenticiranje");
+    next()
+  } else {
+    console.log("IS ADMIN: Zahteva ni prišla s strani administratorja. Zavrnjeno!");
+    next(createError(401));
+  }
+  // Uporabnik.findById(req.query.id).exec((error, profile) => {
+  //   if (error) {
+  //     console.log("IS ADMIN: Nekaj je šlo narobe pri iskanju uporabnika!");
+  //     //res.status(500).json(error);
+  //     next(createError(500));
+  //   } else if (!profile) {
+  //     console.log("IS ADMIN: Uporabnik ne obstaja!");
+  //     //res.status(404).json(error);
+  //     next(createError(401));
+  //   } else {
+  //     if (profile.rank == "admin") {
+  //       console.log("IS ADMIN: Uspešno avtenticiranje");
+  //       next()
+  //     } else {
+  //       console.log("IS ADMIN: Zahteva ni prišla s strani administratorja. Zavrnjeno!");
+  //       //res.status(401).json({"sporocilo":"Za dostop potrebujes administratorske pravice"});
+  //       next(createError(401));
+  //     }
+  //   }
+  // });
 }
 
 module.exports = {

@@ -91,16 +91,18 @@ export class DbComponent implements OnInit {
   }
 
   public dbAddMessages2(i: number, u: Message[]): void {
-    this.dataService.dbAddMessageEntries(u[i])
-      .then(response => {
-        console.log("Successfully imported message: " + u[i].body);
-        this.progress = "Message " + (i+1) + " imported successfully!";
-        this.dbAddMessages2(i+1, u);
-      })
-      .catch(error => {
-        this.addMessagesMessage = "Something went wrong with adding predefined messages into database!";
-        console.log("Something went wrong with adding predefined messages into database: " + error);
-      });
+    if(i<100) {
+      this.dataService.dbAddMessageEntries(u[i])
+        .then(response => {
+          console.log("Successfully imported message: " + u[i].body);
+          this.progress = "Message " + (i + 1) + " imported successfully!";
+          this.dbAddMessages2(i + 1, u);
+        })
+        .catch(error => {
+          this.addMessagesMessage = "Something went wrong with adding predefined messages into database!";
+          console.log("Something went wrong with adding predefined messages into database: " + error);
+        });
+    }
     this.addMessagesMessage = "Messages imported successfully!";
   }
 
