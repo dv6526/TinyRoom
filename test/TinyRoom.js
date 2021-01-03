@@ -155,7 +155,7 @@
 
       context("Pošiljanje sporočil", function () {
         it("Pošiljanje sporočila", async function () {
-          gumb = await brskalnik.findElement(
+          let gumb = await brskalnik.findElement(
             By.xpath("//*[@id='messagesend']"));
           expect(gumb).to.not.be.empty;
           await brskalnik.findElement(By.xpath("//*[@id='message']"))
@@ -188,10 +188,26 @@
 
     // STRAN MY ROOM
     describe("Testiranje funkcionalnosti na 'CHAT' strani", async function () {
-            // - dodajanje elementa
-            // - shranjevanje
-            // - preverjanje, če so elementi tam kot so
-            // - brisanje elementa z desnim klikom
+      // - dodajanje elementa
+
+      // - shranjevanje
+      context("Shranjevanje pohištva", function () {
+        it("Shrani pohištvo", async function () {
+          let gumb = await brskalnik.findElement(By.xpath("//*[@id='save-room']"));
+          expect(gumb).to.not.be.empty;
+          await gumb.click();
+        });
+
+        it("Preverjanje sporočilo o uspešnosti", async function () {
+          await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'Furniture has been updated!')]");
+          let mojeSporocilo = await brskalnik.findElement(By.xpath("//div[contains(text(), 'Furniture has been updated!')]"));
+          expect(mojeSporocilo).to.not.be.empty;
+        });
+      });
+
+      // - preverjanje, če so elementi tam kot so
+
+      // - brisanje elementa z desnim klikom
     });
 
     // STRAN PROFILE
