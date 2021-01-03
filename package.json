@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "compression": "^1.7.4",
     "cookie-parser": "*",
     "currently": "*",
     "debug": "*",

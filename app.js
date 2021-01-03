@@ -10,6 +10,8 @@ var wsserver = require("./ws_server/ws.js")
 var passport = require('passport');
 var swaggerJsdoc = require('swagger-jsdoc');
 var swaggerUi = require('swagger-ui-express');
+const compression = require('compression');
+
 var swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
@@ -46,7 +48,7 @@ require('./app_api/configuration/passport');
 var indexApi = require('./app_api/routes/index');
 
 var app = express();
-
+app.use(compression());
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
@@ -89,6 +91,12 @@ app.use(session({
 }));
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_public', 'build')));
+
+//Handles robots.txt
+app.all('/robots.txt', (req, res) => {
+  res.type('text/plain')
+  res.send("User-agent: *\Allow: /");
+});
 
 app.use('/api', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
