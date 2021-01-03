@@ -375,27 +375,71 @@
               By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
           expect(loginInfo).to.not.be.empty;
         });
+
+        it("Briši vnose za seboj", async function () {
+          let upime = await brskalnik.findElement(By.xpath("//*[@id='username']"));
+          expect(upime).to.not.be.empty;
+          upime.clear();
+          let geslo = await brskalnik.findElement(By.xpath("//*[@id='password']"));
+          expect(geslo).to.not.be.empty;
+          geslo.clear();
+        });
       });
 
     });
 
     // STRAN STATISTICS
     describe("Testiranje funkcionalnosti na 'STATISTICS' strani", async function () {
-      // prestavi se na stran
-      it("Prestavi se na 'STATISTICS' stran", async function () {
-        let statistika = await brskalnik.findElement(By.xpath("//a[contains(text(), 'STATISTICS')]"));
-        expect(statistika).to.not.be.empty;
-        await statistika.click();
+      context("Prijava z administratorskim računom", function () {
+        // db delete all
+        // db add entries
+        it("Prijava uporabnika", async function () {
+          let upime = await brskalnik.findElement(By.xpath("//*[@id='username']"));
+          expect(upime).to.not.be.empty;
+          upime.sendKeys("profesor");
+          let geslo = await brskalnik.findElement(By.xpath("//*[@id='password']"));
+          expect(geslo).to.not.be.empty;
+          geslo.sendKeys("profesor");
+
+          brskalnik.findElement(By.xpath("//button[contains(text(), 'Login')]")).click();
+        });
+
+        it("Preverjanje, ali je bila prijava uspešna", async function () {
+          await pocakajStranNalozena(brskalnik, 10, "//span");
+
+          let uporabnik = await brskalnik.findElement(
+              By.xpath("//span[contains(text(), 'profesor')]"));
+          expect(uporabnik).to.not.be.empty;
+        });
+
+        // prestavi se na stran
+        it("Prestavi se na 'STATISTICS' stran", async function () {
+          let statistika = await brskalnik.findElement(By.xpath("//a[contains(text(), 'STATISTICS')]"));
+          expect(statistika).to.not.be.empty;
+          await statistika.click();
+        });
       });
 
-      // preverjanje izpisa sporočil iz podatkovne vaze
       context("Preveri ali smo pridobili sporočila iz baze", async function () {
-        it("Preverjanje, ali je sporočilo med podatki", async function () {
-          await pocakajStranNalozena(brskalnik, 10, "//div[contains[text(), 'To je moje sporočilo.'");
-          let mojeSporocilo = await brskalnik.findElement(
-              By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
-          expect(mojeSporocilo).to.not.be.empty;
-        });
+          it("Preveri ali je sporočilo med podatki", async function () {
+            await pocakajStranNalozenaSec(brskalnik);
+            await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'To je moje sporočilo.')]");
+            let mojeSporocilo = await brskalnik.findElement(By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+            expect(mojeSporocilo).to.not.be.empty;
+          });
+
+          it("Nastavi uporabniku administratorske pravice", async function () {
+            await pocakajStranNalozena(brskalnik, 10, "//*[@name='setAdmin']");
+            let setAdminInput = await brskalnik.findElement(By.xpath("//*[@name='setAdmin']"));
+            expect(setAdminInput).to.not.be.empty;
+            setAdminInput.sendKeys("student");
+
+            brskalnik.findElement(By.xpath("//button[contains(text(), 'an admin.')]")).click();
+          });
+
+          it("Preveri ali so bile dodane pravice", async function () {
+            brskalnik.findElement(By.xpath("//div[contains(text(), 'successfully')]")).click();
+          });
       });
 
       // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
