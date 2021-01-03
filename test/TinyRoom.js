@@ -10,7 +10,7 @@
     const expect = require("chai").expect;
     
     // Parametri
-    let aplikacijaUrl = "http://localhost:3000/";
+    let aplikacijaUrl = "http://host.docker.internal:3000/";
     // let aplikacijaUrl = "http://http://157.245.36.23/";
     let seleniumStreznikUrl = "http://localhost:4445/wd/hub";
     let brskalnik;
@@ -52,7 +52,7 @@
 // TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
 
 // REGISTRACIJA, PRIJAVA, ODJAVA
-      describe("Testiranje funkcionalnosti na začetni strani", function() {
+      describe("Testiranje funkcionalnosti na 'SIGN IN' strani", function() {
         this.timeout(30 * 1000);
         before(async function() {await brskalnik.get(aplikacijaUrl);});
 
@@ -76,13 +76,13 @@
                 brskalnik.findElement(
                   By.xpath("//button[contains(text(), 'Register')]")).click();
               });
-        
+
               it("Preverjanje, ali je bila registracija uspešna", async function() {
 
-                await pocakajStranNalozena(brskalnik, 10, "//div");
+                await pocakajStranNalozena(brskalnik, 10, "//span");
 
                 let uporabnik = await brskalnik.findElement(
-                By.xpath("//div[contains(text(), 'testiranje')]"));
+                By.xpath("//span[contains(text(), 'testiranje')]"));
                 expect(uporabnik).to.not.be.empty;
               });
         });
@@ -118,14 +118,14 @@
 
               it("Preverjanje, ali je bila prijava uspešna", async function() {
 
-                await pocakajStranNalozena(brskalnik, 10, "//div");
+                await pocakajStranNalozena(brskalnik, 10, "//span");
 
                 let uporabnik = await brskalnik.findElement(
-                  By.xpath("//div[contains(text(), 'testiranje')]"));
+                  By.xpath("//span[contains(text(), 'testiranje')]"));
                 expect(uporabnik).to.not.be.empty;
               });
         });
-  
+
       });
 
 // STRAN CHAT
@@ -134,7 +134,7 @@
     // - dropdown funkcija (desni klik na uporabnika)
         // - klik na vsako izmed funkcij in preverjanje pričakovanega odziva
     // - weather prikazovanje ob potrditvi lokacije
-      describe("Chat", async function() {
+      describe("Testiranje funkcionalnosti na 'CHAT' strani", async function() {
         this.timeout(30 * 1000);
         before(function() { brskalnik.get(aplikacijaUrl);});
 
@@ -167,107 +167,107 @@
 
       });
 
-// STRAN MY ROOM
-        // - dodajanje elementa
-        // - shranjevanje
-        // - preverjanje, če so elementi tam kot so
-        // - brisanje elementa z desnim klikom
-
-// STRAN PROFILE
-        // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
-        // - spreminjanje gesla in preverjanje ponovnega vpisa
-        // - terminate se že pri login preverja
-        // - preverjanje celotnega update profile gumba
-            // - zamenjava slike
-            // - zamenjava skina
-            // - zamenjava BIO naslova
-            // - zamenjava BIO opisa
-            // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
-      describe("Profile", async function() {
-        this.timeout(30 * 1000);
-        before(function() { brskalnik.get(aplikacijaUrl);});
-
-          context("Spreminanje podatkov profila", function() {
-
-            it ("Odpri profilno stran", async function() {
-                await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
-
-                let profilnastran = await brskalnik.findElement(
-                By.xpath("//a[contains(text(), 'PROFILE')]"));
-                expect(profilnastran).to.not.be.empty;
-                await profilnastran.click();
-            });
-
-            it("Spreminjanje podatkov", async function() {
-                await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
-
-                let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
-                expect(novtitle).to.not.be.empty;
-                novtitle.sendKeys("Moj nov title");
-                let novbio = await brskalnik.findElement(By.xpath("//*[@id='bio']"));
-                expect(novbio).to.not.be.empty;
-                novbio.sendKeys("Moj nov bio");
-
-                brskalnik.findElement(
-                    By.xpath("//button[contains(text(), 'UPDATE PROFILE')]")).click();                
-            });
-
-            it("Preverjanje, ali je bilo spreminjanje uspešno", async function() {
-
-                await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
-
-                let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
-                expect(novtitle).to.not.be.empty;
-                let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
-                expect(novbio).to.not.be.empty;
-              });
-          });
-
-      });
-
-// STRAN STATISTICS
-        // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
-            // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
-        // - izpis na grafu
-        // - spremeni uporabnika v administratorja
-            // - uporabi neveljavno ime in preveri message pod vnosnim poljem
-            // - uporabi veljavno ime in preveri message pod vnosnim poljem
-
-
-
-// To je bilo že pri tjaši - nisem brisal ampak mora bit že pr sign in narjeno
-    // IZBRIS UPORABNIKA
-      describe("Izbris uporabnika", async function() {
-        this.timeout(30 * 1000);
-        before(function() { brskalnik.get(aplikacijaUrl);});
-  
-        it("Preveri, ali je uporabnik prijavljen", async function() {
-            await pocakajStranNalozena(brskalnik, 10, "//div");
-            
-            let uporabnik = await brskalnik.findElement(
-             By.xpath("//div[contains(text(), 'testiranje')]"));
-            expect(uporabnik).to.not.be.empty;
-        });
-  
-        it("Zahtevaj izbris računa", async function() {
-          let profilnastran = await brskalnik.findElement(
-              By.xpath("//a[contains(text(), 'PROFILE')]"));
-          expect(profilnastran).to.not.be.empty;
-          await profilnastran.click();
-
-          let izbris = await brskalnik.findElement(
-            By.xpath("//input[@value='TERMINATE']"));
-          expect(izbris).to.not.be.empty;
-          await izbris.click();
-        });
-  
-        it("Preveri, ali je bil izbris uspešen", async function() {
-          let prijava = await brskalnik.findElement(
-            By.xpath("//a[contains(text(), 'Login')]"));
-          expect(prijava).to.not.be.empty;
-        });
-  
-      });
+// // STRAN MY ROOM
+//         // - dodajanje elementa
+//         // - shranjevanje
+//         // - preverjanje, če so elementi tam kot so
+//         // - brisanje elementa z desnim klikom
+//
+// // STRAN PROFILE
+//         // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
+//         // - spreminjanje gesla in preverjanje ponovnega vpisa
+//         // - terminate se že pri login preverja
+//         // - preverjanje celotnega update profile gumba
+//             // - zamenjava slike
+//             // - zamenjava skina
+//             // - zamenjava BIO naslova
+//             // - zamenjava BIO opisa
+//             // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
+//       describe("Profile", async function() {
+//         this.timeout(30 * 1000);
+//         before(function() { brskalnik.get(aplikacijaUrl);});
+//
+//           context("Spreminanje podatkov profila", function() {
+//
+//             it ("Odpri profilno stran", async function() {
+//                 await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
+//
+//                 let profilnastran = await brskalnik.findElement(
+//                 By.xpath("//a[contains(text(), 'PROFILE')]"));
+//                 expect(profilnastran).to.not.be.empty;
+//                 await profilnastran.click();
+//             });
+//
+//             it("Spreminjanje podatkov", async function() {
+//                 await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
+//
+//                 let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
+//                 expect(novtitle).to.not.be.empty;
+//                 novtitle.sendKeys("Moj nov title");
+//                 let novbio = await brskalnik.findElement(By.xpath("//*[@id='bio']"));
+//                 expect(novbio).to.not.be.empty;
+//                 novbio.sendKeys("Moj nov bio");
+//
+//                 brskalnik.findElement(
+//                     By.xpath("//button[contains(text(), 'UPDATE PROFILE')]")).click();
+//             });
+//
+//             it("Preverjanje, ali je bilo spreminjanje uspešno", async function() {
+//
+//                 await pocakajStranNalozena(brskalnik, 10,"//div[contains(text(), 'testiranje')]");
+//
+//                 let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
+//                 expect(novtitle).to.not.be.empty;
+//                 let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
+//                 expect(novbio).to.not.be.empty;
+//               });
+//           });
+//
+//       });
+//
+// // STRAN STATISTICS
+//         // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
+//             // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
+//         // - izpis na grafu
+//         // - spremeni uporabnika v administratorja
+//             // - uporabi neveljavno ime in preveri message pod vnosnim poljem
+//             // - uporabi veljavno ime in preveri message pod vnosnim poljem
+//
+//
+//
+// // To je bilo že pri tjaši - nisem brisal ampak mora bit že pr sign in narjeno
+//     // IZBRIS UPORABNIKA
+//       describe("Izbris uporabnika", async function() {
+//         this.timeout(30 * 1000);
+//         before(function() { brskalnik.get(aplikacijaUrl);});
+//
+//         it("Preveri, ali je uporabnik prijavljen", async function() {
+//             await pocakajStranNalozena(brskalnik, 10, "//div");
+//
+//             let uporabnik = await brskalnik.findElement(
+//              By.xpath("//div[contains(text(), 'testiranje')]"));
+//             expect(uporabnik).to.not.be.empty;
+//         });
+//
+//         it("Zahtevaj izbris računa", async function() {
+//           let profilnastran = await brskalnik.findElement(
+//               By.xpath("//a[contains(text(), 'PROFILE')]"));
+//           expect(profilnastran).to.not.be.empty;
+//           await profilnastran.click();
+//
+//           let izbris = await brskalnik.findElement(
+//             By.xpath("//input[@value='TERMINATE']"));
+//           expect(izbris).to.not.be.empty;
+//           await izbris.click();
+//         });
+//
+//         it("Preveri, ali je bil izbris uspešen", async function() {
+//           let prijava = await brskalnik.findElement(
+//             By.xpath("//a[contains(text(), 'Login')]"));
+//           expect(prijava).to.not.be.empty;
+//         });
+//
+//       });
 
 // TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
       after(async () => {

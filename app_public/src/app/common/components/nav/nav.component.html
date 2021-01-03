@@ -8,7 +8,8 @@
       TINYROOM
     </div>
     <div class="pisava kaligrafija pl-3" *ngIf="username">
-      <i class="fa fa-exclamation-triangle" *ngIf="!isConnected()" style="color:orange"></i> {{username | shorten}}
+      <i class="fa fa-exclamation-triangle mr-2" *ngIf="!isConnected()" style="color:orange"></i>
+      <span>{{username | shorten}}</span>
     </div>
 
     <div class="d-flex flex-column pl-3 kaligrafija pisava povezave-strani" *ngFor="let nav of navigation; index as i">
