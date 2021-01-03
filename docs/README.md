@@ -108,3 +108,25 @@ Naložen morate imeti docker.
       docker start sp-smalltalk-mongodb
       docker start sp-smalltalk-app
       ------------ NASTAVITEV OKOLJSKE SPREMENLJIVKE JWT_GESLO!!!! -------------------
+
+## Odprava varnostnih tveganj
+
+Tveganje **Cross-Domain Misconfiguration** se pojavlja pri pridobivanju bootstrapa, fontov in vremena iz zunanjih virov (cdn, google fonts in openweather api). Napako bi rešili tako, da bi poizvedbo prestavili na naš strežnik in zunanje vire pridobivali iz API klicev. 
+Vire, ki jih potrebuje browser za pravilen prikaz naše aplikacije (fonts, bootstrap, weather API) bi tako pridovali preko našega strežnika namesto javnih strežnikov, kot to počnemo sedaj. Tako bi nam zunanje vire vračal strežnik, ki se nahaja na istem originu kot naša aplikacija in odpravili bi tveganje.
+
+Tveganje **Incomplete or No Cache-control and Pragma HTTP Header Set** se pojavalja samo ob GET metodath za pridobivanje  bootstrapa, fontov in vremena iz zunanjih virov. To tveganje v našem primeru ne predstavlja nevarnosti, saj brskalnik v našem primeru izvaja caching neobčutljivih informacij (bootsrapa, fontov in vremena).
+
+Če bi pridobivali zunanje vire preko našega strežnika,bi odpravili tveganje *Incomplete or No Cache-control and Pragma HTTP Header Set*, tako da bi v odgovor strežnika nastavili ustrezne headerje po priporočilih OWASP:
+
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        res.setHeader("Expires", "0"); // Proxie
+
+Tveganje **X-Content-Type-Options Header Missing** za nas niti ni pomembno, saj pridobivamo vire iz javnega strežnika, ki ni v naši lasti in napadalec ne more neposredno napasti našega strežnika. Če bi do zunanjih virov dostopali preko REST API-ja, bi se znebili tega tveganja, saj smo na strežniku že pravilno nastavili headerje v odgovoru:
+
+        res.header('X-Frame-Options', 'DENY');
+        res.setHeader('X-XSS-Protection', '1; mode=block');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+
+Vsa opozorila po odpravitvi tveganj so povezana s pridobivanjem fontov, vremena in bootsrapa iz zunanjih virov. Ker to niso kritične napake, ki bi ogrožale varnost naše aplikacije in njenih uporabnikov, smo predlagali rešitev tveganj, tako da bi vse klice na zunanje vire 
+prestavili na naš strežnik.
