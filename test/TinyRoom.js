@@ -137,7 +137,7 @@
       before(function () { brskalnik.get(aplikacijaUrl); });
 
       context("Preverjanje sveta", function () {
-        it("Preveri, ali se prikaže mapa", async function () {
+        it("Preveri, ali se prikaže svet", async function () {
 
           await pocakajStranNalozena(brskalnik, 10, "//div");
 
@@ -184,6 +184,8 @@
 
     });
 
+
+
     // // STRAN MY ROOM
     //         // - dodajanje elementa
     //         // - shranjevanje
@@ -200,60 +202,60 @@
     // - zamenjava BIO naslova
     // - zamenjava BIO opisa
     // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
-    describe("Profile", async function () {
-      this.timeout(30 * 1000);
-      before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
-
-      context("Spreminanje podatkov profila", function () {
-
-
-        it("Odpri profilno stran", async function () {
-          await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
-
-          let profilnastran = await brskalnik.findElement(
-            By.xpath("//a[contains(text(), 'PROFILE')]"));
-          expect(profilnastran).to.not.be.empty;
-          await profilnastran.click();
-        });
-
-        it("Spreminjanje podatkov", async function () {
-          await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
-
-          let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
-          expect(novtitle).to.not.be.empty;
-          novtitle.sendKeys("Moj nov title");
-          let novbio = await brskalnik.findElement(By.xpath("//*[@id='bio']"));
-          expect(novbio).to.not.be.empty;
-          novbio.sendKeys("Moj nov bio");
-
-          let potrdi = brskalnik.findElement(By.xpath("//button[contains(text(), 'UPDATE PROFILE')]"));
-          await potrdi.click();
-        });
-
-        it("Potrdi modalno okno", async function () {
-          await pocakajStranNalozenaSec(brskalnik);
-
-          let potrdi = await brskalnik.findElement(By.xpath("//button[contains(text(), 'Yes')]"));
-          expect(potrdi).to.not.be.empty;
-          await potrdi.click();
-        });
-
-
-        it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
-          before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
-          //await pocakajStranNalozena(brskalnik, 10, "//input");
-          //let biotitle = await brskalnik.findElement(By.css("input[name='biotitle']"));
-          let novtitle = await brskalnik.findElement(By.xpath("//input[@ng-model='controller.model.profileInfo.bio_title']"));
-          expect(novtitle).to.not.be.empty;
-          //let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
-          //expect(novtitle).to.not.be.empty;
-          //let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
-          //expect(novbio).to.not.be.empty;
-        });
-
-      });
-
-    });
+    // describe("Profile", async function () {
+    //   this.timeout(30 * 1000);
+    //   before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
+    //
+    //   context("Spreminanje podatkov profila", function () {
+    //
+    //
+    //     it("Odpri profilno stran", async function () {
+    //       await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
+    //
+    //       let profilnastran = await brskalnik.findElement(
+    //         By.xpath("//a[contains(text(), 'PROFILE')]"));
+    //       expect(profilnastran).to.not.be.empty;
+    //       await profilnastran.click();
+    //     });
+    //
+    //     it("Spreminjanje podatkov", async function () {
+    //       await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
+    //
+    //       let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
+    //       expect(novtitle).to.not.be.empty;
+    //       novtitle.sendKeys("Moj nov title");
+    //       let novbio = await brskalnik.findElement(By.xpath("//*[@id='bio']"));
+    //       expect(novbio).to.not.be.empty;
+    //       novbio.sendKeys("Moj nov bio");
+    //
+    //       let potrdi = brskalnik.findElement(By.xpath("//button[contains(text(), 'UPDATE PROFILE')]"));
+    //       await potrdi.click();
+    //     });
+    //
+    //     it("Potrdi modalno okno", async function () {
+    //       await pocakajStranNalozenaSec(brskalnik);
+    //
+    //       let potrdi = await brskalnik.findElement(By.xpath("//button[contains(text(), 'Yes')]"));
+    //       expect(potrdi).to.not.be.empty;
+    //       await potrdi.click();
+    //     });
+    //
+    //
+    //     it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
+    //       before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
+    //       //await pocakajStranNalozena(brskalnik, 10, "//input");
+    //       //let biotitle = await brskalnik.findElement(By.css("input[name='biotitle']"));
+    //       let novtitle = await brskalnik.findElement(By.xpath("//input[@ng-model='controller.model.profileInfo.bio_title']"));
+    //       expect(novtitle).to.not.be.empty;
+    //       //let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
+    //       //expect(novtitle).to.not.be.empty;
+    //       //let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
+    //       //expect(novbio).to.not.be.empty;
+    //     });
+    //
+    //   });
+    //
+    // });
     //
     // // STRAN STATISTICS
     //         // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
@@ -271,39 +273,40 @@
       this.timeout(30 * 1000);
       before(function () { brskalnik.get(aplikacijaUrl); });
 
-      it("Preveri ali je uporabnik prijavljen", async function () {
-        await pocakajStranNalozena(brskalnik, 10, "//span");
+      context("Preveri vpis in izbriši račun", function () {
+        it("Preveri ali je uporabnik prijavljen", async function () {
+          await pocakajStranNalozena(brskalnik, 10, "//span");
 
-        let uporabnik = await brskalnik.findElement(
-          By.xpath("//span[contains(text(), 'testiranje')]"));
-        expect(uporabnik).to.not.be.empty;
+          let uporabnik = await brskalnik.findElement(
+              By.xpath("//span[contains(text(), 'testiranje')]"));
+          expect(uporabnik).to.not.be.empty;
+        });
+
+        it("Izbriši račun", async function () {
+          let profilnastran = await brskalnik.findElement(
+              By.xpath("//a[contains(text(), 'PROFILE')]"));
+          expect(profilnastran).to.not.be.empty;
+          await profilnastran.click();
+
+          let izbris = await brskalnik.findElement(
+              By.xpath("//input[@value='TERMINATE']"));
+          expect(izbris).to.not.be.empty;
+          await izbris.click();
+        });
+
+        // Potrdi modalno okno
+        it("Potrdi izbris v modalnem oknu", async function () {
+          //await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Yes')]");
+          await pocakajStranNalozenaSec(brskalnik);
+          let potrdi = await brskalnik.findElement(
+              By.xpath("//button[contains(text(), 'Yes')]"));
+          expect(potrdi).to.not.be.empty;
+          await potrdi.click();
+        });
       });
 
-      it("Zahtevaj izbris računa", async function () {
-        let profilnastran = await brskalnik.findElement(
-          By.xpath("//a[contains(text(), 'PROFILE')]"));
-        expect(profilnastran).to.not.be.empty;
-        await profilnastran.click();
-
-        let izbris = await brskalnik.findElement(
-          By.xpath("//input[@value='TERMINATE']"));
-        expect(izbris).to.not.be.empty;
-        await izbris.click();
-      });
-
-      // Potrdi modalno okno
-
-      it("Potrdi modalno okno", async function () {
-        await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Yes')]");
-        let potrdi = await brskalnik.findElement(
-          By.xpath("//button[contains(text(), 'Yes')]"));
-        expect(potrdi).to.not.be.empty;
-        await potrdi.click();
-      });
-
-      context("Odjava in prijava", function () {
+      context("Preverjanje vpisa z izbrisanim računom", function () {
         it("Preveri, ali je bil uporabnik odjavljen", async function () {
-
           await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Login')]");
 
           let prijava = await brskalnik.findElement(
@@ -311,10 +314,11 @@
           expect(prijava).to.not.be.empty;
         });
 
-        it("Prijava uporabnika", async function () {
+        it("Prijava neobstoječega uporabnika", async function () {
           let upime = await brskalnik.findElement(By.xpath("//*[@id='username']"));
           expect(upime).to.not.be.empty;
           upime.sendKeys("testiranje");
+
           let geslo = await brskalnik.findElement(By.xpath("//*[@id='password']"));
           expect(geslo).to.not.be.empty;
           geslo.sendKeys("testiranje");
@@ -322,7 +326,7 @@
           brskalnik.findElement(By.xpath("//button[contains(text(), 'Login')]")).click();
         });
 
-        it("Preverjanje, ali je bila prijava neuspešna", async function () {
+        it("Preverjanje ali je bila prijava z neobstoječim računom neuspešna", async function () {
           await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'Wrong username or password!')]");
 
           let loginInfo = await brskalnik.findElement(
