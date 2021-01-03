@@ -187,21 +187,23 @@
 
 
     // STRAN MY ROOM
+    describe("Testiranje funkcionalnosti na 'CHAT' strani", async function () {
             // - dodajanje elementa
             // - shranjevanje
             // - preverjanje, če so elementi tam kot so
             // - brisanje elementa z desnim klikom
+    });
 
-    STRAN PROFILE
-    - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
-    - spreminjanje gesla in preverjanje ponovnega vpisa
-    - terminate se že pri login preverja
-    - preverjanje celotnega update profile gumba
-    - zamenjava slike
-    - zamenjava skina
-    - zamenjava BIO naslova
-    - zamenjava BIO opisa
-    - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
+    // STRAN PROFILE
+    // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
+    // - spreminjanje gesla in preverjanje ponovnega vpisa
+    // - terminate se že pri login preverja
+    // - preverjanje celotnega update profile gumba
+    // - zamenjava slike
+    // - zamenjava skina
+    // - zamenjava BIO naslova
+    // - zamenjava BIO opisa
+    // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
     describe("Profile", async function () {
       this.timeout(30 * 1000);
       before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
