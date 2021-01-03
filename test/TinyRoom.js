@@ -238,16 +238,19 @@
           await potrdi.click();
         });
 
-        /*
+
         it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
           before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
-          await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
-          let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
+          //await pocakajStranNalozena(brskalnik, 10, "//input");
+          //let biotitle = await brskalnik.findElement(By.css("input[name='biotitle']"));
+          let novtitle = await brskalnik.findElement(By.xpath("//input[@ng-model='controller.model.profileInfo.bio_title']"));
           expect(novtitle).to.not.be.empty;
-          let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
-          expect(novbio).to.not.be.empty;
+          //let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
+          //expect(novtitle).to.not.be.empty;
+          //let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
+          //expect(novbio).to.not.be.empty;
         });
-        */
+
       });
 
     });
