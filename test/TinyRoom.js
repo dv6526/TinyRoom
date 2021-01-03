@@ -117,7 +117,6 @@
               });
 
               it("Preverjanje, ali je bila prijava uspešna", async function() {
-
                 await pocakajStranNalozena(brskalnik, 10, "//span");
 
                 let uporabnik = await brskalnik.findElement(
@@ -129,25 +128,28 @@
       });
 
 // STRAN CHAT
-    // - pošiljanje in prejemanje sporočil,
-    // - iskanje (search - desni klik kamorkoli na mapo) !kako bomo preverjali, če deluje?!,
-    // - dropdown funkcija (desni klik na uporabnika)
-        // - klik na vsako izmed funkcij in preverjanje pričakovanega odziva
-    // - weather prikazovanje ob potrditvi lokacije
       describe("Testiranje funkcionalnosti na 'CHAT' strani", async function() {
         this.timeout(30 * 1000);
         before(function() { brskalnik.get(aplikacijaUrl);});
 
-        it("Preveri, ali se prikaže mapa", async function() {
+        context("Preverjanje sveta", function() {
+            it("Preveri, ali se prikaže mapa", async function() {
 
-            await pocakajStranNalozena(brskalnik, 10, "//div");
+                await pocakajStranNalozena(brskalnik, 10, "//div");
 
-            let mapa = await brskalnik.findElement(
-              By.xpath('//*[@id="tinyroom"]'));
-            expect(mapa).to.not.be.empty;
-          });
+                let mapa = await brskalnik.findElement(
+                    By.xpath('//*[@id="tinyroom"]'));
+                expect(mapa).to.not.be.empty;
+            });
+            // TODO:
+            // preveri ob desnem kliku na svet ali se prikaže search
+                // preveri ali deluje search??!!
 
-          context("Pošiljanje sporočil", function() {
+            // preveri ob desnem kliku na igralca ali se prikaže dropdown (kako boš kliknu na uporabnika?)
+                // preveri klike na funkcije dropdown menija
+        });
+
+        context("Pošiljanje sporočil", function() {
             it("Pošiljanje sporočila", async function() {
                 gumb = await brskalnik.findElement(
                     By.xpath("//*[@id='messagesend']"));
@@ -162,8 +164,19 @@
                   let mojeSporocilo = await brskalnik.findElement(
                     By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
                   expect(mojeSporocilo).to.not.be.empty;
-              });
-          });
+            });
+        });
+
+            // TODO: ne vem, če se da v seleniumu
+// - weather prikazovanje ob potrditvi lokacije, ne morem omogočiti lokacije v seleniumu
+        // context("Preverjanje vremena", function() {
+        //     it("Preverjanje, ali je bilo sporočilo dodano", async function() {
+        //         await pocakajStranNalozena(brskalnik, 10,"//*[@id='weather']");
+        //         let danVTednu = await brskalnik.findElement(
+        //           By.xpath("//div[contains(text(), 'Sunday')]"));
+        //         expect(danVTednu).to.not.be.empty;
+        //     });
+        // });
 
       });
 
@@ -235,39 +248,74 @@
 //
 //
 //
-// // To je bilo že pri tjaši - nisem brisal ampak mora bit že pr sign in narjeno
-//     // IZBRIS UPORABNIKA
-//       describe("Izbris uporabnika", async function() {
-//         this.timeout(30 * 1000);
-//         before(function() { brskalnik.get(aplikacijaUrl);});
-//
-//         it("Preveri, ali je uporabnik prijavljen", async function() {
-//             await pocakajStranNalozena(brskalnik, 10, "//div");
-//
-//             let uporabnik = await brskalnik.findElement(
-//              By.xpath("//div[contains(text(), 'testiranje')]"));
-//             expect(uporabnik).to.not.be.empty;
-//         });
-//
-//         it("Zahtevaj izbris računa", async function() {
-//           let profilnastran = await brskalnik.findElement(
-//               By.xpath("//a[contains(text(), 'PROFILE')]"));
-//           expect(profilnastran).to.not.be.empty;
-//           await profilnastran.click();
-//
-//           let izbris = await brskalnik.findElement(
-//             By.xpath("//input[@value='TERMINATE']"));
-//           expect(izbris).to.not.be.empty;
-//           await izbris.click();
-//         });
-//
-//         it("Preveri, ali je bil izbris uspešen", async function() {
-//           let prijava = await brskalnik.findElement(
-//             By.xpath("//a[contains(text(), 'Login')]"));
-//           expect(prijava).to.not.be.empty;
-//         });
-//
-//       });
+
+// IZBRIS UPORABNIKA
+        describe("Izbris uporabnika", async function() {
+            this.timeout(30 * 1000);
+            before(function() { brskalnik.get(aplikacijaUrl);});
+
+            it("Preveri ali je uporabnik prijavljen", async function() {
+                await pocakajStranNalozena(brskalnik, 10, "//span");
+
+                let uporabnik = await brskalnik.findElement(
+                 By.xpath("//span[contains(text(), 'testiranje')]"));
+                expect(uporabnik).to.not.be.empty;
+            });
+
+            it("Zahtevaj izbris računa", async function() {
+              let profilnastran = await brskalnik.findElement(
+                  By.xpath("//a[contains(text(), 'PROFILE')]"));
+              expect(profilnastran).to.not.be.empty;
+              await profilnastran.click();
+
+              let izbris = await brskalnik.findElement(
+                By.xpath("//input[@value='TERMINATE']"));
+              expect(izbris).to.not.be.empty;
+              await izbris.click();
+            });
+
+            // Potrdi modalno okno
+
+            it("Potrdi modalno okno", async function() {
+                await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Yes')]");
+
+                let potrdi = await brskalnik.findElement(
+                    By.xpath("//button[contains(text(), 'Yes')]"));
+                expect(potrdi).to.not.be.empty;
+                await potrdi.click();
+            });
+
+            context("Odjava in prijava", function() {
+                it("Preveri, ali je bil uporabnik odjavljen", async function() {
+
+                    await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Login')]");
+
+                    let prijava = await brskalnik.findElement(
+                        By.xpath("//button[contains(text(), 'Login')]"));
+                    expect(prijava).to.not.be.empty;
+                });
+
+                it("Prijava uporabnika", async function() {
+                    let upime = await brskalnik.findElement(By.xpath("//*[@id='username']"));
+                    expect(upime).to.not.be.empty;
+                    upime.sendKeys("testiranje");
+                    let geslo = await brskalnik.findElement(By.xpath("//*[@id='password']"));
+                    expect(geslo).to.not.be.empty;
+                    geslo.sendKeys("testiranje");
+
+                    brskalnik.findElement(By.xpath("//button[contains(text(), 'Login')]")).click();
+                });
+
+                it("Preverjanje, ali je bila prijava neuspešna", async function() {
+                    await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'Wrong username or password!')]");
+
+                    let loginInfo = await brskalnik.findElement(
+                        By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
+                    expect(loginInfo).to.not.be.empty;
+                });
+            });
+
+        });
 
 // TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
       after(async () => {
