@@ -252,24 +252,49 @@
 
         it("Potrdi modalno okno", async function () {
           await pocakajStranNalozenaSec(brskalnik);
-
           let potrdi = await brskalnik.findElement(By.xpath("//button[contains(text(), 'Yes')]"));
           expect(potrdi).to.not.be.empty;
           await potrdi.click();
         });
 
+        it("Preverjanje uporabniškega imena in e-naslova", async function () {
+          let username = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje')]"));
+          expect(username).to.not.be.empty;
+          let email = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje@example.com')]"));
+          expect(username).to.not.be.empty;
 
+        });
+
+        /*
         it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
           before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
           //await pocakajStranNalozena(brskalnik, 10, "//input");
           //let biotitle = await brskalnik.findElement(By.css("input[name='biotitle']"));
-          let novtitle = await brskalnik.findElement(By.xpath("//input[@ng-model='controller.model.profileInfo.bio_title']"));
-          expect(novtitle).to.not.be.empty;
+          pocakajStranNalozenaSec(brskalnik);
+          let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
+          console.log(novtitle.getText());
+          expect(novtitle.getText()).to.be.equal('Moj nov title');
           //let novtitle = await brskalnik.findElement(By.xpath("//input[@value='Moj nov title']"));
           //expect(novtitle).to.not.be.empty;
           //let novbio = await brskalnik.findElement(By.xpath("//textarea[@value='Moj nov bio']"));
           //expect(novbio).to.not.be.empty;
         });
+        */
+
+        it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
+
+          axios({
+            method: 'get',
+            url: 'uporabniki/testiranje/profile/'
+          })
+            .then(async (odgovor) => {
+              let bio = odgovor.data.bio;
+              expect(bio).to.be.equal('This is default bioMoj nov bio');
+              let bio_title = odgovor.data.bio_title;
+              expect(bio_title).to.be.equal('Default bio titleMoj nov title');
+            });
+        });
+
 
       });
 
