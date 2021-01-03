@@ -593,6 +593,51 @@ router.get('/messages', avtentikacija, ctrlAvtentikacija.isAdmin, ctrlChatLogs.g
  *      description: Napaka na strežniku pri dostopu do podatkovne baze.
  */
 
+/**
+ * @swagger
+ *  /preveriWSToken/{ui}/{token}:
+ *   get:
+ *    summary: Preverjanje ws tokena
+ *    description: WS server avtenticira uporabnike glede na podan ws token.
+ *    tags: [WS Token]
+ *    parameters:
+ *     - in: path
+ *       name: ui
+ *       description: uporabniško ime
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: student
+ *     - in: path
+ *       name: token
+ *       description: Web Socket Token
+ *       schema:
+ *        type: string
+ *       required: true
+ *       example: f861390a1737
+ *    responses:
+ *     "200":
+ *      description: Status ujemanja WS tokena.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/PreveriWSTokenOdgovor"
+ *        examples:
+ *         ws token se ujema: 
+ *           $ref: "#/components/examples/Ujemanje"
+ *         ws token se ne ujema:
+ *           $ref: "#/components/examples/Neujemanje"
+ *     "404":
+ *      description: Napaka zahteve, uporabnik ne obstaja.
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: "#/components/schemas/Napaka"
+ *        example:
+ *         sporočilo: Uporabnik ne obstaja.
+ *     "500":
+ *      description: Napaka na strežniku pri dostopu do podatkovne baze.
+ */
 
 
 

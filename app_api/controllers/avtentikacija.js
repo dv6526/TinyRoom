@@ -91,14 +91,14 @@ const preveriWSToken = (req, res) => {
   let username = req.params.username;
   let token_to_check = req.params.token;
 
-  Uporabnik.findOne({ "username": username}).exec((napaka, uporabnik) => {
+  Uporabnik.findOne({ "username": username }).exec((napaka, uporabnik) => {
 
-    if (!uporabnik) {
-      res.status(404).json({"error": "user does not exist"});
-    }
-    
-    else {
-      res.status(200).json({
+    if (napaka) {
+      return res.status(500);
+    } else if (!uporabnik) {
+      return res.status(404).json({ "sporočilo": "Uporabnik ne obstaja." });
+    } else {
+      return res.status(200).json({
         "success": token_to_check == uporabnik.ws_token
       })
     }

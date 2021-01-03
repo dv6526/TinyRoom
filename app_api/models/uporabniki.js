@@ -187,6 +187,16 @@ const jwt = require('jsonwebtoken');
 *      type: string
 *    example:
 *     sporočilo: Uspešna akcija.
+*   PreveriWSTokenOdgovor:
+*    type: object
+*    description: Ujemanje WS tokena.
+*    required:
+*     - success
+*    properties:
+*     success:
+*      type: boolean
+*    example:
+*     success: true.
 */
 
 /**
@@ -221,6 +231,14 @@ const jwt = require('jsonwebtoken');
  *     summary: Napaka pri shranjevanju sporočila.
  *     value:
  *      sporočilo: "sporočilo: Napaka pri shranjevanju sporočila."
+ *    Ujemanje:
+ *     summary: WS token se ujema.
+ *     value:
+ *      success: "true"
+ *    Neujemanje:
+ *     summary: WS token se ne ujema.
+ *     value:
+ *      success: "false"
  */
 
 const uporabnikiShema = new mongoose.Schema({
@@ -233,10 +251,10 @@ const uporabnikiShema = new mongoose.Schema({
     chosen_skin: { type: String, "default": "bunny" },
     zgoscenaVrednost: { type: String, required: true },
     nakljucnaVrednost: { type: String, required: true },
-    ws_token: {type: String}
+    ws_token: { type: String }
 });
 
-uporabnikiShema.methods.generirajWSToken = function() {
+uporabnikiShema.methods.generirajWSToken = function () {
     let token = crypto.randomBytes(6).toString('hex');
     this.ws_token = token;
     // debug outprint
@@ -244,7 +262,7 @@ uporabnikiShema.methods.generirajWSToken = function() {
     return this.ws_token;
 }
 
-uporabnikiShema.methods.preveriWSToken = function(token) {
+uporabnikiShema.methods.preveriWSToken = function (token) {
     return this.ws_token = token;
 }
 
