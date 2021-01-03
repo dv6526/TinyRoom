@@ -42,18 +42,18 @@
 
     before(() => {
       brskalnik = new Builder()
-        .forBrowser("chrome")
-        .setChromeOptions(new chrome.Options()
-          .addArguments("start-maximized")
-          .addArguments("disable-infobars")
-          .addArguments("allow-insecure-localhost")
-          .addArguments("allow-running-insecure-content")
-        )
-        .usingServer(seleniumStreznikUrl)
-        .build();
+          .forBrowser("chrome")
+          .setChromeOptions(new chrome.Options()
+              .addArguments("start-maximized")
+              .addArguments("disable-infobars")
+              .addArguments("allow-insecure-localhost")
+              .addArguments("allow-running-insecure-content")
+          )
+          .usingServer(seleniumStreznikUrl)
+          .build();
     });
 
-    // TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
+// TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
 
     // REGISTRACIJA, PRIJAVA, ODJAVA
     describe("Testiranje funkcionalnosti na 'SIGN IN' strani", function () {
@@ -65,7 +65,7 @@
         it("Registracija novega uporabnika", async function () {
 
           await pocakajStranNalozena(brskalnik, 10,
-            "//button[contains(text(), 'Register')]");
+              "//button[contains(text(), 'Register')]");
 
           let email = await brskalnik.findElement(By.xpath("//*[@id='email']"));
           expect(email).to.not.be.empty;
@@ -78,7 +78,7 @@
           geslo.sendKeys("testiranje");
 
           brskalnik.findElement(
-            By.xpath("//button[contains(text(), 'Register')]")).click();
+              By.xpath("//button[contains(text(), 'Register')]")).click();
         });
 
         it("Preverjanje, ali je bila registracija uspešna", async function () {
@@ -86,7 +86,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-            By.xpath("//span[contains(text(), 'testiranje')]"));
+              By.xpath("//span[contains(text(), 'testiranje')]"));
           expect(uporabnik).to.not.be.empty;
         });
       });
@@ -95,7 +95,7 @@
 
         it("Odjava uporabnika", async function () {
           let odjava = await brskalnik.findElement(
-            By.xpath("//a[contains(text(), 'LOG OUT')]"));
+              By.xpath("//a[contains(text(), 'LOG OUT')]"));
           expect(odjava).to.not.be.empty;
           await odjava.click();
         });
@@ -105,7 +105,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//div");
 
           let prijava = await brskalnik.findElement(
-            By.xpath("//button[contains(text(), 'Login')]"));
+              By.xpath("//button[contains(text(), 'Login')]"));
           expect(prijava).to.not.be.empty;
         });
 
@@ -124,12 +124,14 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-            By.xpath("//span[contains(text(), 'testiranje')]"));
+              By.xpath("//span[contains(text(), 'testiranje')]"));
           expect(uporabnik).to.not.be.empty;
         });
       });
 
     });
+
+
 
     // STRAN CHAT
     describe("Testiranje funkcionalnosti na 'CHAT' strani", async function () {
@@ -142,7 +144,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//div");
 
           let mapa = await brskalnik.findElement(
-            By.xpath('//*[@id="tinyroom"]'));
+              By.xpath('//*[@id="tinyroom"]'));
           expect(mapa).to.not.be.empty;
         });
         // TODO:
@@ -156,17 +158,17 @@
       context("Pošiljanje sporočil", function () {
         it("Pošiljanje sporočila", async function () {
           let gumb = await brskalnik.findElement(
-            By.xpath("//*[@id='messagesend']"));
+              By.xpath("//*[@id='messagesend']"));
           expect(gumb).to.not.be.empty;
           await brskalnik.findElement(By.xpath("//*[@id='message']"))
-            .sendKeys("To je moje sporočilo.");
+              .sendKeys("To je moje sporočilo.");
           await gumb.click();
         });
 
         it("Preverjanje, ali je bilo sporočilo dodano", async function () {
           await pocakajStranNalozena(brskalnik, 10, "//*[@id='chatlogs']");
           let mojeSporocilo = await brskalnik.findElement(
-            By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+              By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
           expect(mojeSporocilo).to.not.be.empty;
         });
       });
@@ -188,10 +190,18 @@
 
     // STRAN MY ROOM
     describe("Testiranje funkcionalnosti na 'CHAT' strani", async function () {
+      it("Prestavi se na 'MY ROOM' stran", async function () {
+        let profilnastran = await brskalnik.findElement(By.xpath("//a[contains(text(), 'MY ROOM')]"));
+        expect(profilnastran).to.not.be.empty;
+        await profilnastran.click();
+      });
+
       // - dodajanje elementa
 
       // - shranjevanje
       context("Shranjevanje pohištva", function () {
+
+
         it("Shrani pohištvo", async function () {
           let gumb = await brskalnik.findElement(By.xpath("//*[@id='save-room']"));
           expect(gumb).to.not.be.empty;
@@ -209,6 +219,8 @@
 
       // - brisanje elementa z desnim klikom
     });
+
+
 
     // STRAN PROFILE
     // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
@@ -300,16 +312,34 @@
 
     });
 
-    // STRAN STATISTICS
-            // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
-                // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
-            // - izpis na grafu
-            // - spremeni uporabnika v administratorja
-                // - uporabi neveljavno ime in preveri message pod vnosnim poljem
-                // - uporabi veljavno ime in preveri message pod vnosnim poljem
 
+     // STRAN STATISTICS
+     describe("Testiranje funkcionalnosti na 'STATISTICS' strani", async function () {
+         // prestavi se na stran
+         it("Prestavi se na 'STATISTICS' stran", async function () {
+           let statistika = await brskalnik.findElement(By.xpath("//a[contains(text(), 'STATISTICS')]"));
+           expect(statistika).to.not.be.empty;
+           await statistika.click();
+         });
 
+         // preverjanje izpisa sporočil iz podatkovne vaze
+         context("Preveri ali smo pridobili sporočila iz baze", async function () {
+             it("Preverjanje, ali je sporočilo med podatki", async function () {
+               await pocakajStranNalozena(brskalnik, 10, "//div[contains[text(), 'To je moje sporočilo.'");
+               let mojeSporocilo = await brskalnik.findElement(
+                   By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+               expect(mojeSporocilo).to.not.be.empty;
+             });
+         });
 
+         // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
+
+         // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
+         // - izpis na grafu
+         // - spremeni uporabnika v administratorja
+         // - uporabi neveljavno ime in preveri message pod vnosnim poljem
+         // - uporabi veljavno ime in preveri message pod vnosnim poljem
+     });
 
     // IZBRIS UPORABNIKA
     describe("Izbris uporabnika", async function () {
@@ -353,7 +383,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Login')]");
 
           let prijava = await brskalnik.findElement(
-            By.xpath("//button[contains(text(), 'Login')]"));
+              By.xpath("//button[contains(text(), 'Login')]"));
           expect(prijava).to.not.be.empty;
         });
 
@@ -373,14 +403,14 @@
           await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'Wrong username or password!')]");
 
           let loginInfo = await brskalnik.findElement(
-            By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
+              By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
           expect(loginInfo).to.not.be.empty;
         });
       });
 
     });
 
-    // TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
+// TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
     after(async () => {
       brskalnik.quit();
     });
