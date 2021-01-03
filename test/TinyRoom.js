@@ -220,8 +220,6 @@
       // - brisanje elementa z desnim klikom
     });
 
-
-
     // STRAN PROFILE
     // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
     // - spreminjanje gesla in preverjanje ponovnega vpisa
@@ -312,35 +310,6 @@
 
     });
 
-
-     // STRAN STATISTICS
-     describe("Testiranje funkcionalnosti na 'STATISTICS' strani", async function () {
-         // prestavi se na stran
-         it("Prestavi se na 'STATISTICS' stran", async function () {
-           let statistika = await brskalnik.findElement(By.xpath("//a[contains(text(), 'STATISTICS')]"));
-           expect(statistika).to.not.be.empty;
-           await statistika.click();
-         });
-
-         // preverjanje izpisa sporočil iz podatkovne vaze
-         context("Preveri ali smo pridobili sporočila iz baze", async function () {
-             it("Preverjanje, ali je sporočilo med podatki", async function () {
-               await pocakajStranNalozena(brskalnik, 10, "//div[contains[text(), 'To je moje sporočilo.'");
-               let mojeSporocilo = await brskalnik.findElement(
-                   By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
-               expect(mojeSporocilo).to.not.be.empty;
-             });
-         });
-
-         // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
-
-         // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
-         // - izpis na grafu
-         // - spremeni uporabnika v administratorja
-         // - uporabi neveljavno ime in preveri message pod vnosnim poljem
-         // - uporabi veljavno ime in preveri message pod vnosnim poljem
-     });
-
     // IZBRIS UPORABNIKA
     describe("Izbris uporabnika", async function () {
       this.timeout(30 * 1000);
@@ -408,6 +377,34 @@
         });
       });
 
+    });
+
+    // STRAN STATISTICS
+    describe("Testiranje funkcionalnosti na 'STATISTICS' strani", async function () {
+      // prestavi se na stran
+      it("Prestavi se na 'STATISTICS' stran", async function () {
+        let statistika = await brskalnik.findElement(By.xpath("//a[contains(text(), 'STATISTICS')]"));
+        expect(statistika).to.not.be.empty;
+        await statistika.click();
+      });
+
+      // preverjanje izpisa sporočil iz podatkovne vaze
+      context("Preveri ali smo pridobili sporočila iz baze", async function () {
+        it("Preverjanje, ali je sporočilo med podatki", async function () {
+          await pocakajStranNalozena(brskalnik, 10, "//div[contains[text(), 'To je moje sporočilo.'");
+          let mojeSporocilo = await brskalnik.findElement(
+              By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+          expect(mojeSporocilo).to.not.be.empty;
+        });
+      });
+
+      // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
+
+      // - vrnit bi moglo 10 strani glej med gumba "PREVIOUS" in "NEXT"
+      // - izpis na grafu
+      // - spremeni uporabnika v administratorja
+      // - uporabi neveljavno ime in preveri message pod vnosnim poljem
+      // - uporabi veljavno ime in preveri message pod vnosnim poljem
     });
 
 // TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
