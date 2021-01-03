@@ -288,7 +288,7 @@ uporabnikiShema.methods.generirajJwt = function () {
         email: this.email,
         my_id: this._id,
         // sprite_idx: this.chosen_skin,
-        // rank: this.rank,
+        rank: this.rank,
         exp: parseInt(datumPoteka.getTime() / 1000, 10)
     }, process.env.JWT_GESLO);
 };
