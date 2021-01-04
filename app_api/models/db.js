@@ -6,8 +6,8 @@ if (process.env.NODE_ENV == "production") {
   //dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk';
 }
 else {
-  //dbURI = 'mongodb://localhost/smalltalk';  //   dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk'; // za docker
-  dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk';
+  dbURI = 'mongodb://localhost/smalltalk';  //   dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk'; // za docker
+  //dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk';
 }
 
 mongoose.connect(dbURI, {

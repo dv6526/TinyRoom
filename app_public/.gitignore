@@ -47,5 +47,5 @@ Thumbs.db
 
 
 # ANGULAR
-/build
+# /build
 package-lock.json

@@ -1,0 +1,148 @@
+{
+  "configVersion": 1,
+  "timestamp": 1609722494955,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main.f9fde1ab50097731edc8.js",
+        "/manifest.webmanifest",
+        "/polyfills.b3b05dce4f05c03b56a3.js",
+        "/runtime.0e49e2b53282f40c8925.js",
+        "/styles.347cc0369673d899950f.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/editor/fotelj.png",
+        "/assets/editor/light.png",
+        "/assets/editor/room.png",
+        "/assets/editor/stol.png",
+        "/assets/editor/stolcek.png",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/images/avatar.png",
+        "/assets/images/map-mockup.jpg",
+        "/assets/images/map.jpg",
+        "/assets/images/map.png",
+        "/assets/images/room.png",
+        "/assets/images/soba.jpg",
+        "/assets/images/sprites.png",
+        "/assets/images/weather.png",
+        "/assets/javascripts/Vector2D.js",
+        "/assets/javascripts/room.js",
+        "/assets/javascripts/script.js",
+        "/assets/javascripts/scriptOLD.js",
+        "/assets/models/sporocila.js",
+        "/assets/models/uporabnik.js",
+        "/assets/profileImages/asistent.png",
+        "/assets/profileImages/profesor.png",
+        "/assets/stylesheets/style.css"
+      ],
+      "patterns": [
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@4\\.5\\.3\\/dist\\/css\\/bootstrap\\.min\\.css",
+        "https:\\/\\/cdnjs\\.cloudflare\\.com\\/ajax\\/libs\\/font-awesome\\/4\\.7\\.0\\/css\\/font-awesome\\.min\\.css",
+        "https:\\/\\/code\\.jquery\\.com\\/jquery-3\\.5\\.1\\.min\\.js",
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@4\\.5\\.3\\/dist\\/js\\/bootstrap\\.bundle\\.min\\.js",
+        "https:\\/\\/pro\\.fontawesome\\.com\\/releases\\/v5\\.13\\.0\\/css\\/all\\.css",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/[^/]*"
+      ]
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "tinyroom-api",
+      "patterns": [
+        "http:\\/\\/localhost:3000\\/.*",
+        "http:\\/\\/157\\.245\\.36\\.23\\/api\\/.*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 20,
+      "maxAge": 3600000,
+      "timeoutMs": 5000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/assets/editor/fotelj.png": "197267884fcc6be4ab69e61702507a5d8dd34c49",
+    "/assets/editor/light.png": "1bd8aecff3fb9327a82a52e9bbea03a18b9f4f01",
+    "/assets/editor/room.png": "f53845cbf0567e626c4ca312369981da4dcb28f6",
+    "/assets/editor/stol.png": "df3760525630cba462ed1750f5396a35c9ac3a93",
+    "/assets/editor/stolcek.png": "1942ecef46a4b7385a1c330b79fc37193d0db4c9",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/assets/images/avatar.png": "425f8025d9e4c6b35a359cc39ce18da1d1dc9ce3",
+    "/assets/images/map-mockup.jpg": "ea2a49f2df0f82ebd733d939f3edd9fee121b77d",
+    "/assets/images/map.jpg": "b7f613707aaa35a27fb40847d5e1caa27f48f2d4",
+    "/assets/images/map.png": "05ad85e796c3e5c515f409a828b16c8cf0a7d2fe",
+    "/assets/images/room.png": "1cc1daea8e882d94b0c9ba2d01b26319109da707",
+    "/assets/images/soba.jpg": "a64daaacb5dddbdda423b3ccca8d979be27d1062",
+    "/assets/images/sprites.png": "9fbbd61772fa639b8ef942e9d289d268f7080ff9",
+    "/assets/images/weather.png": "41e1f6c6b2bbf89bb325c57feb9bca16950f55bc",
+    "/assets/javascripts/Vector2D.js": "79c4d40b9d4f8b239766aa69c3b342cfce785226",
+    "/assets/javascripts/room.js": "4beb747fdfffc268c903366d8a9f86fa377e1c58",
+    "/assets/javascripts/script.js": "73056b22e367d04497cf46a8cd96c014df13d987",
+    "/assets/javascripts/scriptOLD.js": "0e01811fa39bd5302f50d1667e72962af8b15466",
+    "/assets/models/sporocila.js": "6452d72b3addabf59064012fc376e9ff0f5f92ce",
+    "/assets/models/uporabnik.js": "507fb70c34c7f66b20a15476dfad3571f5e6a238",
+    "/assets/profileImages/asistent.png": "237c5a464dba5fa11088be9ae8c3b6df240727a9",
+    "/assets/profileImages/profesor.png": "8e421e6a04d42a423dc77d775a0bde1a3ae636bd",
+    "/assets/stylesheets/style.css": "c93c2cd1c5130fdf2dddad379f653bc7c1ebf56f",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "b9254e47ae342ed73b818ed845b8a4a390211f9f",
+    "/main.f9fde1ab50097731edc8.js": "595e5f298be8665e5f89d41a85138bfb8e700445",
+    "/manifest.webmanifest": "48813a567471c2837bb0a614eb41f2777104b9c8",
+    "/polyfills.b3b05dce4f05c03b56a3.js": "0d003992512d28c544b0a972ce2ae6b28ebbf5f6",
+    "/runtime.0e49e2b53282f40c8925.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/styles.347cc0369673d899950f.css": "4fb8abee79dcb8dc6ca15de2f0ce486bb95011af"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
