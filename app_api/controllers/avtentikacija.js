@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 //const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
 const Soba = mongoose.model('privateRoom');
-const atob = require('atob');
 var createError = require('http-errors');
 
 const registracija = (req, res) => {
