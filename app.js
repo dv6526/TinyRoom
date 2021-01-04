@@ -48,7 +48,7 @@ require('./app_api/configuration/passport');
 var indexApi = require('./app_api/routes/index');
 
 var app = express();
-//app.use(compression());
+app.use(compression());
 
 /*
 if (process.env.NODE_ENV === 'production') {
@@ -74,7 +74,7 @@ app.set('view engine', 'hbs');
 require('./app_server/views/helpers/hbsh.js');
 
 // Odprava varnostnih pomanjkljivosti
-/*
+
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.header('X-Frame-Options', 'DENY');
@@ -82,7 +82,7 @@ app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   next();
 });
-*/
+
 
 app.use(logger('dev'));
 app.use(express.json());

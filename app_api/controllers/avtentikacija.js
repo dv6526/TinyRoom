@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 //const delete = require('../../app');
 const Uporabnik = mongoose.model('Uporabnik');
 const Soba = mongoose.model('privateRoom');
+const atob = require('atob');
 var createError = require('http-errors');
 
 const registracija = (req, res) => {
@@ -116,7 +117,11 @@ function parseJwt (token) {
 };
 
 function isAdmin(req, res, next) {
-  let rank = parseJwt(req.header('Authorization'))['rank'];
+  console.log('token', req.header('Authorization').split(" ")[1])
+  //console.log(req.header('Authorization'));
+  let token = parseJwt(req.header('Authorization').split(" ")[1]);
+  console.log('rank', token['rank']);
+  let rank = token['rank'];
   if(rank == 'admin') {
     console.log("IS ADMIN: Uspešno avtenticiranje");
     next()
