@@ -42,36 +42,6 @@ var mutedPlayers = [];
 var globalMutes = [];
 
 // UTILITY FUNCTIONS =======================================
-const regPass = /^.{3,}$/;
-const regEmail = /^\S+@\S+$/;
-const regName = /^[a-zA-Z0-9]{1,10}$/;
-
-// check profile password
-/*
-function checkPassword(dogodek) {
-    let password = document.getElementById('password');
-    let info = document.getElementById("passwordInfo");
-    if (!regPass.test(password.value)) {
-        info.innerText = "Password is too short";
-        dogodek.preventDefault();
-        return;
-    }
-}
-
-// check profile info
-function checkProfileInfo(dogodek) {
-    let biotitle = document.getElementById("biotitle");
-    let bio = document.getElementById('bio')
-    biotitle.value = biotitle.value.substring(0, 20);
-    bio.value = bio.value.substring(0, 200);
-    if (biotitle.value == "") {
-        biotitle.value = "Default bio title";
-    }
-    if (bio.value == "") {
-        bio.value = "This is default bio";
-    }
-}
-*/
 
 function orangeObroba() {
     var message = document.getElementById("message");
@@ -96,49 +66,6 @@ function topAlert(message, seconds) {
     var cas = setTimeout(function () { okno.remove(); }, seconds * 1000);
 }
 
-// check login
-function checkLoginInfo(dogodek) {
-    let username = document.getElementById("username")
-    let password = document.getElementById('password');
-    let info = document.getElementById("loginInfo");
-    if (!regName.test(username.value)) {
-        info.innerText = "Username does not fit the specification";
-        dogodek.preventDefault();
-        return;
-    }
-    if (!regPass.test(password.value)) {
-        info.innerText = "Password does not fit the specification";
-        dogodek.preventDefault();
-        return;
-    }
-}
-
-// check register
-function checkRegisterInfo(dogodek) {
-    console.log(this);
-    // preveri pravilno vnosa imena in gesla
-    let email = document.getElementById('email');
-    let name = document.getElementById('usernameRegister');
-    let password = document.getElementById('passwordRegister');
-    let info = document.getElementById("registerInfo");
-
-    if (!regEmail.test(email.value)) {
-        info.innerText = "Email address has a typo";
-        dogodek.preventDefault();
-        return;
-    }
-    if (!regName.test(name.value)) {
-        info.innerText = "Username should consist only of letters or numbers";
-        dogodek.preventDefault();
-        return;
-    }
-    if (!regPass.test(password.value)) {
-        info.innerText = "Password is too short";
-        dogodek.preventDefault();
-        return;
-    }
-}
-
 function returnImageObject(image_link, onload) {
     var img = document.createElement('img');
     img.src = image_link;
@@ -160,7 +87,6 @@ function addZero(i) {
     }
     return i;
 }
-
 
 // new message
 function novoSporocilo(sporocilo_info) {
@@ -278,17 +204,14 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
     /*
         Construct dropdown
     */
-    //dropdown.style.width = "400px";
     // Append buttons to div (user and admin are different)
     dropdown.id = "dropdown";
-    dropdown_nav.id = "dropdown_nav";                               // set ID for removal of dropdown
-    dropdown_nav.className = "nav flex-columns";                 // bootstrap
+    dropdown_nav.id = "dropdown_nav";
+    dropdown_nav.className = "nav flex-columns";
     for (let i = 0; i < optionsLength; i++) {
-        //row = document.createElement("li");
-        link = document.createElement("a");                         // has to be reinitialized every time
-        row.className = "nav-item";                                   // bootstrap
-        link.className = "nav-link pt-0 pb-0";                      // bootstrap
-        //link.addEventListener("click", dropdownButtonClick);      // add event listener on click (left in case eventlistener on div is harder to handle)
+        link = document.createElement("a");
+        row.className = "nav-item";
+        link.className = "nav-link pt-0 pb-0";
 
         // append childs to parents (look out for mute/unmute, global mute/unmute)
         if (i == 0)
@@ -347,32 +270,10 @@ function messageDropdown(screenPosition, dropdown_info, chat) {
         }
         document.removeEventListener("click", click_handler);
     }
-
     document.addEventListener("click", click_handler);
 
-
-    // Opens dropdown on x,y position
-    // check if clicked closer to the edge than allowed
-    /*
-    if((screenPosition.x + dropdown.offsetHeight) > $(document).height())
-        dropdown.style.top = ($(document).height() - dropdown.offsetHeight - 1) + "px";
-    else
-        dropdown.style.top = screenPosition.y + "px";
-
-    if((screenPosition.y + dropdown.offsetWidth) > $(document).width())
-        dropdown.style.left = ($(document).width() - dropdown.offsetWidth - 1) + "px";
-    else
-        dropdown.style.left = screenPosition.x + "px";
-    */
     dropdown.style.top = screenPosition.y + "px";
     dropdown.style.left = screenPosition.x + "px";
-
-    // Close dropdown if clicked anywhere else on the screen
-    // klic dropdownButtonClick(brez opcije) ali dropdownReset()
-    // PRI RESIZE-U OKNA SKRIJ DIV (klic dropdownReset()), ker se ne premika skladno in bo potem postavljen kr nekje
-
-    // HTML okno mora imeti atribut data-user_id z vrednostjo target_user_id
-    // ne vem točno kaj naj bi to pomenilo. Predvidevam, da mora imeti ta atribut message-bubble.
 }
 
 function openSearchField(screenPosition, chat) {
@@ -965,8 +866,9 @@ class Chat {
     }
 
     communications() {
-        this.socket = new WebSocket("ws://localhost:8070");
-        //this.socket = new WebSocket("ws://157.245.36.23:8070");
+        //this.socket = new WebSocket("ws://localhost:8070");
+        //this.socket = new WebSocket("ws://host.docker.internal:8070");
+        this.socket = new WebSocket("ws://157.245.36.23:8070");
 
         var chat = this;
 
@@ -1095,18 +997,18 @@ let rank = "";
 let ws_token = "";
 
 function setUserData(user) {
-  var skins = { "bunny": 0, "goat": 1, "rat": 2 };
-  username = user.username;
-  sprite_idx = skins[user.chosen_skin];
-  my_id = user._id;
-  rank = user.rank;
-  ws_token = user.ws_token;
+    var skins = { "bunny": 0, "goat": 1, "rat": 2 };
+    username = user.username;
+    sprite_idx = skins[user.chosen_skin];
+    my_id = user._id;
+    rank = user.rank;
+    ws_token = user.ws_token;
 }
 
 function setUserWeather(setWeather) {
-  console.log("Weather is set: " + setWeather);
-  chat.player.weather = setWeather;
-  weather = setWeather;
+    console.log("Weather is set: " + setWeather);
+    chat.player.weather = setWeather;
+    weather = setWeather;
 }
 
 function exit() {
@@ -1129,8 +1031,6 @@ function newStart() {
             }
         }
     }
-    //chat.canvas = document.getElementById("tinyroom");
-    //chat.socket = new WebSocket("ws://157.245.36.23:8070");
     chat = new Chat('tinyroom');
     formatPage();
     console.log("Zaganjam svet!");
@@ -1166,52 +1066,4 @@ $(function () {
     }
 
     $(window).resize(formatPage);
-
-
-    // formatiranje s pomocjo javascripta
-
-    //chat = new Chat('tinyroom');
-    //formatPage();
-
-
-    // End of Code =========================================
-
-
-
-
 });
-
-function getLocation() {
-    console.log("Pridobivam lokacijo...");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
-    }
-}
-
-function getLocation1() {
-    console.log("Pridobivam lokacijo...");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success1, error);
-    }
-}
-
-function success1(position) {
-    console.log(position);
-    $("getlon1").val(position.coords.longitude);
-    $("getlat1").val(position.coords.latitude);
-
-    $("#formRegister").submit(); // here the form is submit
-}
-
-function success(position) {
-    console.log(position);
-    $("getlon").val(position.coords.longitude);
-    $("getlat").val(position.coords.latitude);
-
-    $("#signinform").submit(); // here the form is submit
-}
-
-function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
