@@ -40,7 +40,7 @@
       "name": "tinyroom-api",
       "urls": [
         "http://localhost:3000/**",
-        "http://157.245.36.23/api/**"
+        "http://157.245.36.23/**"
       ],
       "cacheConfig": {
         "strategy": "freshness",

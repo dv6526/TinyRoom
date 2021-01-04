@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1609722494955,
+  "timestamp": 1609723412098,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.f9fde1ab50097731edc8.js",
+        "/main.3cfb6a626752a81298ac.js",
         "/manifest.webmanifest",
         "/polyfills.b3b05dce4f05c03b56a3.js",
         "/runtime.0e49e2b53282f40c8925.js",
@@ -75,7 +75,7 @@
       "name": "tinyroom-api",
       "patterns": [
         "http:\\/\\/localhost:3000\\/.*",
-        "http:\\/\\/157\\.245\\.36\\.23\\/api\\/.*"
+        "http:\\/\\/157\\.245\\.36\\.23\\/.*"
       ],
       "strategy": "freshness",
       "maxSize": 20,
@@ -119,8 +119,8 @@
     "/assets/profileImages/profesor.png": "8e421e6a04d42a423dc77d775a0bde1a3ae636bd",
     "/assets/stylesheets/style.css": "c93c2cd1c5130fdf2dddad379f653bc7c1ebf56f",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "b9254e47ae342ed73b818ed845b8a4a390211f9f",
-    "/main.f9fde1ab50097731edc8.js": "595e5f298be8665e5f89d41a85138bfb8e700445",
+    "/index.html": "6563ef06ebc6a02283775d599f9ef0819235f675",
+    "/main.3cfb6a626752a81298ac.js": "c1b391e4333714ee7620aeafcf1c424bec6352a6",
     "/manifest.webmanifest": "48813a567471c2837bb0a614eb41f2777104b9c8",
     "/polyfills.b3b05dce4f05c03b56a3.js": "0d003992512d28c544b0a972ce2ae6b28ebbf5f6",
     "/runtime.0e49e2b53282f40c8925.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
