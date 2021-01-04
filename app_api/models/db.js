@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 let dbURI;
 if (process.env.NODE_ENV == "production") {
-  //dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
-  dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk';
+  dbURI = 'mongodb+srv://admin:admin@tinytalk.ovsch.mongodb.net/smalltalk?retryWrites=true&w=majority';
+  //dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk';
 }
 else {
   //dbURI = 'mongodb://localhost/smalltalk';  //   dbURI = 'mongodb://sp-smalltalk-mongodb/smalltalk'; // za docker
