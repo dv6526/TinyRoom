@@ -72,7 +72,6 @@ Naložen morate imeti docker.
 
 # Uporabljene npm knjižnice
 * Uporabili smo knjižnico **ws**, ki jo uporabljamo za prenos sporočil in vso komunikacijo potrebno za delovanje interkativnega chata.
-* Dodatno smo uporabili **nodemailer**, ki ob registraciji na mail sporoči, da je bil uporabnik kreiran.
 
 
 ---
