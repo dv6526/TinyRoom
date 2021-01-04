@@ -42,18 +42,18 @@
 
     before(() => {
       brskalnik = new Builder()
-          .forBrowser("chrome")
-          .setChromeOptions(new chrome.Options()
-              .addArguments("start-maximized")
-              .addArguments("disable-infobars")
-              .addArguments("allow-insecure-localhost")
-              .addArguments("allow-running-insecure-content")
-          )
-          .usingServer(seleniumStreznikUrl)
-          .build();
+        .forBrowser("chrome")
+        .setChromeOptions(new chrome.Options()
+          .addArguments("start-maximized")
+          .addArguments("disable-infobars")
+          .addArguments("allow-insecure-localhost")
+          .addArguments("allow-running-insecure-content")
+        )
+        .usingServer(seleniumStreznikUrl)
+        .build();
     });
 
-// TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
+    // TU ZAČNEMO MI DELAT -------------------------------------------------------------------------------------------------
 
     // REGISTRACIJA, PRIJAVA, ODJAVA
     describe("Testiranje funkcionalnosti na 'SIGN IN' strani", function () {
@@ -65,7 +65,7 @@
         it("Registracija novega uporabnika", async function () {
 
           await pocakajStranNalozena(brskalnik, 10,
-              "//button[contains(text(), 'Register')]");
+            "//button[contains(text(), 'Register')]");
 
           let email = await brskalnik.findElement(By.xpath("//*[@id='email']"));
           expect(email).to.not.be.empty;
@@ -78,7 +78,7 @@
           geslo.sendKeys("testiranje");
 
           brskalnik.findElement(
-              By.xpath("//button[contains(text(), 'Register')]")).click();
+            By.xpath("//button[contains(text(), 'Register')]")).click();
         });
 
         it("Preverjanje, ali je bila registracija uspešna", async function () {
@@ -86,7 +86,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-              By.xpath("//span[contains(text(), 'testiranje')]"));
+            By.xpath("//span[contains(text(), 'testiranje')]"));
           expect(uporabnik).to.not.be.empty;
         });
       });
@@ -95,7 +95,7 @@
 
         it("Odjava uporabnika", async function () {
           let odjava = await brskalnik.findElement(
-              By.xpath("//a[contains(text(), 'LOG OUT')]"));
+            By.xpath("//a[contains(text(), 'LOG OUT')]"));
           expect(odjava).to.not.be.empty;
           await odjava.click();
         });
@@ -105,7 +105,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//div");
 
           let prijava = await brskalnik.findElement(
-              By.xpath("//button[contains(text(), 'Login')]"));
+            By.xpath("//button[contains(text(), 'Login')]"));
           expect(prijava).to.not.be.empty;
         });
 
@@ -124,7 +124,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-              By.xpath("//span[contains(text(), 'testiranje')]"));
+            By.xpath("//span[contains(text(), 'testiranje')]"));
           expect(uporabnik).to.not.be.empty;
         });
       });
@@ -144,7 +144,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//div");
 
           let mapa = await brskalnik.findElement(
-              By.xpath('//*[@id="tinyroom"]'));
+            By.xpath('//*[@id="tinyroom"]'));
           expect(mapa).to.not.be.empty;
         });
         // TODO:
@@ -158,17 +158,17 @@
       context("Pošiljanje sporočil", function () {
         it("Pošiljanje sporočila", async function () {
           let gumb = await brskalnik.findElement(
-              By.xpath("//*[@id='messagesend']"));
+            By.xpath("//*[@id='messagesend']"));
           expect(gumb).to.not.be.empty;
           await brskalnik.findElement(By.xpath("//*[@id='message']"))
-              .sendKeys("To je moje sporočilo.");
+            .sendKeys("To je moje sporočilo.");
           await gumb.click();
         });
 
         it("Preverjanje, ali je bilo sporočilo dodano", async function () {
           await pocakajStranNalozena(brskalnik, 10, "//*[@id='chatlogs']");
           let mojeSporocilo = await brskalnik.findElement(
-              By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+            By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
           expect(mojeSporocilo).to.not.be.empty;
         });
       });
@@ -220,17 +220,18 @@
       // - brisanje elementa z desnim klikom
     });
 
+
     // STRAN PROFILE
-    // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
-    // - spreminjanje gesla in preverjanje ponovnega vpisa
-    // - terminate se že pri login preverja
-    // - preverjanje celotnega update profile gumba
-    // - zamenjava slike
-    // - zamenjava skina
-    // - zamenjava BIO naslova
-    // - zamenjava BIO opisa
-    // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
     describe("Profile", async function () {
+      // - preverjanje ali so podatki (rank, username, email....) takšni kot morajo biti
+      // - spreminjanje gesla in preverjanje ponovnega vpisa
+      // - terminate se že pri login preverja
+      // - preverjanje celotnega update profile gumba
+      // - zamenjava slike
+      // - zamenjava skina
+      // - zamenjava BIO naslova
+      // - zamenjava BIO opisa
+      // - preverjanje ob kliku na gumb, da ne vrne napake in če se stvari poupdejtajo v textboxih
       this.timeout(30 * 1000);
       before(function () { brskalnik.get(aplikacijaUrl + '/profile'); });
 
@@ -246,15 +247,25 @@
           await profilnastran.click();
         });
 
+        it("Preverjanje uporabniškega imena in e-naslova", async function () {
+          let username = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje')]"));
+          expect(username).to.not.be.empty;
+          let email = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje@example.com')]"));
+          expect(email).to.not.be.empty;
+        });
+
         it("Spreminjanje podatkov", async function () {
           await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'testiranje')]");
 
           let novtitle = await brskalnik.findElement(By.xpath("//*[@id='biotitle']"));
           expect(novtitle).to.not.be.empty;
-          novtitle.sendKeys("Moj nov title");
+          novtitle.sendKeys("123");
           let novbio = await brskalnik.findElement(By.xpath("//*[@id='bio']"));
           expect(novbio).to.not.be.empty;
-          novbio.sendKeys("Moj nov bio");
+          novbio.sendKeys("123");
+
+          let skin = await brskalnik.findElement(By.xpath("//img[contains(@class, 'goat')]"));
+          await skin.click();
 
           let potrdi = brskalnik.findElement(By.xpath("//button[contains(text(), 'UPDATE PROFILE')]"));
           await potrdi.click();
@@ -267,13 +278,6 @@
           await potrdi.click();
         });
 
-        it("Preverjanje uporabniškega imena in e-naslova", async function () {
-          let username = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje')]"));
-          expect(username).to.not.be.empty;
-          let email = await brskalnik.findElement(By.xpath("//div[contains(text(), 'testiranje@example.com')]"));
-          expect(username).to.not.be.empty;
-
-        });
 
         /*
         it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
@@ -293,15 +297,17 @@
 
         it("Preverjanje, ali je bilo spreminjanje uspešno", async function () {
 
+          let status = await brskalnik.findElement(By.xpath("//div[contains(text(), 'Profile info is UPDATED.')]"));
+          expect(await status.getText()).to.have.string("Profile info is UPDATED.");
+
           axios({
             method: 'get',
             url: 'uporabniki/testiranje/profile/'
           })
             .then(async (odgovor) => {
-              let bio = odgovor.data.bio;
-              expect(bio).to.be.equal('This is default bioMoj nov bio');
-              let bio_title = odgovor.data.bio_title;
-              expect(bio_title).to.be.equal('Default bio titleMoj nov title');
+              expect(odgovor.data.bio).to.be.equal("This is default bio123");
+              expect(odgovor.data.bio_title).to.be.equal("Default bio title123");
+              expect(odgovor.data.chosen_skin).to.be.equal("goat");
             });
         });
 
@@ -320,18 +326,18 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-              By.xpath("//span[contains(text(), 'testiranje')]"));
+            By.xpath("//span[contains(text(), 'testiranje')]"));
           expect(uporabnik).to.not.be.empty;
         });
 
         it("Izbriši račun", async function () {
           let profilnastran = await brskalnik.findElement(
-              By.xpath("//a[contains(text(), 'PROFILE')]"));
+            By.xpath("//a[contains(text(), 'PROFILE')]"));
           expect(profilnastran).to.not.be.empty;
           await profilnastran.click();
 
           let izbris = await brskalnik.findElement(
-              By.xpath("//input[@value='TERMINATE']"));
+            By.xpath("//input[@value='TERMINATE']"));
           expect(izbris).to.not.be.empty;
           await izbris.click();
         });
@@ -341,7 +347,7 @@
           //await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Yes')]");
           await pocakajStranNalozenaSec(brskalnik);
           let potrdi = await brskalnik.findElement(
-              By.xpath("//button[contains(text(), 'Yes')]"));
+            By.xpath("//button[contains(text(), 'Yes')]"));
           expect(potrdi).to.not.be.empty;
           await potrdi.click();
         });
@@ -352,7 +358,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//button[contains(text(), 'Login')]");
 
           let prijava = await brskalnik.findElement(
-              By.xpath("//button[contains(text(), 'Login')]"));
+            By.xpath("//button[contains(text(), 'Login')]"));
           expect(prijava).to.not.be.empty;
         });
 
@@ -372,7 +378,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'Wrong username or password!')]");
 
           let loginInfo = await brskalnik.findElement(
-              By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
+            By.xpath("//div[contains(text(), 'Wrong username or password!')]"));
           expect(loginInfo).to.not.be.empty;
         });
 
@@ -408,7 +414,7 @@
           await pocakajStranNalozena(brskalnik, 10, "//span");
 
           let uporabnik = await brskalnik.findElement(
-              By.xpath("//span[contains(text(), 'profesor')]"));
+            By.xpath("//span[contains(text(), 'profesor')]"));
           expect(uporabnik).to.not.be.empty;
         });
 
@@ -421,25 +427,25 @@
       });
 
       context("Preveri ali smo pridobili sporočila iz baze", async function () {
-          it("Preveri ali je sporočilo med podatki", async function () {
-            await pocakajStranNalozenaSec(brskalnik);
-            await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'To je moje sporočilo.')]");
-            let mojeSporocilo = await brskalnik.findElement(By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
-            expect(mojeSporocilo).to.not.be.empty;
-          });
+        it("Preveri ali je sporočilo med podatki", async function () {
+          await pocakajStranNalozenaSec(brskalnik);
+          await pocakajStranNalozena(brskalnik, 10, "//div[contains(text(), 'To je moje sporočilo.')]");
+          let mojeSporocilo = await brskalnik.findElement(By.xpath("//div[contains(text(), 'To je moje sporočilo.')]"));
+          expect(mojeSporocilo).to.not.be.empty;
+        });
 
-          it("Nastavi uporabniku administratorske pravice", async function () {
-            await pocakajStranNalozena(brskalnik, 10, "//*[@name='setAdmin']");
-            let setAdminInput = await brskalnik.findElement(By.xpath("//*[@name='setAdmin']"));
-            expect(setAdminInput).to.not.be.empty;
-            setAdminInput.sendKeys("student");
+        it("Nastavi uporabniku administratorske pravice", async function () {
+          await pocakajStranNalozena(brskalnik, 10, "//*[@name='setAdmin']");
+          let setAdminInput = await brskalnik.findElement(By.xpath("//*[@name='setAdmin']"));
+          expect(setAdminInput).to.not.be.empty;
+          setAdminInput.sendKeys("student");
 
-            brskalnik.findElement(By.xpath("//button[contains(text(), 'an admin.')]")).click();
-          });
+          brskalnik.findElement(By.xpath("//button[contains(text(), 'an admin.')]")).click();
+        });
 
-          it("Preveri ali so bile dodane pravice", async function () {
-            brskalnik.findElement(By.xpath("//div[contains(text(), 'successfully')]")).click();
-          });
+        it("Preveri ali so bile dodane pravice", async function () {
+          brskalnik.findElement(By.xpath("//div[contains(text(), 'successfully')]")).click();
+        });
       });
 
       // - izberi datum 30.12.2020 in poglej če se izpisujejo sporočila
@@ -451,7 +457,7 @@
       // - uporabi veljavno ime in preveri message pod vnosnim poljem
     });
 
-// TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
+    // TU KONČAMO MI DELAT -------------------------------------------------------------------------------------------------
     after(async () => {
       brskalnik.quit();
     });
