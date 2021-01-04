@@ -49,15 +49,8 @@ var indexApi = require('./app_api/routes/index');
 
 var app = express();
 app.use(compression());
-if (process.env.NODE_ENV === 'production') {
-  app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https')
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    else
-      next();
-  });
-}
 
+/*
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
@@ -66,6 +59,7 @@ if (process.env.NODE_ENV === 'production') {
       next();
   });
 }
+*/
 
 // picture upload
 const fileUpload = require('express-fileupload');
