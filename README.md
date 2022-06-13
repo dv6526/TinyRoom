@@ -2,6 +2,7 @@
 
 Lastni projekt pri predmetu **Spletno programiranje** v študijskem letu **2020/2021**.
 
+[Povezava na dokumentacijo](https://github.com/dv6526/TinyRoom/tree/master/docs)
 
 ## 1. LP
 
@@ -26,3 +27,4 @@ SPA aplikacija na eni strani
 ## 5. LP
 
 Varnostno zaščitena progresivna aplikacija
+
